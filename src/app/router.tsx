@@ -1,8 +1,10 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter } from "react-router-dom";
 
-import { StubPage } from '../pages/StubPage'
+import LoginPage from "../pages/LoginPage/LoginPage";
+import RegisterPage from "../pages/RegisterPage/RegisterPage";
 
 export const router = createBrowserRouter([
-  { path: '/', element: <StubPage /> },
-])
-
+  { element: <LoginPage />, path: "/" },
+  { element: <LoginPage />, path: "/login" },
+  { element: <RegisterPage />, path: "/register" },
+]);
