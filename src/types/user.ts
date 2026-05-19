@@ -7,7 +7,9 @@ export type User = {
 };
 
 export type UserProfile = User & {
-  password?: string;
+  surname: string;
+  accName: string;
+  avatar?: string;
 };
 
 export type RegisterPayload = {
@@ -27,6 +29,16 @@ export type UpdateProfilePayload = {
   email?: string;
   name?: string;
   password?: string;
+};
+
+export type ProfileFormValues = {
+  name: string;
+  surname: string;
+  email: string;
+  accName: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 };
 
 export type RegisterFormValues = {

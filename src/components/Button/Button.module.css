@@ -47,6 +47,8 @@
 .ghost {
   background-color: transparent;
   color: var(--color-brand-primary);
+  font-weight: 400;
+  line-height: 20px;
 }
 
 .ghost:hover:not(:disabled) {

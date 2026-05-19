@@ -1,5 +1,6 @@
 export type {
   LoginPayload,
+  ProfileFormValues,
   RegisterFormValues,
   RegisterPayload,
   UpdateProfilePayload,
