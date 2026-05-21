@@ -4,4 +4,8 @@ export { default as Button } from "./Button/Button";
 export type { ButtonSize, ButtonVariant } from "./Button/Button";
 export { default as Input } from "./Input/Input";
 export { default as Logo } from "./Logo/Logo";
+export { default as MainLayout } from "./MainLayout/MainLayout";
 export { default as ProfileForm } from "./ProfileForm/ProfileForm";
+export { default as Sidebar } from "./Sidebar/Sidebar";
+export { default as SidebarItem } from "./Sidebar/SidebarItem";
+export { default as SidebarList } from "./Sidebar/SidebarList";
