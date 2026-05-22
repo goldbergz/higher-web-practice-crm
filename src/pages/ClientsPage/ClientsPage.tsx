@@ -1,39 +1,29 @@
 import type React from "react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { Client, UpdateClientPayload } from "../../types";
-import type { ColumnConfig, SortConfig } from "../../components/DataList/types";
+import type { SortConfig } from "../../components/DataList/types";
 import Button from "../../components/Button/Button";
 import ClientEditModal from "../../components/ClientEditModal/ClientEditModal";
 import DataList from "../../components/DataList/DataList";
-import { mockClients } from "../../mocks/clients";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { deleteClient, loadClients, selectActiveClients, updateClient } from "../../store/clientsSlice";
 import styles from "./ClientsPage.module.css";
-
-const clientColumns: ColumnConfig<Client>[] = [
-  { key: "name", label: "Имя", flex: "1 1 0", className: "cellName" },
-  { key: "phone", label: "Телефон", flex: "1.4 1 0", className: "" },
-  { key: "email", label: "Email", flex: "1.8 1 0", className: "cellEmail" },
-  { key: "company", label: "Название компании", flex: "1.7 1 0", className: "" },
-  { key: "website", label: "Сайт", flex: "1.6 1 0", className: "" },
-  { key: "comment", label: "Комментарий", flex: "2.5 1 0", className: "cellComment" },
-  { key: "createdAt", label: "Добавлен", flex: "1.2 1 0", className: "cellDate" },
-];
-
-const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-};
+import { clientColumns } from "../../utils/сonstants";
+import { formatDate } from "../../utils/formaters";
 
 const ClientsPage: React.FC = () => {
-  const [clients, setClients] = useState<Client[]>(mockClients);
+  const dispatch = useAppDispatch();
+  const clients = useAppSelector(selectActiveClients);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<Client> | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(loadClients());
+  }, [dispatch]);
 
   const filteredClients = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
@@ -97,20 +87,12 @@ const ClientsPage: React.FC = () => {
   };
 
   const handleSave = (id: string, data: UpdateClientPayload) => {
-    setClients((prev) =>
-      prev.map((client) =>
-        client.id === id ? { ...client, ...data } : client,
-      ),
-    );
+    dispatch(updateClient({ id, changes: data }));
     handleModalClose();
   };
 
   const handleDelete = (id: string) => {
-    setClients((prev) =>
-      prev.map((client) =>
-        client.id === id ? { ...client, deleted: true } : client,
-      ),
-    );
+    dispatch(deleteClient(id));
     handleModalClose();
   };
 

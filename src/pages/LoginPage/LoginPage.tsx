@@ -1,31 +1,34 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AuthLayout from "../../components/AuthLayout/AuthLayuot";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { selectUserError, selectUserLoading, setUser, setUserError, setUserLoading } from "../../store/userSlice";
 import type { LoginPayload, ValidationErrors } from "../../types";
-import styles from "./LoginPage.module.css";
 import { validateLoginForm } from "../../utils/formValidators";
-
-const MOCK_USER: LoginPayload = {
-  email: "ivanov@yandex.ru",
-  password: "password123",
-};
+import styles from "./LoginPage.module.css";
 
 const LoginPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isLoading = useAppSelector(selectUserLoading);
+  const authError = useAppSelector(selectUserError);
+
   const [formValues, setFormValues] = useState<LoginPayload>({
     email: "",
     password: "",
   });
   const [errors, setErrors] = useState<ValidationErrors<LoginPayload>>({});
-  const [authError, setAuthError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined }));
-    setAuthError(null);
+    if (authError) {
+      dispatch(setUserError(null));
+    }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,18 +40,21 @@ const LoginPage: React.FC = () => {
       return;
     }
 
-    setIsLoading(true);
+    dispatch(setUserLoading(true));
 
     setTimeout(() => {
-      setIsLoading(false);
-      if (
-        formValues.email === MOCK_USER.email &&
-        formValues.password === MOCK_USER.password
-      ) {
-        window.location.href = "/dashboard";
-      } else {
-        setAuthError("Неверный email или пароль");
-      }
+      dispatch(setUserLoading(false));
+      dispatch(
+        setUser({
+          id: "1",
+          email: formValues.email,
+          name: "",
+          surname: "",
+          accName: "",
+          createdAt: new Date().toISOString(),
+        }),
+      );
+      navigate("/profile");
     }, 800);
   };
 

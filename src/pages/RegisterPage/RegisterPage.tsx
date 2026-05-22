@@ -1,32 +1,31 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AuthLayout from "../../components/AuthLayout/AuthLayuot";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
-import type {
-  RegisterFormValues,
-  RegisterPayload,
-  ValidationErrors,
-} from "../../types";
-import styles from "./RegisterPage.module.css";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { selectUserLoading, setUser, setUserLoading } from "../../store/userSlice";
+import type { RegisterFormValues, ValidationErrors } from "../../types";
 import { validateRegisterForm } from "../../utils/formValidators";
-
+import styles from "./RegisterPage.module.css";
 
 const RegisterPage: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isLoading = useAppSelector(selectUserLoading);
+
   const [formValues, setFormValues] = useState<RegisterFormValues>({
     name: "",
-    surname: '',
+    surname: "",
     email: "",
-    accName: '',
+    accName: "",
     password: "",
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<ValidationErrors<RegisterFormValues>>(
-    {}
+    {},
   );
-  const [isLoading, setIsLoading] = useState(false);
-  const [registeredUser, setRegisteredUser] =
-    useState<RegisterPayload | null>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -43,45 +42,23 @@ const RegisterPage: React.FC = () => {
       return;
     }
 
-    setIsLoading(true);
+    dispatch(setUserLoading(true));
 
     setTimeout(() => {
-      setIsLoading(false);
-      setRegisteredUser({
-        name: formValues.name,
-        surname: formValues.surname,
-        email: formValues.email,
-        accName: formValues.accName,
-        password: formValues.password,
-      });
+      dispatch(setUserLoading(false));
+      dispatch(
+        setUser({
+          id: crypto.randomUUID(),
+          email: formValues.email,
+          name: formValues.name,
+          surname: formValues.surname,
+          accName: formValues.accName,
+          createdAt: new Date().toISOString(),
+        }),
+      );
+      navigate("/profile");
     }, 800);
   };
-
-  if (registeredUser) {
-    return (
-      <AuthLayout
-        linkHref="/login"
-        linkLabel="Войти в аккаунт"
-        linkPrompt="Уже зарегистрированы?"
-      >
-        <div className={styles.card}>
-          <div className={styles.successState}>
-            <div aria-hidden="true" className={styles.successIcon}>
-              ✓
-            </div>
-            <h1 className={styles.title}>Аккаунт создан!</h1>
-            <p className={styles.successMessage}>
-              Добро пожаловать в YaPlex, {registeredUser.name}. Ваш аккаунт
-              успешно зарегистрирован.
-            </p>
-            <a href="/login">
-              <Button size="lg">Войти в аккаунт</Button>
-            </a>
-          </div>
-        </div>
-      </AuthLayout>
-    );
-  }
 
   return (
     <AuthLayout
@@ -110,7 +87,7 @@ const RegisterPage: React.FC = () => {
             value={formValues.name}
           />
 
-            <Input
+          <Input
             autoComplete="surname"
             error={errors.surname?.message}
             label="Фамилия"
@@ -134,7 +111,7 @@ const RegisterPage: React.FC = () => {
             value={formValues.email}
           />
 
-           <Input
+          <Input
             autoComplete="accName"
             error={errors.accName?.message}
             label="Имя аккаунта"

@@ -7,7 +7,7 @@ import styles from "./Sidebar.module.css";
 
 interface SidebarProps {
   avatarSrc: string;
-  userName: string;
+  accName: string;
 }
 
 const HomeIcon: React.FC = () => (
@@ -154,7 +154,7 @@ const menuItems = [
   { icon: <TasksIcon />, label: "Задачи" },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, userName }) => {
+const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const handleToggle = () => {
@@ -207,13 +207,13 @@ const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, userName }) => {
       >
         <div className={styles.userAvatar}>
           <img
-            alt={`Аватар ${userName}`}
+            alt={`Аватар ${accName}`}
             className={`${styles.avatarImage} ${isExpanded ? styles.avatarImageExpanded : styles.avatarImageCollapsed}`}
             src={avatarSrc}
           />
         </div>
         {isExpanded && (
-          <span className={styles.userName}>{userName}</span>
+          <span className={styles.userName}>{accName}</span>
         )}
       </div>
     </aside>

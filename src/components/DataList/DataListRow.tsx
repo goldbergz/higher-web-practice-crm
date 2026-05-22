@@ -50,7 +50,14 @@ function DataListRow<T>({
             role="cell"
             style={{
               flex: column.flex,
-              width: column.width,
+              minWidth: column.minWidth,
+              textAlign: column.align ?? "left",
+               justifyContent:
+    column.align === "right"
+      ? "flex-end"
+      : column.align === "center"
+        ? "center"
+        : "flex-start",
             }}
             title={String(value ?? "")}
           >

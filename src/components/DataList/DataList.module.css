@@ -1,5 +1,5 @@
 .header {
-  align-items: center;
+  align-items: stretch;
   display: flex;
   gap: 16px;
   overflow: hidden;
@@ -10,10 +10,11 @@
   align-items: center;
   color: var(--color-gray-400);
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   font-size: 0.75rem;
   gap: 2px;
   line-height: 1rem;
+  min-width: 0;
   padding: 6px 0;
   user-select: none;
 }
@@ -30,8 +31,9 @@
   align-items: center;
   display: inline-flex;
   height: 16px;
+  flex-shrink: 0;
   justify-content: center;
-  width: 16px;
+  width: 18px;
 }
 
 .list {
@@ -41,7 +43,7 @@
 }
 
 .row {
-  align-items: baseline;
+  align-items: center;
   background: var(--color-white);
   border-radius: var(--radius-lg);
   box-shadow: 0 4px 8px #e5e7eb;
@@ -70,6 +72,7 @@
   font-size: 0.75rem;
   line-height: 1rem;
   overflow: hidden;
+  min-width: 0; 
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -85,7 +88,6 @@
 
 .cellComment {
   color: var(--color-gray-500);
-  flex: 1 1 0;
 }
 
 .cellDate {

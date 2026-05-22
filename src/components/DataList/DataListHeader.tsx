@@ -13,15 +13,16 @@ const SortArrowDown = () => (
   <svg
     fill="none"
     height="16"
-    viewBox="0 0 16 16"
-    width="16"
+    viewBox="0 0 18 16"
+    width="18"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M13 7L8 12L3 7"
+      d="M16.75 4L8.75 12L0.749998 4"
       stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
+      strokeWidth="1.5"
     />
   </svg>
 );
@@ -75,7 +76,14 @@ function DataListHeader<T>({
             role="columnheader"
             style={{
               flex: column.flex,
-              width: column.width,
+              minWidth: column.minWidth,
+              textAlign: column.align ?? "left",
+              justifyContent:
+    column.align === "right"
+      ? "flex-end"
+      : column.align === "center"
+        ? "center"
+        : "flex-start",
             }}
           >
             <span>{column.label}</span>
