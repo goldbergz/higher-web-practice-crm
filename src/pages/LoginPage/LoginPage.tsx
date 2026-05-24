@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import type React from "react";
 import { useNavigate } from "react-router-dom";
 
+import type { LoginFormValues } from "../../utils/authSchemas";
 import AuthLayout from "../../components/AuthLayout/AuthLayuot";
 import Button from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
+import Form from "../../components/Form/Form";
+import { loginSchema } from "../../utils/authSchemas";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { selectUserError, selectUserLoading, setUser, setUserError, setUserLoading } from "../../store/userSlice";
-import type { LoginPayload, ValidationErrors } from "../../types";
-import { validateLoginForm } from "../../utils/formValidators";
+import {
+  selectUserError,
+  selectUserLoading,
+  setUser,
+  setUserLoading,
+} from "../../store/userSlice";
 import styles from "./LoginPage.module.css";
+import { loginDefaultValues, loginSections } from "../../utils/сonstants";
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -16,30 +22,7 @@ const LoginPage: React.FC = () => {
   const isLoading = useAppSelector(selectUserLoading);
   const authError = useAppSelector(selectUserError);
 
-  const [formValues, setFormValues] = useState<LoginPayload>({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState<ValidationErrors<LoginPayload>>({});
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormValues((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: undefined }));
-    if (authError) {
-      dispatch(setUserError(null));
-    }
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const validationErrors = validateLoginForm(formValues);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
+  const handleSubmit = (data: LoginFormValues) => {
     dispatch(setUserLoading(true));
 
     setTimeout(() => {
@@ -47,7 +30,7 @@ const LoginPage: React.FC = () => {
       dispatch(
         setUser({
           id: "1",
-          email: formValues.email,
+          email: data.email,
           name: "",
           surname: "",
           accName: "",
@@ -67,40 +50,16 @@ const LoginPage: React.FC = () => {
       <div className={styles.card}>
         <h1 className={styles.title}>Вход в аккаунт</h1>
 
-        <form
-          aria-label="Форма входа"
-          className={styles.form}
-          noValidate
+        <Form<LoginFormValues>
+          ariaLabel="Форма входа"
+          defaultValues={loginDefaultValues}
           onSubmit={handleSubmit}
+          schema={loginSchema}
+          sections={loginSections}
         >
-          <Input
-            autoComplete="email"
-            error={errors.email?.message}
-            label="Email или логин"
-            name="email"
-            onChange={handleChange}
-            placeholder="ivanov@yandex.ru"
-            required
-            type="email"
-            value={formValues.email}
-          />
-
-          <div className={styles.passwordWrapper}>
-            <Input
-              autoComplete="current-password"
-              error={errors.password?.message}
-              label="Пароль"
-              name="password"
-              onChange={handleChange}
-              placeholder="••••••"
-              required
-              type="password"
-              value={formValues.password}
-            />
-            <a className={styles.forgotLink} href="/forgot-password">
-              Забыли пароль?
-            </a>
-          </div>
+          <a className={styles.forgotLink} href="/forgot-password">
+            Забыли пароль?
+          </a>
 
           {authError ? (
             <p className={styles.authError} role="alert">
@@ -111,7 +70,7 @@ const LoginPage: React.FC = () => {
           <Button isLoading={isLoading} size="lg" type="submit">
             Войти
           </Button>
-        </form>
+        </Form>
       </div>
     </AuthLayout>
   );

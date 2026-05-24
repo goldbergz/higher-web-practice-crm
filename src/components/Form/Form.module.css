@@ -1,0 +1,45 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldRow {
+  align-items: flex-start;
+  display: flex;
+  gap: 8px;
+}
+
+.fieldRow > * {
+  flex: 1;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionTitle {
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.actions {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.actions > button:first-child {
+  flex: 1;
+}

@@ -1,64 +1,151 @@
-In the `store` folder, add the application state using Redux Toolkit.
-The following slices should be included: user, transactions, clients, tasks.
-Define the state (actions, reducers, selectors, slices) based on the page functionality:
-1. Home Page
-General project information—name, brief description (USP).
-Login form:
-email;
-password;
-“Log In” button — if the login credentials match, the user is redirected to the home page;
-“Sign Up” button — redirects to the “Sign Up” page.
-2. Registration Page
-Registration form:
-email;
-password;
-name;
-“Register” button — we verify that the email is unique and the password is valid.
-Section functionality: if validation passes, we register the user.
-3. Dashboard
-Display of summary information and statistics:
-Number of clients: today’s total, added today, added this week, added this month, added this quarter.
-Number of active deals: today’s total, added today, added this week, added this month.
-Number of completed deals: today’s total, added today, added this week, added this month.
-The 10 most active clients involved in the majority of the current user’s deals.
-The current user’s last 10 active deals.
-The current user’s last 10 tasks.
-Buttons for quick access to sections:
-Add client.
-Add transaction.
-Add task.
-4. Clients page
-Client fields: Name, Phone, Email, Company Name, Website, Date Added, Comment.
-List: contains all client fields, with the ability to sort and filter (search) by all fields. Clicking on a row opens a modal editing window.
-Delete: when deleted, the client is marked as deleted. You cannot add a deal to such a client, but deals with them are displayed.
-Add: opens a modal window for entering client data
-5. Deals Page
-Deal fields: Name, Client, Description, Amount, Stage (status), Creation Date, Completion Date.
-Deal statuses: New, In Progress, Completed, Canceled.
-List: contains all deal fields, with the ability to sort and filter (search) by all fields. Clicking on a row opens a modal editing window.
-Add: Opens a modal window for entering transaction details
-6. Reports Page
-The page contains several tabs with reports.
-General Sales Report: displays all completed deals for a given period (week, month, quarter). Report fields: Deal ID, Name, Client, Amount, Completion Date.
-Deal Stage Report: analysis of deals by current stage (status). Report fields: Deal stage, Number of deals at this stage, Total amount of deals at this stage.
-Customer reports
-New customers report: number of new customers for the period (week, month, quarter). Report fields: Customer ID, Customer name, Company, Date added.
-Customer Activity Report: information on customer interactions (number of deals, completed tasks). Report fields: Customer ID, Customer Name, Number of Deals, Completed Tasks.
-Task Reports
-Overdue Tasks Report: a list of tasks that were not completed on time. Report fields: Task ID, Task Name, Assignee, Due Date, Status.
-The report must be presented in a standard table format with the ability to sort by each field. Table pagination must be provided.
-Report filtering. Each report must include a form for filtering data by date, manager, and deal stage.
-7. Tasks Page
-Task fields: Title, Deal, Description, Due Date, Assignee, Status, Creation Date.
-Task statuses: New, In Progress.
-Add: Opens a modal window for entering task details
-8. User Profile Page
-Settings form:
-email;
-password;
-name.
+Create a single modal window component that can be reused for modals related to editing and adding client data, deals, and tasks. Remove the existing modal windows and replace their usage in components with the new universal modal.
+Display the modal window when creating a new client (by clicking the ```<Button size="md" variant="primary">
+            New Client
+          </Button>```
+button) and when editing a client (by clicking on a DataListRow list item); the modal window should populate with the data of the client we clicked on.
 
-Refer to the types in the “types” folder
+When adding or modifying client data, the store must be updated via the clientsSlice slice. Verify that the data conforms to the client’s types and interfaces in folder 'types'.
+
+Also, create a separate form component that can be reused in different components. Remove the old form and replace it with the new one in the components where it is used. The form should use existing Button and Input components.
+Recommendations for forms: react-hook-form + zod
+For pages with forms (clients, deals, tasks, profile), it’s convenient to use a schema-based validation approach:
+react-hook-form handles form data collection, error handling, and onSubmit processing.
+zod defines field contracts (type, required status, formats) in one place and allows you to set normalization centrally.
+If you choose this combination, connect zodResolver so that zod errors are automatically passed to react-hook-form.
+Best practice:
+Perform validation based on the schema, not “on the fly” in handlers. This makes errors predictable and easier to test.
+For text fields (e.g., comments), it’s helpful to normalize input at the schema level: use trim() and remove spaces so that clean values are passed to the submit payload.
+In edit mode, use defaultValues / reset so that the form is populated with initial data.
+Display errors next to the field (under the corresponding input), and mark required fields with an asterisk in the label.
+
+
+Translated with DeepL.com (free version)
+
+jsx modal (edit client):
+```
+<div style={{width: 580, padding: 24, background: 'white', boxShadow: '0px 8px 16px #E5E7EB', borderRadius: 12, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 32, display: 'inline-flex'}}>
+  <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16, display: 'flex'}}>
+    <div style={{alignSelf: 'stretch', overflow: 'hidden', justifyContent: 'space-between', alignItems: 'flex-start', display: 'inline-flex'}}>
+      <div style={{color: '#1F2937', fontSize: 24, fontFamily: 'Roboto', fontWeight: '700', lineHeight: 32, wordWrap: 'break-word'}}>Карточка клиента</div>
+      <div style={{textAlign: 'right', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>добавлен 17 октября 2024</div>
+    </div>
+    <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16, display: 'flex'}}>
+      <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Имя</div>
+          <div data-state="Default" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>Добрыня</div>
+          </div>
+        </div>
+      </div>
+      <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Телефон</div>
+          <div data-state="Default" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>+7 915 876-54-32</div>
+          </div>
+        </div>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Компания</div>
+          <div data-state="Default" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>Доброград</div>
+          </div>
+        </div>
+      </div>
+      <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Сайт</div>
+          <div data-state="Default" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>www.dobrograd.ru</div>
+          </div>
+        </div>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Email</div>
+          <div data-state="Default" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>dobrinia@yandex.ru</div>
+          </div>
+        </div>
+      </div>
+      <div style={{width: 532, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Комментарий</div>
+        <div data-state="Default" style={{alignSelf: 'stretch', height: 80, paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>Прогнозируется рост активности.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16, display: 'inline-flex'}}>
+    <div data-state="Default" data-type="Primary" style={{flex: '1 1 0', paddingLeft: 16, paddingRight: 16, paddingTop: 8, paddingBottom: 8, background: '#3B82F6', borderRadius: 6, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, display: 'inline-flex'}}>
+      <div style={{color: '#F9FAFB', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', lineHeight: 24, wordWrap: 'break-word'}}>Редактировать</div>
+    </div>
+    <div data-state="Default" data-type="Secondary" style={{paddingLeft: 16, paddingRight: 16, paddingTop: 8, paddingBottom: 8, borderRadius: 8, outline: '2px #D1D5DB solid', outlineOffset: '-2px', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, display: 'inline-flex'}}>
+      <div style={{color: '#EF4444', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', lineHeight: 24, wordWrap: 'break-word'}}>Удалить клиента</div>
+    </div>
+  </div>
+</div>
+```
+jsx modal (new client):
+```
+<div style={{width: 580, padding: 24, background: 'white', boxShadow: '0px 8px 16px #E5E7EB', borderRadius: 12, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 32, display: 'inline-flex'}}>
+  <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16, display: 'flex'}}>
+    <div style={{alignSelf: 'stretch', overflow: 'hidden', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+      <div style={{color: '#1F2937', fontSize: 24, fontFamily: 'Roboto', fontWeight: '700', lineHeight: 32, wordWrap: 'break-word'}}>Новый клиент</div>
+    </div>
+    <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16, display: 'flex'}}>
+      <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Имя</div>
+          <div data-state="Placeholder" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>Добрыня</div>
+          </div>
+        </div>
+      </div>
+      <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Телефон</div>
+          <div data-state="Placeholder" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>+7 915 876-54-32</div>
+          </div>
+        </div>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Компания</div>
+          <div data-state="Placeholder" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>Доброград</div>
+          </div>
+        </div>
+      </div>
+      <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Сайт</div>
+          <div data-state="Placeholder" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>www.dobrograd.ru</div>
+          </div>
+        </div>
+        <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'inline-flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Email</div>
+          <div data-state="Placeholder" style={{alignSelf: 'stretch', paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>dobrinia@yandex.ru</div>
+          </div>
+        </div>
+      </div>
+      <div style={{width: 532, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>Комментарий</div>
+        <div data-state="Placeholder" style={{alignSelf: 'stretch', height: 80, paddingLeft: 14, paddingRight: 14, paddingTop: 8, paddingBottom: 8, background: 'white', borderRadius: 4, outline: '1px #D1D5DB solid', outlineOffset: '-1px', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', color: '#9CA3AF', fontSize: 16, fontFamily: 'Inter', fontWeight: '400', lineHeight: 24, wordWrap: 'break-word'}}>Прогнозируется рост активности.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 16, display: 'inline-flex'}}>
+    <div data-state="Default" data-type="Primary" style={{flex: '1 1 0', paddingLeft: 16, paddingRight: 16, paddingTop: 8, paddingBottom: 8, background: '#3B82F6', borderRadius: 6, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, display: 'inline-flex'}}>
+      <div style={{color: '#F9FAFB', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', lineHeight: 24, wordWrap: 'break-word'}}>Создать</div>
+    </div>
+    <div data-state="Default" data-type="Secondary" style={{paddingLeft: 16, paddingRight: 16, paddingTop: 8, paddingBottom: 8, borderRadius: 8, outline: '2px #D1D5DB solid', outlineOffset: '-2px', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, display: 'inline-flex'}}>
+      <div style={{color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', lineHeight: 24, wordWrap: 'break-word'}}>Отменить</div>
+    </div>
+  </div>
+</div>
+```
 
 Coding Style
 All code is formatted using Prettier.

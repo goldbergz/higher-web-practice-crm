@@ -1,16 +1,25 @@
 import type React from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import styles from "./Modal.module.css";
 
 interface ModalProps {
   children: React.ReactNode;
+  headerRight?: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
   title: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose, title }) => {
+const Modal: React.FC<ModalProps> = ({
+  children,
+  headerRight,
+  isOpen,
+  onClose,
+  title,
+}) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -42,20 +51,16 @@ const Modal: React.FC<ModalProps> = ({ children, isOpen, onClose, title }) => {
       <div
         className={styles.modal}
         onClick={(e) => e.stopPropagation()}
+        ref={modalRef}
         role="document"
       >
         <div className={styles.header}>
           <h2 className={styles.title} id="modal-title">
             {title}
           </h2>
-          <button
-            aria-label="Закрыть"
-            className={styles.closeButton}
-            onClick={onClose}
-            type="button"
-          >
-            &times;
-          </button>
+          {headerRight && (
+            <span className={styles.headerRight}>{headerRight}</span>
+          )}
         </div>
         <div className={styles.body}>{children}</div>
       </div>
