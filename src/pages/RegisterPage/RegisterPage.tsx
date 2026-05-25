@@ -1,11 +1,11 @@
 import type React from "react";
 import { useNavigate } from "react-router-dom";
 
-import type { RegisterFormValues } from "../../utils/authSchemas";
+import type { RegisterFormValues } from "../../utils/schemas/authSchemas";
 import AuthLayout from "../../components/AuthLayout/AuthLayuot";
 import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
-import { registerSchema } from "../../utils/authSchemas";
+import { registerSchema } from "../../utils/schemas/authSchemas";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
   selectUserLoading,

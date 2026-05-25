@@ -4,6 +4,7 @@ export { default as Button } from "./Button/Button";
 export type { ButtonSize, ButtonVariant } from "./Button/Button";
 export { default as ClientForm } from "./ClientForm/ClientForm";
 export { default as DataList } from "./DataList/DataList";
+export { default as DealForm } from "./DealForm/DealForm";
 export { default as Form } from "./Form/Form";
 export type { FieldConfig, FieldRow, FormSection } from "./Form/Form";
 export { default as DataListHeader } from "./DataList/DataListHeader";

@@ -1,7 +1,7 @@
 import type React from "react";
 
 import type { ProfileFormValues } from "../../types";
-import { profileSchema } from "../../utils/profileSchema";
+import { profileSchema } from "../../utils/schemas/profileSchema";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
 import { profileSections } from "../../utils/сonstants";

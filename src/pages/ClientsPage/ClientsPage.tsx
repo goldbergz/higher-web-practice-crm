@@ -2,7 +2,7 @@ import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 
 import type { Client } from "../../types";
-import type { ClientFormValues } from "../../utils/clientSchema";
+import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type { SortConfig } from "../../components/DataList/types";
 import Button from "../../components/Button/Button";
 import ClientForm from "../../components/ClientForm/ClientForm";

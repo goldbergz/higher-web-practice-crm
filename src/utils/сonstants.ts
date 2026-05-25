@@ -1,7 +1,8 @@
 import type { ColumnConfig, FormSection } from "../components";
 import type { Client, ProfileFormValues, RegisterFormValues } from "../types";
-import type { LoginFormValues } from "./authSchemas";
-import type { ClientFormValues } from "./clientSchema";
+import type { DealDisplay } from "../types/deal";
+import type { LoginFormValues } from "./schemas/authSchemas";
+import type { ClientFormValues } from "./schemas/clientSchema";
 
 export const clientColumns: ColumnConfig<Client>[] = [
   { key: "name",      label: "Имя",              flex: "1 1 0", minWidth: "60px",  className: "cellName"    },
@@ -213,3 +214,52 @@ export const registerDefaultValues: RegisterFormValues = {
   password: "",
   surname: "",
 };
+
+export const dealColumns: ColumnConfig<DealDisplay>[] = [
+  {
+    key: "title",
+    label: "Название",
+    flex: "2 1 0",
+    minWidth: "140px",
+    className: "cellName",
+  },
+  {
+    key: "client",
+    label: "Клиент",
+    flex: "0.8 1 0",
+    minWidth: "80px",
+  },
+  {
+    key: "description",
+    label: "Описание",
+    flex: "2 1 0",
+    minWidth: "100px",
+  },
+  {
+    key: "status",
+    label: "Этап (статус)",
+    flex: "0.7 1 0",
+    minWidth: "80px",
+  },
+  {
+    key: "amount",
+    label: "Сумма",
+    flex: "0.8 1 0",
+    minWidth: "80px",
+    align: "right",
+  },
+  {
+    key: "createdAt",
+    label: "Дата создания",
+    flex: "0.9 1 0",
+    minWidth: "100px",
+    align: "right",
+  },
+  {
+    key: "completedAt",
+    label: "Дата завершения",
+    flex: "1 1 0",
+    minWidth: "100px",
+    align: "right",
+  },
+];

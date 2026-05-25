@@ -3,14 +3,14 @@ import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux
 
 import clientsReducer from './clientsSlice';
 import tasksReducer from './tasksSlice';
-import transactionsReducer from './transactionsSlice';
 import userReducer from './userSlice';
+import dealsSlice from './dealsSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     clients: clientsReducer,
-    transactions: transactionsReducer,
+    deals: dealsSlice,
     tasks: tasksReducer,
   },
 });

@@ -31,3 +31,14 @@ export type UpdateDealPayload = {
   status?: DealStatus;
   completedAt?: string;
 };
+
+export type DealDisplay = {
+  amount: string;
+  client: string;
+  completedAt: string;
+  createdAt: string;
+  description: string;
+  id: string;
+  status: string;
+  title: string;
+};

@@ -1,7 +1,7 @@
 import type React from "react";
 
-import type { ClientFormValues } from "../../utils/clientSchema";
-import { clientSchema } from "../../utils/clientSchema";
+import type { ClientFormValues } from "../../utils/schemas/clientSchema";
+import { clientSchema } from "../../utils/schemas/clientSchema";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
 import { clientSections, emptyValues } from "../../utils/сonstants";

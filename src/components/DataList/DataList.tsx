@@ -7,7 +7,9 @@ import styles from "./DataList.module.css";
 
 interface DataListProps<T> {
   columns: ColumnConfig<T>[];
+  getCellClassName?: (item: T, key: keyof T) => string | undefined;
   getItemId: (item: T) => string;
+  getRowClassName?: (item: T) => string | undefined;
   isItemDeleted?: (item: T) => boolean;
   items: T[];
   onItemClick?: (item: T) => void;
@@ -17,7 +19,9 @@ interface DataListProps<T> {
 
 function DataList<T>({
   columns,
+  getCellClassName,
   getItemId,
+  getRowClassName,
   isItemDeleted,
   items,
   onItemClick,
@@ -35,10 +39,12 @@ function DataList<T>({
         {items.map((item) => (
           <DataListRow
             columns={columns}
+            getCellClassName={getCellClassName}
             isDeleted={isItemDeleted?.(item)}
             item={item}
             key={getItemId(item)}
             onClick={onItemClick}
+            rowClassName={getRowClassName?.(item)}
           />
         ))}
       </div>
