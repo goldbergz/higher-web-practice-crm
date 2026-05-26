@@ -7,7 +7,11 @@ export const profileSchema = z
     accName: z.string().trim().min(1, "Введите имя аккаунта"),
     confirmPassword: z.string(),
     currentPassword: z.string(),
-    email: z.string().trim().min(1, "Введите email").email("Введите корректный email"),
+    email: z
+      .string()
+      .trim()
+      .min(1, "Введите email")
+      .email("Введите корректный email"),
     name: z.string().trim().min(1, "Введите имя"),
     newPassword: z.string(),
     surname: z.string().trim().min(1, "Введите фамилию"),
@@ -22,7 +26,7 @@ export const profileSchema = z
     {
       message: "Введите текущий пароль",
       path: ["currentPassword"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -34,7 +38,7 @@ export const profileSchema = z
     {
       message: `Пароль должен содержать не менее ${MIN_PASSWORD_LENGTH} символов`,
       path: ["newPassword"],
-    }
+    },
   )
   .refine(
     (data) => {
@@ -46,7 +50,7 @@ export const profileSchema = z
     {
       message: "Пароли не совпадают",
       path: ["confirmPassword"],
-    }
+    },
   );
 
 export type ProfileSchemaType = z.infer<typeof profileSchema>;

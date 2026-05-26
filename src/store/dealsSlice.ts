@@ -1,8 +1,9 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { Deal, DealStatus, UpdateDealPayload } from "../types/deal";
 import { mockDeals } from "../mocks/deals";
+
 import type { RootState } from "./index";
+import type { Deal, DealStatus, UpdateDealPayload } from "../types/deal";
 
 type DealsState = {
   items: Deal[];

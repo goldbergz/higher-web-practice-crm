@@ -1,4 +1,4 @@
-export type DealStatus = 'new' | 'in_progress' | 'completed' | 'cancelled';
+export type DealStatus = "new" | "in_progress" | "completed" | "cancelled";
 
 export type Deal = {
   id: string;

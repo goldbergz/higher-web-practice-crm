@@ -15,7 +15,10 @@ export const clientSchema = z.object({
     .string()
     .trim()
     .min(1, "Введите телефон")
-    .regex(PHONE_REGEX, "Телефон должен начинаться с + и содержать не менее 11 цифр")
+    .regex(
+      PHONE_REGEX,
+      "Телефон должен начинаться с + и содержать не менее 11 цифр",
+    )
     .refine(
       (val) => val.replace(/\D/g, "").length >= 11,
       "Телефон должен содержать не менее 11 цифр",

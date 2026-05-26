@@ -18,6 +18,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {required && <span className={styles.required}>*</span>}
         </label>
         <input
+          ref={ref}
           aria-describedby={error ? `${inputId}-error` : undefined}
           aria-invalid={error ? true : undefined}
           aria-required={required}
@@ -25,7 +26,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             .filter(Boolean)
             .join(" ")}
           id={inputId}
-          ref={ref}
           required={required}
           {...rest}
         />
@@ -40,7 +40,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

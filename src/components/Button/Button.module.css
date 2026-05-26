@@ -9,7 +9,9 @@
   gap: 0.5rem;
   justify-content: center;
   outline-offset: 2px;
-  transition: background-color var(--transition-base), opacity var(--transition-base);
+  transition:
+    background-color var(--transition-base),
+    opacity var(--transition-base);
   white-space: nowrap;
 }
 

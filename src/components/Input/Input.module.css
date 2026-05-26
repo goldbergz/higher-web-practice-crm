@@ -25,7 +25,9 @@
   height: 2.875rem;
   outline: none;
   padding: 0 0.875rem;
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
   width: 100%;
 }
 

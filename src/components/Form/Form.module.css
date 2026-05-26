@@ -43,3 +43,9 @@
 .actions > button:first-child {
   flex: 1;
 }
+
+@media (max-width: 640px) {
+  .fieldRow {
+    flex-direction: column;
+  }
+}

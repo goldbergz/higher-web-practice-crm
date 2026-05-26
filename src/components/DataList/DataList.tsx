@@ -1,9 +1,10 @@
-import type React from "react";
-
-import type { ColumnConfig, SortConfig } from "./types";
+import styles from "./DataList.module.css";
 import DataListHeader from "./DataListHeader";
 import DataListRow from "./DataListRow";
-import styles from "./DataList.module.css";
+
+import type { ColumnConfig, SortConfig } from "./types";
+import type React from "react";
+
 
 interface DataListProps<T> {
   columns: ColumnConfig<T>[];
@@ -32,19 +33,19 @@ function DataList<T>({
     <div role="table">
       <DataListHeader
         columns={columns}
-        onSort={onSort}
         sortConfig={sortConfig}
+        onSort={onSort}
       />
       <div className={styles.list} role="rowgroup">
         {items.map((item) => (
           <DataListRow
+            key={getItemId(item)}
             columns={columns}
             getCellClassName={getCellClassName}
             isDeleted={isItemDeleted?.(item)}
             item={item}
-            key={getItemId(item)}
-            onClick={onItemClick}
             rowClassName={getRowClassName?.(item)}
+            onClick={onItemClick}
           />
         ))}
       </div>

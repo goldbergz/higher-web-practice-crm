@@ -1,4 +1,4 @@
-import type React from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import {
   type DefaultValues,
@@ -7,20 +7,30 @@ import {
   type Resolver,
   useForm,
 } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { ZodType } from "zod";
+
 
 import Input from "../Input/Input";
+import Select from "../Select/Select";
 import Textarea from "../Textarea/Textarea";
+
 import styles from "./Form.module.css";
+
+import type React from "react";
+import type { ZodType } from "zod";
+
+export type SelectOption = {
+  label: string;
+  value: string;
+};
 
 export type FieldConfig<T extends FieldValues> = {
   autoComplete?: string;
   label: string;
   name: Path<T>;
+  options?: SelectOption[];
   placeholder?: string;
   required?: boolean;
-  type?: "text" | "email" | "tel" | "password" | "textarea";
+  type?: "text" | "email" | "tel" | "password" | "textarea" | "select" | "date";
 };
 
 export type FieldRow<T extends FieldValues> = FieldConfig<T> | FieldConfig<T>[];
@@ -69,9 +79,23 @@ function Form<T extends FieldValues>({
     if (field.type === "textarea") {
       return (
         <Textarea
-          error={errorMessage}
           key={field.name}
+          error={errorMessage}
           label={field.label}
+          placeholder={field.placeholder}
+          required={field.required}
+          {...register(field.name)}
+        />
+      );
+    }
+
+    if (field.type === "select") {
+      return (
+        <Select
+          key={field.name}
+          error={errorMessage}
+          label={field.label}
+          options={field.options ?? []}
           placeholder={field.placeholder}
           required={field.required}
           {...register(field.name)}
@@ -81,9 +105,9 @@ function Form<T extends FieldValues>({
 
     return (
       <Input
+        key={field.name}
         autoComplete={field.autoComplete}
         error={errorMessage}
-        key={field.name}
         label={field.label}
         placeholder={field.placeholder}
         required={field.required}
@@ -96,7 +120,7 @@ function Form<T extends FieldValues>({
   const renderRow = (row: FieldRow<T>, index: number) => {
     if (Array.isArray(row)) {
       return (
-        <div className={styles.fieldRow} key={index}>
+        <div key={index} className={styles.fieldRow}>
           {row.map(renderField)}
         </div>
       );
@@ -106,19 +130,17 @@ function Form<T extends FieldValues>({
 
   return (
     <form
+      noValidate
       aria-label={ariaLabel}
       className={styles.form}
-      noValidate
       onSubmit={handleSubmit(onSubmit)}
     >
       {sections.map((section, sectionIndex) => (
-        <div className={styles.section} key={sectionIndex}>
+        <div key={sectionIndex} className={styles.section}>
           {section.title && (
             <h2 className={styles.sectionTitle}>{section.title}</h2>
           )}
-          <div className={styles.fields}>
-            {section.fields.map(renderRow)}
-          </div>
+          <div className={styles.fields}>{section.fields.map(renderRow)}</div>
         </div>
       ))}
       {children && <div className={styles.actions}>{children}</div>}

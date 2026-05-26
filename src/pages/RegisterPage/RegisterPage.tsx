@@ -1,19 +1,22 @@
-import type React from "react";
 import { useNavigate } from "react-router-dom";
 
-import type { RegisterFormValues } from "../../utils/schemas/authSchemas";
 import AuthLayout from "../../components/AuthLayout/AuthLayuot";
 import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
-import { registerSchema } from "../../utils/schemas/authSchemas";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
   selectUserLoading,
   setUser,
   setUserLoading,
 } from "../../store/userSlice";
-import styles from "./RegisterPage.module.css";
+import { registerSchema } from "../../utils/schemas/authSchemas";
 import { registerDefaultValues, registerSections } from "../../utils/сonstants";
+
+import styles from "./RegisterPage.module.css";
+
+
+import type { RegisterFormValues } from "../../utils/schemas/authSchemas";
+import type React from "react";
 
 const RegisterPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -51,9 +54,9 @@ const RegisterPage: React.FC = () => {
         <Form<RegisterFormValues>
           ariaLabel="Форма регистрации"
           defaultValues={registerDefaultValues}
-          onSubmit={handleSubmit}
           schema={registerSchema}
           sections={registerSections}
+          onSubmit={handleSubmit}
         >
           <Button isLoading={isLoading} size="lg" type="submit">
             Зарегистрироваться

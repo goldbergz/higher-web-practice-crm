@@ -1,7 +1,9 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { Task, TaskStatus, UpdateTaskPayload } from '../types/task';
-import type { RootState } from './index';
+import { mockTasks } from "../mocks/tasks";
+
+import type { RootState } from "./index";
+import type { Task, TaskStatus, UpdateTaskPayload } from "../types/task";
 
 type TasksState = {
   items: Task[];
@@ -16,23 +18,38 @@ const initialState: TasksState = {
 };
 
 const tasksSlice = createSlice({
-  name: 'tasks',
+  name: "tasks",
   initialState,
   reducers: {
+    loadTasks(state) {
+      state.items = mockTasks;
+    },
     setTasks(state, action: PayloadAction<Task[]>) {
       state.items = action.payload;
     },
     addTask(state, action: PayloadAction<Task>) {
       state.items.push(action.payload);
     },
-    updateTask(state, action: PayloadAction<{ id: string; changes: UpdateTaskPayload }>) {
+    updateTask(
+      state,
+      action: PayloadAction<{ id: string; changes: UpdateTaskPayload }>,
+    ) {
       const index = state.items.findIndex((t) => t.id === action.payload.id);
       if (index !== -1) {
-        state.items[index] = { ...state.items[index], ...action.payload.changes };
+        state.items[index] = {
+          ...state.items[index],
+          ...action.payload.changes,
+        };
       }
     },
     removeTask(state, action: PayloadAction<string>) {
       state.items = state.items.filter((t) => t.id !== action.payload);
+    },
+    completeTask(state, action: PayloadAction<string>) {
+      const index = state.items.findIndex((t) => t.id === action.payload);
+      if (index !== -1) {
+        state.items[index].status = "completed";
+      }
     },
     setTasksLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
@@ -47,10 +64,12 @@ const tasksSlice = createSlice({
 });
 
 export const {
+  loadTasks,
   setTasks,
   addTask,
   updateTask,
   removeTask,
+  completeTask,
   setTasksLoading,
   setTasksError,
   clearTasksError,
@@ -60,9 +79,13 @@ export const selectTasks = (state: RootState) => state.tasks.items;
 export const selectTasksByStatus = (state: RootState, status: TaskStatus) =>
   state.tasks.items.filter((t) => t.status === status);
 export const selectOverdueTasks = (state: RootState) =>
-  state.tasks.items.filter((t) => t.dueDate && new Date(t.dueDate) < new Date() && t.status !== 'completed');
+  state.tasks.items.filter(
+    (t) =>
+      t.dueDate && new Date(t.dueDate) < new Date() && t.status !== "completed",
+  );
 export const selectTasksLoading = (state: RootState) => state.tasks.loading;
 export const selectTasksError = (state: RootState) => state.tasks.error;
-export const selectTaskById = (state: RootState, id: string) => state.tasks.items.find((t) => t.id === id);
+export const selectTaskById = (state: RootState, id: string) =>
+  state.tasks.items.find((t) => t.id === id);
 
 export default tasksSlice.reducer;

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
 import Logo from "../Logo/Logo";
+
+import styles from "./Sidebar.module.css";
 import SidebarItem from "./SidebarItem";
 import SidebarList from "./SidebarList";
-import styles from "./Sidebar.module.css";
 
 interface SidebarProps {
   avatarSrc: string;
@@ -174,8 +175,8 @@ const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
               <button
                 aria-label="Свернуть боковую панель"
                 className={styles.toggleButton}
-                onClick={handleToggle}
                 type="button"
+                onClick={handleToggle}
               >
                 <CollapseIcon />
               </button>
@@ -184,8 +185,8 @@ const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
             <button
               aria-label="Развернуть боковую панель"
               className={styles.toggleButton}
-              onClick={handleToggle}
               type="button"
+              onClick={handleToggle}
             >
               <ExpandIcon />
             </button>
@@ -194,9 +195,9 @@ const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
         <SidebarList>
           {menuItems.map((item) => (
             <SidebarItem
+              key={item.label}
               icon={item.icon}
               isExpanded={isExpanded}
-              key={item.label}
               label={item.label}
             />
           ))}
@@ -212,9 +213,7 @@ const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
             src={avatarSrc}
           />
         </div>
-        {isExpanded && (
-          <span className={styles.userName}>{accName}</span>
-        )}
+        {isExpanded && <span className={styles.userName}>{accName}</span>}
       </div>
     </aside>
   );

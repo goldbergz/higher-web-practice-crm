@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { useAppSelector } from "../../store";
 import { selectCurrentUser } from "../../store/userSlice";
 import Sidebar from "../Sidebar/Sidebar";
+
 import styles from "./MainLayout.module.css";
 
 const MainLayout: React.FC = () => {
@@ -12,8 +13,8 @@ const MainLayout: React.FC = () => {
   return (
     <div className={styles.layout}>
       <Sidebar
-        avatarSrc="https://placehold.co/40x40"
         accName={currentUser?.accName ?? "User"}
+        avatarSrc="https://placehold.co/40x40"
       />
       <main className={styles.content}>
         <Outlet />

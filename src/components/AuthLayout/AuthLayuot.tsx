@@ -1,6 +1,7 @@
 import React from "react";
 
 import Logo from "../Logo/Logo";
+
 import styles from "./AuthLayout.module.css";
 
 interface AuthLayoutProps {
@@ -27,7 +28,10 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({
         <Logo />
         <div className={styles.infoText}>
           <p className={styles.desc}>
-            Платформа для управления клиентами, сделками и задачами.<br />Эффективно управляйте бизнес-процессами, отслеживайте ключевые показатели и выстраивайте продуктивные отношения с клиентами.
+            Платформа для управления клиентами, сделками и задачами.
+            <br />
+            Эффективно управляйте бизнес-процессами, отслеживайте ключевые
+            показатели и выстраивайте продуктивные отношения с клиентами.
           </p>
         </div>
         <p className={styles.switchPrompt}>

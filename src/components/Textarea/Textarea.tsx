@@ -2,8 +2,7 @@ import React, { forwardRef } from "react";
 
 import styles from "./Textarea.module.css";
 
-interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   error?: string;
   label: string;
 }
@@ -19,6 +18,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {required && <span className={styles.required}>*</span>}
         </label>
         <textarea
+          ref={ref}
           aria-describedby={error ? `${textareaId}-error` : undefined}
           aria-invalid={error ? true : undefined}
           aria-required={required}
@@ -30,7 +30,6 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             .filter(Boolean)
             .join(" ")}
           id={textareaId}
-          ref={ref}
           required={required}
           {...rest}
         />

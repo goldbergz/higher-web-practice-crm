@@ -1,10 +1,11 @@
-import type React from "react";
 
-import type { ProfileFormValues } from "../../types";
 import { profileSchema } from "../../utils/schemas/profileSchema";
+import { profileSections } from "../../utils/сonstants";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
-import { profileSections } from "../../utils/сonstants";
+
+import type { ProfileFormValues } from "../../types";
+import type React from "react";
 
 interface ProfileFormProps {
   defaultValues: ProfileFormValues;
@@ -19,9 +20,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
     <Form<ProfileFormValues>
       ariaLabel="Форма настройки профиля"
       defaultValues={defaultValues}
-      onSubmit={onSubmit}
       schema={profileSchema}
       sections={profileSections}
+      onSubmit={onSubmit}
     >
       <Button type="submit" variant="primary">
         Сохранить изменения

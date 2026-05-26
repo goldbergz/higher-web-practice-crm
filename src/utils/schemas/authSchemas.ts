@@ -26,7 +26,10 @@ export const registerSchema = z
     password: z
       .string()
       .min(1, "Введите пароль")
-      .min(MIN_PASSWORD_LENGTH, `Пароль должен содержать не менее ${MIN_PASSWORD_LENGTH} символов`),
+      .min(
+        MIN_PASSWORD_LENGTH,
+        `Пароль должен содержать не менее ${MIN_PASSWORD_LENGTH} символов`,
+      ),
     surname: z.string().trim().min(1, "Введите фамилию"),
   })
   .refine((data) => data.password === data.confirmPassword, {

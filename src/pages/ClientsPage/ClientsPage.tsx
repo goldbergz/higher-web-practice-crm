@@ -1,12 +1,9 @@
-import type React from "react";
 import { useEffect, useMemo, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-import type { Client } from "../../types";
-import type { ClientFormValues } from "../../utils/schemas/clientSchema";
-import type { SortConfig } from "../../components/DataList/types";
 import Button from "../../components/Button/Button";
-import ClientForm from "../../components/ClientForm/ClientForm";
 import DataList from "../../components/DataList/DataList";
+import ClientForm from "../../components/Forms/ClientForm";
 import Modal from "../../components/Modal/Modal";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
@@ -16,10 +13,16 @@ import {
   selectClients,
   updateClient,
 } from "../../store/clientsSlice";
-import styles from "./ClientsPage.module.css";
-import { clientColumns } from "../../utils/сonstants";
 import { formatDate } from "../../utils/formaters";
-import { v4 as uuidv4 } from "uuid";
+import { clientColumns } from "../../utils/сonstants";
+
+import styles from "./ClientsPage.module.css";
+
+
+import type { SortConfig } from "../../components/DataList/types";
+import type { Client } from "../../types";
+import type { ClientFormValues } from "../../utils/schemas/clientSchema";
+import type React from "react";
 
 type ModalMode = "create" | "edit" | null;
 
@@ -166,16 +169,16 @@ const ClientsPage: React.FC = () => {
       </div>
       <div className={styles.listSection}>
         <div className={styles.toolbar}>
-          <Button onClick={handleNewClient} size="md" variant="primary">
+          <Button size="md" variant="primary" onClick={handleNewClient}>
             Новый клиент
           </Button>
           <div className={styles.searchInput}>
             <input
               className={styles.searchField}
-              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Искать"
               type="search"
               value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
@@ -185,9 +188,9 @@ const ClientsPage: React.FC = () => {
             getItemId={(item) => item.id}
             isItemDeleted={(item) => item.deleted === true}
             items={displayClients}
+            sortConfig={sortConfig}
             onItemClick={handleRowClick}
             onSort={handleSort}
-            sortConfig={sortConfig}
           />
         </div>
       </div>
@@ -198,23 +201,23 @@ const ClientsPage: React.FC = () => {
             : undefined
         }
         isOpen={modalMode !== null}
-        onClose={handleModalClose}
         title={modalTitle}
+        onClose={handleModalClose}
       >
         {modalMode === "create" && (
           <ClientForm
+            submitLabel="Создать"
             onCancel={handleModalClose}
             onSubmit={handleCreate}
-            submitLabel="Создать"
           />
         )}
         {modalMode === "edit" && selectedClient && (
           <ClientForm
             defaultValues={editDefaultValues}
+            submitLabel="Редактировать"
             onCancel={handleModalClose}
             onDelete={handleDelete}
             onSubmit={handleEdit}
-            submitLabel="Редактировать"
           />
         )}
       </Modal>

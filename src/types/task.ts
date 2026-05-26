@@ -1,4 +1,4 @@
-export type TaskStatus = 'new' | 'in_progress' | 'completed';
+export type TaskStatus = "new" | "in_progress" | "completed";
 
 export type Task = {
   id: string;
@@ -33,4 +33,15 @@ export type UpdateTaskPayload = {
   status?: TaskStatus;
   dueDate?: string;
   assigneeId?: string;
+};
+
+export type TaskDisplay = {
+  id: string;
+  title: string;
+  deal: string;
+  description: string;
+  dueDate: string;
+  assignee: string;
+  status: string;
+  createdAt: string;
 };

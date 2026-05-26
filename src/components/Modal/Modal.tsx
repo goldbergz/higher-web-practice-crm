@@ -1,7 +1,8 @@
-import type React from "react";
 import { useEffect, useRef } from "react";
 
 import styles from "./Modal.module.css";
+
+import type React from "react";
 
 interface ModalProps {
   children: React.ReactNode;
@@ -42,17 +43,17 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className={styles.overlay}
-      onClick={onClose}
-      role="dialog"
       aria-labelledby="modal-title"
       aria-modal="true"
+      className={styles.overlay}
+      role="dialog"
+      onClick={onClose}
     >
       <div
-        className={styles.modal}
-        onClick={(e) => e.stopPropagation()}
         ref={modalRef}
+        className={styles.modal}
         role="document"
+        onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.header}>
           <h2 className={styles.title} id="modal-title">

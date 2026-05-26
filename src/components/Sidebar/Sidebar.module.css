@@ -80,7 +80,7 @@
 }
 
 .item {
-    position: relative;
+  position: relative;
   align-self: stretch;
   padding: 8px 20px;
 }
@@ -92,7 +92,7 @@
   left: 20px;
   right: 20px;
   height: 1px;
-  background: #D1D5DB;
+  background: #d1d5db;
 }
 
 .itemLink {

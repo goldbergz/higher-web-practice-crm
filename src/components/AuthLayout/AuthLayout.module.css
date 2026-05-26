@@ -16,8 +16,6 @@
   width: 596px;
 }
 
-
-
 .blobOrange {
   background: #f59e0b;
   filter: blur(40px);
@@ -61,7 +59,7 @@
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr 1fr;
-  min-height: 100vh;  
+  min-height: 100vh;
   padding: 2rem 4rem;
   position: relative;
   z-index: 1;
@@ -102,7 +100,6 @@
   display: flex;
   justify-content: center;
 }
-
 
 @media (max-width: 768px) {
   .page {

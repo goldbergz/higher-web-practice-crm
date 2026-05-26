@@ -1,15 +1,12 @@
-import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-import type { Deal } from "../../types";
-import type { DealFormValues } from "../../utils/schemas/dealSchema";
-import type { SortConfig } from "../../components/DataList/types";
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
-import DealForm from "../../components/DealForm/DealForm";
+import DealForm from "../../components/Forms/DealForm";
 import Modal from "../../components/Modal/Modal";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { loadClients, selectClients } from "../../store/clientsSlice";
 import {
   addDeal,
   completeDeal,
@@ -17,11 +14,16 @@ import {
   selectDeals,
   updateDeal,
 } from "../../store/dealsSlice";
-import { loadClients, selectClients } from "../../store/clientsSlice";
 import { formatDate } from "../../utils/formaters";
-import styles from "./DealsPage.module.css";
-import type { DealDisplay } from "../../types/deal";
 import { dealColumns } from "../../utils/сonstants";
+
+import styles from "./DealsPage.module.css";
+
+import type { SortConfig } from "../../components/DataList/types";
+import type { Deal } from "../../types";
+import type { DealDisplay } from "../../types/deal";
+import type { DealFormValues } from "../../utils/schemas/dealSchema";
+import type React from "react";
 
 type ModalMode = "create" | "edit" | null;
 
@@ -91,7 +93,9 @@ const DealsPage: React.FC = () => {
         display: {
           amount: formatAmount(deal.amount),
           client: getClientName(deal.clientId),
-          completedAt: deal.completedAt ? formatDate(deal.completedAt) : "\u2014",
+          completedAt: deal.completedAt
+            ? formatDate(deal.completedAt)
+            : "\u2014",
           createdAt: formatDate(deal.createdAt),
           description: deal.description ?? "",
           id: deal.id,
@@ -275,16 +279,16 @@ const DealsPage: React.FC = () => {
       </div>
       <div className={styles.listSection}>
         <div className={styles.toolbar}>
-          <Button onClick={handleNewDeal} size="md" variant="primary">
+          <Button size="md" variant="primary" onClick={handleNewDeal}>
             Новая сделка
           </Button>
           <div className={styles.searchInput}>
             <input
               className={styles.searchField}
-              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Искать"
               type="search"
               value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
@@ -295,9 +299,9 @@ const DealsPage: React.FC = () => {
             getItemId={(item) => item.id}
             getRowClassName={getRowClassName}
             items={displayDeals}
+            sortConfig={sortConfig}
             onItemClick={handleRowClick}
             onSort={handleSort}
-            sortConfig={sortConfig}
           />
         </div>
       </div>
@@ -308,25 +312,25 @@ const DealsPage: React.FC = () => {
             : undefined
         }
         isOpen={modalMode !== null}
-        onClose={handleModalClose}
         title={modalTitle}
+        onClose={handleModalClose}
       >
         {modalMode === "create" && (
           <DealForm
             clients={activeClients}
+            submitLabel="Создать сделку"
             onCancel={handleModalClose}
             onSubmit={handleCreate}
-            submitLabel="Создать сделку"
           />
         )}
         {modalMode === "edit" && selectedDeal && (
           <DealForm
             clients={activeClients}
             defaultValues={editDefaultValues}
+            submitLabel="Редактировать"
             onCancel={handleModalClose}
             onComplete={showCompleteButton ? handleComplete : undefined}
             onSubmit={handleEdit}
-            submitLabel="Редактировать"
           />
         )}
       </Modal>

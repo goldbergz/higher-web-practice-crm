@@ -1,10 +1,11 @@
-import type React from "react";
 
-import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import { clientSchema } from "../../utils/schemas/clientSchema";
+import { clientSections, emptyValues } from "../../utils/сonstants";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
-import { clientSections, emptyValues } from "../../utils/сonstants";
+
+import type { ClientFormValues } from "../../utils/schemas/clientSchema";
+import type React from "react";
 
 interface ClientFormProps {
   defaultValues?: ClientFormValues;
@@ -25,19 +26,19 @@ const ClientForm: React.FC<ClientFormProps> = ({
     <Form<ClientFormValues>
       ariaLabel="Форма клиента"
       defaultValues={defaultValues ?? emptyValues}
-      onSubmit={onSubmit}
       schema={clientSchema}
       sections={clientSections}
+      onSubmit={onSubmit}
     >
       <Button type="submit" variant="primary">
         {submitLabel}
       </Button>
       {onDelete ? (
-        <Button onClick={onDelete} type="button" variant="danger">
+        <Button type="button" variant="danger" onClick={onDelete}>
           Удалить клиента
         </Button>
       ) : (
-        <Button onClick={onCancel} type="button" variant="secondary">
+        <Button type="button" variant="secondary" onClick={onCancel}>
           Отменить
         </Button>
       )}

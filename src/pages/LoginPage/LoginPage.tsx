@@ -1,11 +1,8 @@
-import type React from "react";
 import { useNavigate } from "react-router-dom";
 
-import type { LoginFormValues } from "../../utils/schemas/authSchemas";
 import AuthLayout from "../../components/AuthLayout/AuthLayuot";
 import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
-import { loginSchema } from "../../utils/schemas/authSchemas";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
   selectUserError,
@@ -13,8 +10,14 @@ import {
   setUser,
   setUserLoading,
 } from "../../store/userSlice";
-import styles from "./LoginPage.module.css";
+import { loginSchema } from "../../utils/schemas/authSchemas";
 import { loginDefaultValues, loginSections } from "../../utils/сonstants";
+
+import styles from "./LoginPage.module.css";
+
+
+import type { LoginFormValues } from "../../utils/schemas/authSchemas";
+import type React from "react";
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -53,9 +56,9 @@ const LoginPage: React.FC = () => {
         <Form<LoginFormValues>
           ariaLabel="Форма входа"
           defaultValues={loginDefaultValues}
-          onSubmit={handleSubmit}
           schema={loginSchema}
           sections={loginSections}
+          onSubmit={handleSubmit}
         >
           <a className={styles.forgotLink} href="/forgot-password">
             Забыли пароль?

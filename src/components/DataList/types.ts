@@ -6,7 +6,7 @@ export type ColumnConfig<T> = {
   minWidth?: string;
   flex?: string;
   className?: string;
-   align?: "left" | "right" | "center";
+  align?: "left" | "right" | "center";
 };
 
 export type SortConfig<T> = {

@@ -1,7 +1,8 @@
-import type React from "react";
+import styles from "./DataList.module.css";
 
 import type { ColumnConfig } from "./types";
-import styles from "./DataList.module.css";
+import type React from "react";
+
 
 interface DataListRowProps<T> {
   columns: ColumnConfig<T>[];
@@ -31,6 +32,8 @@ function DataListRow<T>({
   return (
     <div
       className={rowClasses}
+      role="row"
+      tabIndex={0}
       onClick={() => onClick?.(item)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -38,8 +41,6 @@ function DataListRow<T>({
           onClick?.(item);
         }
       }}
-      role="row"
-      tabIndex={0}
     >
       {columns.map((column) => {
         const value = item[column.key];
@@ -57,8 +58,8 @@ function DataListRow<T>({
 
         return (
           <div
-            className={cellClasses}
             key={String(column.key)}
+            className={cellClasses}
             role="cell"
             style={{
               flex: column.flex,

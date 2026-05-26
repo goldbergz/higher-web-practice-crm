@@ -1,7 +1,8 @@
-import type React from "react";
+import styles from "./DataList.module.css";
 
 import type { ColumnConfig, SortConfig } from "./types";
-import styles from "./DataList.module.css";
+import type React from "react";
+
 
 interface DataListHeaderProps<T> {
   columns: ColumnConfig<T>[];
@@ -58,6 +59,7 @@ function DataListHeader<T>({
 
         return (
           <div
+            key={String(column.key)}
             aria-sort={
               isActive
                 ? sortConfig?.direction === "asc"
@@ -71,20 +73,19 @@ function DataListHeader<T>({
             ]
               .filter(Boolean)
               .join(" ")}
-            key={String(column.key)}
-            onClick={() => onSort(column.key)}
             role="columnheader"
             style={{
               flex: column.flex,
               minWidth: column.minWidth,
               textAlign: column.align ?? "left",
               justifyContent:
-    column.align === "right"
-      ? "flex-end"
-      : column.align === "center"
-        ? "center"
-        : "flex-start",
+                column.align === "right"
+                  ? "flex-end"
+                  : column.align === "center"
+                    ? "center"
+                    : "flex-start",
             }}
+            onClick={() => onSort(column.key)}
           >
             <span>{column.label}</span>
             <span className={styles.sortIcon}>

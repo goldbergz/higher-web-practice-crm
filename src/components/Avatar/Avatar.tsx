@@ -27,8 +27,8 @@ const Avatar: React.FC<AvatarProps> = ({ onAvatarChange, src }) => {
       <button
         aria-label="Изменить аватар"
         className={styles.editButton}
-        onClick={handleEditClick}
         type="button"
+        onClick={handleEditClick}
       >
         <svg
           className={styles.editIcon}
@@ -51,12 +51,12 @@ const Avatar: React.FC<AvatarProps> = ({ onAvatarChange, src }) => {
         </svg>
       </button>
       <input
+        ref={fileInputRef}
         accept="image/*"
         className={styles.hiddenInput}
-        onChange={handleFileChange}
-        ref={fileInputRef}
         tabIndex={-1}
         type="file"
+        onChange={handleFileChange}
       />
     </div>
   );

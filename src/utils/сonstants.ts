@@ -1,17 +1,61 @@
 import type { ColumnConfig, FormSection } from "../components";
 import type { Client, ProfileFormValues, RegisterFormValues } from "../types";
 import type { DealDisplay } from "../types/deal";
+import type { TaskDisplay } from "../types/task";
 import type { LoginFormValues } from "./schemas/authSchemas";
 import type { ClientFormValues } from "./schemas/clientSchema";
 
 export const clientColumns: ColumnConfig<Client>[] = [
-  { key: "name",      label: "Имя",              flex: "1 1 0", minWidth: "60px",  className: "cellName"    },
-  { key: "phone",     label: "Телефон",           flex: "1 1 0", minWidth: "100px", className: ""            },
-  { key: "email",     label: "Email",             flex: "1.3 1 0", minWidth: "120px", className: "cellEmail" },
-  { key: "company",   label: "Название компании", flex: "1.2 1 0", minWidth: "100px", className: ""          },
-  { key: "website",   label: "Сайт",             flex: "1.1 1 0", minWidth: "100px", className: ""           },
-  { key: "comment",   label: "Комментарий",       flex: "2 1 0",  minWidth: "80px",  className: "cellComment"},
-  { key: "createdAt", label: "Добавлен",          flex: "1 1 0",  minWidth: "80px",  className: "cellDate", align: "right"},
+  {
+    key: "name",
+    label: "Имя",
+    flex: "1 1 0",
+    minWidth: "60px",
+    className: "cellName",
+  },
+  {
+    key: "phone",
+    label: "Телефон",
+    flex: "1 1 0",
+    minWidth: "100px",
+    className: "",
+  },
+  {
+    key: "email",
+    label: "Email",
+    flex: "1.3 1 0",
+    minWidth: "120px",
+    className: "cellEmail",
+  },
+  {
+    key: "company",
+    label: "Название компании",
+    flex: "1.2 1 0",
+    minWidth: "100px",
+    className: "",
+  },
+  {
+    key: "website",
+    label: "Сайт",
+    flex: "1.1 1 0",
+    minWidth: "100px",
+    className: "",
+  },
+  {
+    key: "comment",
+    label: "Комментарий",
+    flex: "2 1 0",
+    minWidth: "80px",
+    className: "cellComment",
+  },
+  {
+    key: "createdAt",
+    label: "Добавлен",
+    flex: "1 1 0",
+    minWidth: "80px",
+    className: "cellDate",
+    align: "right",
+  },
 ];
 
 export const profileSections: FormSection<ProfileFormValues>[] = [
@@ -259,6 +303,54 @@ export const dealColumns: ColumnConfig<DealDisplay>[] = [
     key: "completedAt",
     label: "Дата завершения",
     flex: "1 1 0",
+    minWidth: "100px",
+    align: "right",
+  },
+];
+
+export const taskColumns: ColumnConfig<TaskDisplay>[] = [
+  {
+    key: "title",
+    label: "Название",
+    flex: "2 1 0",
+    minWidth: "140px",
+    className: "cellName",
+  },
+  {
+    key: "deal",
+    label: "Сделка",
+    flex: "1.2 1 0",
+    minWidth: "100px",
+  },
+  {
+    key: "description",
+    label: "Описание",
+    flex: "2 1 0",
+    minWidth: "100px",
+  },
+  {
+    key: "assignee",
+    label: "Исполнитель",
+    flex: "1 1 0",
+    minWidth: "100px",
+  },
+  {
+    key: "status",
+    label: "Статус",
+    flex: "0.7 1 0",
+    minWidth: "80px",
+  },
+  {
+    key: "dueDate",
+    label: "Выполнить до",
+    flex: "0.9 1 0",
+    minWidth: "100px",
+    align: "right",
+  },
+  {
+    key: "createdAt",
+    label: "Дата создания",
+    flex: "0.9 1 0",
     minWidth: "100px",
     align: "right",
   },

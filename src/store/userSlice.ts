@@ -1,7 +1,7 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { UserProfile } from '../types/user';
-import type { RootState } from './index';
+import type { RootState } from "./index";
+import type { UserProfile } from "../types/user";
 
 type UserState = {
   currentUser: UserProfile | null;
@@ -18,7 +18,7 @@ const initialState: UserState = {
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setUser(state, action: PayloadAction<UserProfile>) {
@@ -48,10 +48,18 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, logout, setUserLoading, setUserError, updateUser, clearUserError } = userSlice.actions;
+export const {
+  setUser,
+  logout,
+  setUserLoading,
+  setUserError,
+  updateUser,
+  clearUserError,
+} = userSlice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.user.currentUser;
-export const selectIsAuthenticated = (state: RootState) => state.user.isAuthenticated;
+export const selectIsAuthenticated = (state: RootState) =>
+  state.user.isAuthenticated;
 export const selectUserLoading = (state: RootState) => state.user.loading;
 export const selectUserError = (state: RootState) => state.user.error;
 

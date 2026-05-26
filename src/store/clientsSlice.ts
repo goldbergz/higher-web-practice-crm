@@ -1,8 +1,9 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { Client, UpdateClientPayload } from '../types/client';
-import { mockClients } from '../mocks/clients';
-import type { RootState } from './index';
+import { mockClients } from "../mocks/clients";
+
+import type { RootState } from "./index";
+import type { Client, UpdateClientPayload } from "../types/client";
 
 type ClientsState = {
   items: Client[];
@@ -17,7 +18,7 @@ const initialState: ClientsState = {
 };
 
 const clientsSlice = createSlice({
-  name: 'clients',
+  name: "clients",
   initialState,
   reducers: {
     loadClients(state) {
@@ -29,10 +30,16 @@ const clientsSlice = createSlice({
     addClient(state, action: PayloadAction<Client>) {
       state.items.push(action.payload);
     },
-    updateClient(state, action: PayloadAction<{ id: string; changes: UpdateClientPayload }>) {
+    updateClient(
+      state,
+      action: PayloadAction<{ id: string; changes: UpdateClientPayload }>,
+    ) {
       const index = state.items.findIndex((c) => c.id === action.payload.id);
       if (index !== -1) {
-        state.items[index] = { ...state.items[index], ...action.payload.changes };
+        state.items[index] = {
+          ...state.items[index],
+          ...action.payload.changes,
+        };
       }
     },
     deleteClient(state, action: PayloadAction<string>) {
@@ -65,9 +72,11 @@ export const {
 } = clientsSlice.actions;
 
 export const selectClients = (state: RootState) => state.clients.items;
-export const selectActiveClients = (state: RootState) => state.clients.items.filter((c) => !c.deleted);
+export const selectActiveClients = (state: RootState) =>
+  state.clients.items.filter((c) => !c.deleted);
 export const selectClientsLoading = (state: RootState) => state.clients.loading;
 export const selectClientsError = (state: RootState) => state.clients.error;
-export const selectClientById = (state: RootState, id: string) => state.clients.items.find((c) => c.id === id);
+export const selectClientById = (state: RootState, id: string) =>
+  state.clients.items.find((c) => c.id === id);
 
 export default clientsSlice.reducer;
