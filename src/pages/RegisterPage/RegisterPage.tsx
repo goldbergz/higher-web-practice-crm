@@ -10,10 +10,12 @@ import {
   setUserLoading,
 } from "../../store/userSlice";
 import { registerSchema } from "../../utils/schemas/authSchemas";
-import { registerDefaultValues, registerSections } from "../../utils/сonstants";
+import {
+  registerDefaultValues,
+  registerSections,
+} from "../../utils/constants/сonstants";
 
 import styles from "./RegisterPage.module.css";
-
 
 import type { RegisterFormValues } from "../../utils/schemas/authSchemas";
 import type React from "react";

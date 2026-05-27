@@ -5,7 +5,6 @@ import DataListRow from "./DataListRow";
 import type { ColumnConfig, SortConfig } from "./types";
 import type React from "react";
 
-
 interface DataListProps<T> {
   columns: ColumnConfig<T>[];
   getCellClassName?: (item: T, key: keyof T) => string | undefined;
@@ -14,8 +13,8 @@ interface DataListProps<T> {
   isItemDeleted?: (item: T) => boolean;
   items: T[];
   onItemClick?: (item: T) => void;
-  onSort: (key: keyof T) => void;
-  sortConfig: SortConfig<T> | null;
+  onSort?: (key: keyof T) => void;
+  sortConfig?: SortConfig<T> | null;
 }
 
 function DataList<T>({
@@ -33,7 +32,7 @@ function DataList<T>({
     <div role="table">
       <DataListHeader
         columns={columns}
-        sortConfig={sortConfig}
+        sortConfig={sortConfig ?? null}
         onSort={onSort}
       />
       <div className={styles.list} role="rowgroup">

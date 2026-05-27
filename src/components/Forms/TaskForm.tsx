@@ -82,7 +82,6 @@ const TaskForm: React.FC<TaskFormProps> = ({
             type: "select",
             options: dealOptions,
             placeholder: "Не выбрана",
-            required: true,
           },
         ],
         {

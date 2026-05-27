@@ -16,6 +16,7 @@ export type DashboardStats = {
     today: number;
     week: number;
     month: number;
+    quarter: number;
   };
 
   completedDeals: {
@@ -23,6 +24,7 @@ export type DashboardStats = {
     today: number;
     week: number;
     month: number;
+    quarter: number;
   };
 };
 

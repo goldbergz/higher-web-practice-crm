@@ -1,6 +1,5 @@
-
 import { profileSchema } from "../../utils/schemas/profileSchema";
-import { profileSections } from "../../utils/сonstants";
+import { profileSections } from "../../utils/constants/сonstants";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
 

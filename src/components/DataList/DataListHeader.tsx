@@ -3,10 +3,9 @@ import styles from "./DataList.module.css";
 import type { ColumnConfig, SortConfig } from "./types";
 import type React from "react";
 
-
 interface DataListHeaderProps<T> {
   columns: ColumnConfig<T>[];
-  onSort: (key: keyof T) => void;
+  onSort?: (key: keyof T) => void;
   sortConfig: SortConfig<T> | null;
 }
 
@@ -85,12 +84,14 @@ function DataListHeader<T>({
                     ? "center"
                     : "flex-start",
             }}
-            onClick={() => onSort(column.key)}
+            onClick={() => onSort?.(column.key)}
           >
             <span>{column.label}</span>
-            <span className={styles.sortIcon}>
-              {isActive && isAsc ? <SortArrowUp /> : <SortArrowDown />}
-            </span>
+            {onSort && (
+              <span className={styles.sortIcon}>
+                {isActive && isAsc ? <SortArrowUp /> : <SortArrowDown />}
+              </span>
+            )}
           </div>
         );
       })}

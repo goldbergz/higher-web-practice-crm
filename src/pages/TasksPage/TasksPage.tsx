@@ -15,7 +15,7 @@ import {
   updateTask,
 } from "../../store/tasksSlice";
 import { formatDate } from "../../utils/formaters";
-import { taskColumns } from "../../utils/сonstants";
+import { taskColumns } from "../../utils/constants/сonstants";
 
 import styles from "./TasksPage.module.css";
 
@@ -23,25 +23,16 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Task, TaskDisplay } from "../../types/task";
 import type { TaskFormValues } from "../../utils/schemas/taskSchema";
 import type React from "react";
+import { loadUsers, selectUsers } from "../../store/userSlice";
+import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
 
 type ModalMode = "create" | "edit" | null;
-
-const MOCK_USERS = [
-  { id: "user-1", name: "Иван Иванов" },
-  { id: "user-2", name: "Мария Петрова" },
-  { id: "user-3", name: "Алексей Сидоров" },
-];
-
-const STATUS_LABELS: Record<string, string> = {
-  new: "Новая",
-  in_progress: "В работе",
-  completed: "Выполнена",
-};
 
 const TasksPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const tasks = useAppSelector(selectTasks);
   const deals = useAppSelector(selectDeals);
+  const users = useAppSelector(selectUsers);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<TaskDisplay> | null>(
@@ -53,6 +44,7 @@ const TasksPage: React.FC = () => {
   useEffect(() => {
     dispatch(loadTasks());
     dispatch(loadDeals());
+    dispatch(loadUsers());
   }, [dispatch]);
 
   const getDealTitle = (dealId?: string): string => {
@@ -62,7 +54,7 @@ const TasksPage: React.FC = () => {
   };
 
   const getUserName = (userId: string): string => {
-    const user = MOCK_USERS.find((u) => u.id === userId);
+    const user = users.find((u) => u.id === userId);
     return user?.name ?? userId;
   };
 
@@ -72,7 +64,7 @@ const TasksPage: React.FC = () => {
     return tasks.filter((task) => {
       const dealTitle = getDealTitle(task.dealId).toLowerCase();
       const assigneeName = getUserName(task.assigneeId).toLowerCase();
-      const statusLabel = (STATUS_LABELS[task.status] ?? "").toLowerCase();
+      const statusLabel = (TASK_STATUS_LABELS[task.status] ?? "").toLowerCase();
       return (
         task.title.toLowerCase().includes(query) ||
         (task.description ?? "").toLowerCase().includes(query) ||
@@ -98,7 +90,7 @@ const TasksPage: React.FC = () => {
           deal: getDealTitle(task.dealId),
           description: task.description ?? "",
           assignee: getUserName(task.assigneeId),
-          status: STATUS_LABELS[task.status] ?? task.status,
+          status: TASK_STATUS_LABELS[task.status] ?? task.status,
           dueDate: task.dueDate ? formatDate(task.dueDate) : "—",
           createdAt: formatDate(task.createdAt),
         } as TaskDisplay,
@@ -121,7 +113,7 @@ const TasksPage: React.FC = () => {
         deal: getDealTitle(task.dealId),
         description: task.description ?? "",
         assignee: getUserName(task.assigneeId),
-        status: STATUS_LABELS[task.status] ?? task.status,
+        status: TASK_STATUS_LABELS[task.status] ?? task.status,
         dueDate: task.dueDate ? formatDate(task.dueDate) : "—",
         createdAt: formatDate(task.createdAt),
       })),
@@ -294,7 +286,7 @@ const TasksPage: React.FC = () => {
           <TaskForm
             deals={deals}
             submitLabel="Создать задачу"
-            users={MOCK_USERS}
+            users={users}
             onCancel={handleModalClose}
             onSubmit={handleCreate}
           />
@@ -304,7 +296,7 @@ const TasksPage: React.FC = () => {
             deals={deals}
             defaultValues={editDefaultValues}
             submitLabel="Сохранить"
-            users={MOCK_USERS}
+            users={users}
             onCancel={handleModalClose}
             onComplete={showCompleteButton ? handleComplete : undefined}
             onSubmit={handleEdit}

@@ -1,0 +1,463 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.greetingTitle {
+  color: #1f2937;
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.greetingSubtitle {
+  color: #6b7280;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.statsSection {
+  align-self: stretch;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statsHeader {
+  align-items: center;
+  align-self: stretch;
+  border-radius: 8px;
+  display: inline-flex;
+  justify-content: space-between;
+  overflow: hidden;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.statsLabelPlaceholder {
+  height: 14px;
+  position: relative;
+  width: 240px;
+}
+
+.statsHeaderCell {
+  align-items: center;
+  display: flex;
+  flex: 1 1 0;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.statsHeaderText {
+  color: #6b7280;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.statsRow {
+  align-items: center;
+  align-self: stretch;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px #e5e7eb;
+  display: inline-flex;
+  height: 48px;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 8px 24px;
+}
+
+.statsRowLabel {
+  color: #1f2937;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  width: 240px;
+  word-wrap: break-word;
+}
+
+.statsCell {
+  align-items: center;
+  display: flex;
+  flex: 1 1 0;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.statsTotalValue {
+  color: #3b82f6;
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  word-wrap: break-word;
+}
+
+.statsIncrementValue {
+  color: #10b981;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  word-wrap: break-word;
+}
+
+.topClientsSection {
+  align-self: stretch;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.topClientsHeader {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.topClientsTitle {
+  align-self: stretch;
+  color: #1f2937;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  height: 24px;
+  line-height: 24px;
+  word-wrap: break-word;
+}
+
+.topClientsGrid {
+  align-self: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.topClientCard {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 254.4px;
+  min-height: 126px;
+  justify-content: space-between;
+  padding: 12px 16px;
+}
+
+.topClientInfo {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.topClientName {
+  align-self: stretch;
+  color: #1f2937;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.topClientCompany {
+  color: #6b7280;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.topClientDeals {
+  align-items: baseline;
+  display: inline-flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.topClientDealsCount {
+  color: #10b981;
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  word-wrap: break-word;
+}
+
+.topClientDealsLabel {
+  color: #9ca3af;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.topClientsSection button {
+  width: 100%;
+  max-width: 146px;
+  align-self: flex-start;
+}
+
+.topDealsSection {
+  align-self: stretch;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.topDealsSection button {
+  width: 100%;
+  max-width: 160px;
+  align-self: flex-start;
+}
+
+.rowNew {
+  background: #eff6ff;
+}
+
+.rowNew:hover {
+  background: #dbeafe;
+}
+
+.rowCompleted {
+  background: #f0fdf4;
+}
+
+.rowCompleted:hover {
+  background: #dcfce7;
+}
+
+.rowCancelled {
+  background: #fff7ed;
+}
+
+.rowCancelled:hover {
+  background: #ffedd5;
+}
+
+.statusNew {
+  color: var(--color-text-primary, #1f2937);
+}
+
+.statusInProgress {
+  color: #3b82f6;
+}
+
+.statusCompleted {
+  color: #10b981;
+}
+
+.statusCancelled {
+  color: #f59e0b;
+}
+
+.tasksSection {
+  align-self: stretch;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tasksGrid {
+  align-self: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.taskCard {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px #e5e7eb;
+  display: flex;
+  flex: 1 1 calc(20% - 8px);
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 254.4px;
+  min-height: 126px;
+  padding: 12px 16px;
+  justify-content: space-between;
+}
+
+.taskCardNew {
+  background: #eff6ff;
+}
+
+.taskCardCompleted {
+  background: #f0fdf4;
+}
+
+.taskCardInfo {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.taskCardTitle {
+  align-self: stretch;
+  color: #1f2937;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.taskCardDeal {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.taskCardDealLabel {
+  color: #9ca3af;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.taskCardDealTitle {
+  align-self: stretch;
+  color: #6b7280;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.taskCardFooter {
+  align-items: baseline;
+  align-self: stretch;
+  display: inline-flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.taskCardDueDate {
+  color: #6b7280;
+  flex: 1 1 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.taskCardStatusNew {
+  color: #1f2937;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.taskCardStatusInProgress {
+  color: #3b82f6;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.taskCardStatusCompleted {
+  color: #10b981;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.tasksSection button {
+  width: 100%;
+  max-width: 160px;
+  align-self: flex-start;
+}
+
+@media (max-width: 1024px) {
+  .topClientsRow {
+    flex-wrap: wrap;
+  }
+
+  .topClientCard {
+    flex: 1 1 calc(33.333% - 6px);
+    min-width: 200px;
+  }
+
+  .taskCard {
+    flex: 1 1 calc(33.333% - 6px);
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 16px;
+  }
+
+  .statsHeader {
+    display: none;
+  }
+
+  .statsRow {
+    flex-wrap: wrap;
+    gap: 8px;
+    height: auto;
+    padding: 12px 16px;
+  }
+
+  .statsRowLabel {
+    width: 100%;
+  }
+
+  .statsCell {
+    flex: 0 0 auto;
+  }
+
+  .statsLabelPlaceholder {
+    display: none;
+  }
+
+  .topClientsRow {
+    flex-direction: column;
+  }
+
+  .topClientCard {
+    flex: 1 1 100%;
+    height: auto;
+    min-height: 100px;
+  }
+
+  .taskCard {
+    flex: 1 1 100%;
+    min-width: unset;
+  }
+}

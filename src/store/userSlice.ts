@@ -1,9 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import type { RootState } from "./index";
-import type { UserProfile } from "../types/user";
+import type { User, UserProfile } from "../types/user";
+import { mockUsers } from "../mocks/users";
 
 type UserState = {
+  users: User[];
   currentUser: UserProfile | null;
   isAuthenticated: boolean;
   loading: boolean;
@@ -11,6 +13,7 @@ type UserState = {
 };
 
 const initialState: UserState = {
+  users: [],
   currentUser: null,
   isAuthenticated: false,
   loading: false,
@@ -21,6 +24,9 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    loadUsers(state) {
+      state.users = mockUsers;
+    },
     setUser(state, action: PayloadAction<UserProfile>) {
       state.currentUser = action.payload;
       state.isAuthenticated = true;
@@ -49,6 +55,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  loadUsers,
   setUser,
   logout,
   setUserLoading,
@@ -57,6 +64,7 @@ export const {
   clearUserError,
 } = userSlice.actions;
 
+export const selectUsers = (state: RootState) => state.user.users;
 export const selectCurrentUser = (state: RootState) => state.user.currentUser;
 export const selectIsAuthenticated = (state: RootState) =>
   state.user.isAuthenticated;

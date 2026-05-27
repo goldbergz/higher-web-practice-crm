@@ -14,10 +14,9 @@ import {
   updateClient,
 } from "../../store/clientsSlice";
 import { formatDate } from "../../utils/formaters";
-import { clientColumns } from "../../utils/сonstants";
+import { clientColumns } from "../../utils/constants/сonstants";
 
 import styles from "./ClientsPage.module.css";
-
 
 import type { SortConfig } from "../../components/DataList/types";
 import type { Client } from "../../types";

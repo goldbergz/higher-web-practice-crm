@@ -7,6 +7,7 @@ export type ColumnConfig<T> = {
   flex?: string;
   className?: string;
   align?: "left" | "right" | "center";
+  renderCell?: (item: T) => React.ReactNode;
 };
 
 export type SortConfig<T> = {

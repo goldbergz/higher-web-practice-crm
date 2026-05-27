@@ -1,6 +1,5 @@
-
 import { clientSchema } from "../../utils/schemas/clientSchema";
-import { clientSections, emptyValues } from "../../utils/сonstants";
+import { clientSections, emptyValues } from "../../utils/constants/сonstants";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
 

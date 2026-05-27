@@ -14,8 +14,8 @@ import {
   selectDeals,
   updateDeal,
 } from "../../store/dealsSlice";
-import { formatDate } from "../../utils/formaters";
-import { dealColumns } from "../../utils/сonstants";
+import { formatAmount, formatDate } from "../../utils/formaters";
+import { dealColumns } from "../../utils/constants/сonstants";
 
 import styles from "./DealsPage.module.css";
 
@@ -24,19 +24,9 @@ import type { Deal } from "../../types";
 import type { DealDisplay } from "../../types/deal";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type React from "react";
+import { DEAL_STATUS_LABELS } from "../../utils/constants/dealConstants";
 
 type ModalMode = "create" | "edit" | null;
-
-const STATUS_LABELS: Record<string, string> = {
-  cancelled: "Отменена",
-  completed: "Завершена",
-  in_progress: "В работе",
-  new: "Новая",
-};
-
-const formatAmount = (amount: number): string => {
-  return amount.toLocaleString("ru-RU") + " \u20BD";
-};
 
 const DealsPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -66,7 +56,7 @@ const DealsPage: React.FC = () => {
 
     return deals.filter((deal) => {
       const clientName = getClientName(deal.clientId).toLowerCase();
-      const statusLabel = (STATUS_LABELS[deal.status] ?? "").toLowerCase();
+      const statusLabel = (DEAL_STATUS_LABELS[deal.status] ?? "").toLowerCase();
       const amountStr = formatAmount(deal.amount).toLowerCase();
 
       return (
@@ -99,7 +89,7 @@ const DealsPage: React.FC = () => {
           createdAt: formatDate(deal.createdAt),
           description: deal.description ?? "",
           id: deal.id,
-          status: STATUS_LABELS[deal.status] ?? deal.status,
+          status: DEAL_STATUS_LABELS[deal.status] ?? deal.status,
           title: deal.title,
         },
       }))
@@ -129,7 +119,7 @@ const DealsPage: React.FC = () => {
         createdAt: formatDate(deal.createdAt),
         description: deal.description ?? "",
         id: deal.id,
-        status: STATUS_LABELS[deal.status] ?? deal.status,
+        status: DEAL_STATUS_LABELS[deal.status] ?? deal.status,
         title: deal.title,
       })),
     // eslint-disable-next-line react-hooks/exhaustive-deps

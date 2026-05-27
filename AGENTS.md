@@ -1,11 +1,351 @@
-Create a Deals page in the DealsPage folder, similar to the ClientsPage. Deals Page
-Deal fields: Name, Client, Description, Amount, Stage (status), Creation Date, Completion Date.
-Deal statuses: New, In Progress, Completed, Canceled.
-List: contains all deal fields, with the ability to sort and filter (search) by all fields. Clicking on a row opens a modal editing window.
+Two additional blocks need to be added to the main page:
 
-The page component must consist of a “New Deal” Button component, a search input field, and a DataList with deal data. Clicking on a deal opens a modal window (Modal component) for editing the deal, containing a Form component with the deal values pre-filled in the input fields and a “Complete Deal” button. Clicking the “New Deal” button opens a modal window (Modal component) for creating a new deal (with a Form component). All actions involving deals must be updated in the store via the dealsSlice. Edit the dealsSlice so that when a deal is canceled, it is not removed from the list but is marked as canceled, and its background color changes to #FFF7ED. A new deal should be marked as new, with a background color of #EFF6FF. A completed deal should be marked as completed in the store, with a background color of #F0FDF4.
+1.  **Top 10 Active Deals** — This block should utilize the `DataList` component, styled identically to the list on the `DealsPage`, but without sorting capabilities. The fields to be displayed on the main page are: Title, Client, Amount, Status, and Creation Date. A button that opens a modal window for creating a new deal should be placed beneath the list.
+2.  **Last 10 Tasks** — This block should be implemented similarly to the "Top 10 Active Clients" block, using the same styling. Each task card should display the following data, in this specific order: Task Title, the word "Deal," Deal Title, Due Date, and Task Status. A button that opens a modal window for creating a new task should be placed beneath the list.
+    The task cards should feature the same highlighting scheme found on the `TasksPage`, varying according to the task's status.
 
-Refer to the types in the types folder, specifically the deal file.
+jsx for Top 10 Active Deals block:
+
+```
+<div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 12, display: 'inline-flex'}}>
+  <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+    <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', lineHeight: 24, wordWrap: 'break-word'}}>Топ 10 активных сделок</div>
+    <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 4, display: 'flex'}}>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Заключение договора</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Велимир</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>1 500 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>15 сентября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: '#EFF6FF', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Проект «Сварог 2024»</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Ярополк</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>3 000 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Новая</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>5 ноября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: '#EFF6FF', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Проект «Радуга 2025»</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Радомир</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>2 800 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Новая</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>20 октября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Разработка ПО для Добрыни</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Добрыня</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>5 200 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>17 октября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Миролюб — Интеграция</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Радмила</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>1 750 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>24 сентября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: '#EFF6FF', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>«Ясновид CRM»</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Ясна</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>4 500 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Новая</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>12 сентября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: '#EFF6FF', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>ИТ-проект «БоярДев»</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Боярин</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>6 000 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Новая</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>30 октября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Заключение договора</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Велимир</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>1 500 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>15 сентября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Разработка ПО для Добрыни</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Добрыня</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>2 200 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>17 октября 2024</div>
+          </div>
+        </div>
+      </div>
+      <div data-device="Desktop" data-state="Default" style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+        <div style={{alignSelf: 'stretch', paddingLeft: 24, paddingRight: 24, paddingTop: 8, paddingBottom: 8, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, justifyContent: 'flex-start', alignItems: 'center', display: 'inline-flex'}}>
+          <div style={{flex: '1 1 0', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Миролюб — Интеграция</div>
+          <div style={{width: 300, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Радмила</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>750 000 ₽</div>
+          </div>
+          <div style={{width: 140, justifyContent: 'flex-start', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+          <div style={{width: 120, justifyContent: 'flex-end', alignItems: 'center', gap: 8, display: 'flex'}}>
+            <div style={{color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>24 сентября 2024</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div data-state="Default" data-type="Primary" style={{paddingLeft: 16, paddingRight: 16, paddingTop: 8, paddingBottom: 8, background: '#3B82F6', borderRadius: 6, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, display: 'flex'}}>
+    <div style={{color: '#F9FAFB', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', lineHeight: 24, wordWrap: 'break-word'}}>Новая сделка</div>
+  </div>
+</div>
+```
+
+jsx for Last 10 Tasks block:
+
+```
+<div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 12, display: 'inline-flex'}}>
+  <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+    <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', lineHeight: 24, wordWrap: 'break-word'}}>Последние 10 задач</div>
+    <div style={{alignSelf: 'stretch', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+      <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Согласовать спецификации</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Проект «Сварог 2024»</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 13 ноября</div>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+        </div>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Подготовить договор</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Заключение договора</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 17 ноября</div>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+        </div>
+      </div>
+      <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: '#EFF6FF', boxShadow: '0px 4px 8px #E5E7EB', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Контроль</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>ИТ-проект «БоярДев»</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 13 ноября</div>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Новая</div>
+          </div>
+        </div>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: '#EFF6FF', boxShadow: '0px 4px 8px #E5E7EB', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Отправить КП</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Проект «Сварог 2024»</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 16 ноября</div>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Новая</div>
+          </div>
+        </div>
+      </div>
+      <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Созвон с Добрыней</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Разработка ПО для Добрыни</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 15 ноября</div>
+            <div style={{color: '#3B82F6', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+        </div>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: '#EFF6FF', boxShadow: '0px 4px 8px #E5E7EB', overflow: 'hidden', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Подготовить документы</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>«Ясновид CRM»</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 12 ноября</div>
+            <div style={{color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Новая</div>
+          </div>
+        </div>
+      </div>
+      <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Встреча с Радмилой</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Миролюб — Интеграция</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 17 ноября</div>
+            <div style={{color: '#9CA3AF', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Новая</div>
+          </div>
+        </div>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: 'white', boxShadow: '0px 4px 8px #E5E7EB', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Уточнить ТЗ</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Консалтинг по IT-оптимизации</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 17 ноября</div>
+            <div style={{color: '#9CA3AF', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>В работе</div>
+          </div>
+        </div>
+      </div>
+      <div style={{flex: '1 1 0', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'inline-flex'}}>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: '#F0FDF4', boxShadow: '0px 4px 8px #E5E7EB', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Подготовить документы</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>«Обновление сайта Светлояр»</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 14 ноября</div>
+            <div style={{color: '#10B981', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Завершена</div>
+          </div>
+        </div>
+        <div data-property-1="Default" style={{alignSelf: 'stretch', paddingLeft: 16, paddingRight: 16, paddingTop: 12, paddingBottom: 12, background: '#F0FDF4', boxShadow: '0px 4px 8px #E5E7EB', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 8, display: 'flex'}}>
+          <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+            <div style={{alignSelf: 'stretch', color: '#1F2937', fontSize: 14, fontFamily: 'Inter', fontWeight: '700', lineHeight: 20, wordWrap: 'break-word'}}>Согласовать правки</div>
+            <div style={{alignSelf: 'stretch', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', gap: 2, display: 'flex'}}>
+              <div style={{color: '#9CA3AF', fontSize: 12, fontFamily: 'Inter', fontWeight: '400', lineHeight: 16, wordWrap: 'break-word'}}>сделка</div>
+              <div style={{alignSelf: 'stretch', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Проект «Ладомир»</div>
+            </div>
+          </div>
+          <div style={{alignSelf: 'stretch', justifyContent: 'flex-end', alignItems: 'baseline', gap: 4, display: 'inline-flex'}}>
+            <div style={{flex: '1 1 0', color: '#6B7280', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>до 14 ноября</div>
+            <div style={{color: '#10B981', fontSize: 14, fontFamily: 'Inter', fontWeight: '400', lineHeight: 20, wordWrap: 'break-word'}}>Завершена</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div data-state="Default" data-type="Primary" style={{paddingLeft: 16, paddingRight: 16, paddingTop: 8, paddingBottom: 8, background: '#3B82F6', borderRadius: 6, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, display: 'flex'}}>
+    <div style={{color: '#F9FAFB', fontSize: 16, fontFamily: 'Inter', fontWeight: '700', lineHeight: 24, wordWrap: 'break-word'}}>Новая задача</div>
+  </div>
+</div>
+```
+
+The distance between the blocks is 32 pixels.
+Refer to the types in the types folder.
 The page should adapt to different screen widths
 
 Recommendations for forms: react-hook-form + zod

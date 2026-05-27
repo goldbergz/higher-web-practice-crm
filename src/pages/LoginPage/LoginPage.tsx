@@ -11,10 +11,12 @@ import {
   setUserLoading,
 } from "../../store/userSlice";
 import { loginSchema } from "../../utils/schemas/authSchemas";
-import { loginDefaultValues, loginSections } from "../../utils/сonstants";
+import {
+  loginDefaultValues,
+  loginSections,
+} from "../../utils/constants/сonstants";
 
 import styles from "./LoginPage.module.css";
-
 
 import type { LoginFormValues } from "../../utils/schemas/authSchemas";
 import type React from "react";

@@ -3,7 +3,6 @@ import styles from "./DataList.module.css";
 import type { ColumnConfig } from "./types";
 import type React from "react";
 
-
 interface DataListRowProps<T> {
   columns: ColumnConfig<T>[];
   getCellClassName?: (item: T, key: keyof T) => string | undefined;
@@ -74,7 +73,7 @@ function DataListRow<T>({
             }}
             title={String(value ?? "")}
           >
-            {String(value ?? "")}
+            {column.renderCell ? column.renderCell(item) : String(value ?? "")}
           </div>
         );
       })}
