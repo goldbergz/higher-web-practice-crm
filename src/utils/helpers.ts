@@ -1,5 +1,5 @@
 import { DEAL_STATUS_LABELS } from "./constants/dealConstants";
-import { formatAmount, formatDate } from "./formaters";
+import { formatAmount, formatDate, formatPdfAmount } from "./formaters";
 
 import type { Client } from "../types/client";
 import type { DashboardStats } from "../types/dashboard";
@@ -301,27 +301,6 @@ export const paginateData = <T>(
 export const getTotalPages = (totalItems: number, pageSize: number): number =>
   Math.max(1, Math.ceil(totalItems / pageSize));
 
-export const formatSalesDisplayData = (
-  rows: SalesReportRow[],
-): (Omit<SalesReportRow, "amount"> & { amount: number })[] =>
-  rows.map((row) => ({
-    ...row,
-    amount: formatAmount(row.amount) as unknown as number,
-  }));
-
-export const formatStagesDisplayData = (
-  rows: DealsStageReportRow[],
-): (Omit<DealsStageReportRow, "stage" | "totalAmount"> & {
-  stage: DealsStageReportRow["stage"];
-  totalAmount: number;
-})[] =>
-  rows.map((row) => ({
-    ...row,
-    stage: (DEAL_STATUS_LABELS[row.stage] ??
-      row.stage) as unknown as typeof row.stage,
-    totalAmount: formatAmount(row.totalAmount) as unknown as number,
-  }));
-
 export const exportSalesReportPdf = (data: SalesReportRow[]): void => {
   const doc = new jsPDF();
 
@@ -428,14 +407,6 @@ const DEAL_STATUS_LABELS_EN: Record<string, string> = {
   IN_PROGRESS: "In Progress",
   WON: "Won",
   LOST: "Lost",
-};
-
-const formatPdfAmount = (amount: number): string => {
-  return new Intl.NumberFormat("en-US").format(amount);
-};
-
-const formatPdfDate = (date: string): string => {
-  return new Date(date).toLocaleDateString("en-US");
 };
 
 export const exportStagesReportPdf = (data: DealsStageReportRow[]): void => {

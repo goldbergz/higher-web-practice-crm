@@ -21,8 +21,6 @@ import {
   exportSalesReportXlsx,
   exportStagesReportPdf,
   exportStagesReportXlsx,
-  formatSalesDisplayData,
-  formatStagesDisplayData,
   getCompletedDealsReport,
   getDealRowStyleKey,
   getDealStagesReport,
@@ -42,6 +40,7 @@ import type {
 } from "../../types/reports";
 import type { ReportTab } from "../../utils/constants/reportConstants";
 import type React from "react";
+import { formatSalesDisplayData, formatStagesDisplayData } from "../../utils/formaters";
 
 const ReportsPage: React.FC = () => {
   const dispatch = useAppDispatch();
