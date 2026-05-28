@@ -1,9 +1,19 @@
-import type { Client } from "../types/client";
-import type { DashboardStats } from "../types/dashboard";
-import type { Deal, DealDisplay } from "../types/deal";
-import type { Task } from "../types/task";
 import { DEAL_STATUS_LABELS } from "./constants/dealConstants";
 import { formatAmount, formatDate } from "./formaters";
+
+import type { Client } from "../types/client";
+import type { DashboardStats } from "../types/dashboard";
+import type { Deal, DealDisplay, DealStatus } from "../types/deal";
+import type {
+  DealsStageReportRow,
+  ReportPeriod,
+  SalesReportRow,
+} from "../types/reports";
+import type { Task } from "../types/task";
+import type { SortConfig } from "../components";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import * as XLSX from "xlsx";
 
 const isToday = (dateStr: string): boolean => {
   const date = new Date(dateStr);
@@ -156,4 +166,324 @@ export const getLastTasks = (tasks: Task[], limit: number = 10): Task[] => {
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
     .slice(0, limit);
+};
+
+export const filterByPeriod = (
+  dateStr: string | undefined,
+  period: ReportPeriod,
+): boolean => {
+  if (!dateStr) return false;
+  switch (period) {
+    case "week":
+      return isThisWeek(dateStr);
+    case "month":
+      return isThisMonth(dateStr);
+    case "quarter":
+      return isThisQuarter(dateStr);
+    default:
+      return false;
+  }
+};
+
+export const getCompletedDealsReport = (
+  deals: Deal[],
+  clients: Client[],
+  period: ReportPeriod,
+): SalesReportRow[] => {
+  const completedDeals = deals.filter(
+    (deal) =>
+      deal.status === "completed" &&
+      deal.completedAt &&
+      filterByPeriod(deal.completedAt, period),
+  );
+
+  return completedDeals.map((deal) => {
+    const client = clients.find((c) => c.id === deal.clientId);
+    return {
+      dealId: deal.id,
+      title: deal.title,
+      clientName: client?.name ?? "",
+      amount: deal.amount,
+      completedAt: deal.completedAt ? formatDate(deal.completedAt) : "",
+    };
+  });
+};
+
+export const getDealStagesReport = (
+  deals: Deal[],
+  period: ReportPeriod,
+): DealsStageReportRow[] => {
+  const stages: DealStatus[] = ["in_progress", "new", "cancelled", "completed"];
+
+  const filteredDeals = deals.filter((deal) =>
+    filterByPeriod(deal.createdAt, period),
+  );
+
+  return stages
+    .map((stage) => {
+      const stageDeals = filteredDeals.filter((deal) => deal.status === stage);
+      return {
+        stage,
+        dealsCount: stageDeals.length,
+        totalAmount: stageDeals.reduce((sum, deal) => sum + deal.amount, 0),
+      };
+    })
+    .filter((row) => row.dealsCount > 0);
+};
+
+export const getDealRowStyleKey = (
+  status: DealStatus,
+): "new" | "completed" | "cancelled" | "in_progress" | null => {
+  switch (status) {
+    case "new":
+      return "new";
+    case "completed":
+      return "completed";
+    case "cancelled":
+      return "cancelled";
+    case "in_progress":
+      return "in_progress";
+    default:
+      return null;
+  }
+};
+
+export const sortSalesReport = (
+  data: SalesReportRow[],
+  sort: SortConfig<SalesReportRow> | null,
+): SalesReportRow[] => {
+  if (!sort) return data;
+  const { key, direction } = sort;
+  return [...data].sort((a, b) => {
+    if (key === "amount") {
+      return direction === "asc" ? a.amount - b.amount : b.amount - a.amount;
+    }
+    const aVal = String(a[key] ?? "");
+    const bVal = String(b[key] ?? "");
+    const cmp = aVal.localeCompare(bVal, "ru");
+    return direction === "asc" ? cmp : -cmp;
+  });
+};
+
+export const sortStagesReport = (
+  data: DealsStageReportRow[],
+  sort: SortConfig<DealsStageReportRow> | null,
+): DealsStageReportRow[] => {
+  if (!sort) return data;
+  const { key, direction } = sort;
+  return [...data].sort((a, b) => {
+    if (key === "dealsCount") {
+      return direction === "asc"
+        ? a.dealsCount - b.dealsCount
+        : b.dealsCount - a.dealsCount;
+    }
+    if (key === "totalAmount") {
+      return direction === "asc"
+        ? a.totalAmount - b.totalAmount
+        : b.totalAmount - a.totalAmount;
+    }
+    const aVal = String(a[key] ?? "");
+    const bVal = String(b[key] ?? "");
+    const cmp = aVal.localeCompare(bVal, "ru");
+    return direction === "asc" ? cmp : -cmp;
+  });
+};
+
+export const paginateData = <T>(
+  data: T[],
+  page: number,
+  pageSize: number,
+): T[] => {
+  const start = (page - 1) * pageSize;
+  return data.slice(start, start + pageSize);
+};
+
+export const getTotalPages = (totalItems: number, pageSize: number): number =>
+  Math.max(1, Math.ceil(totalItems / pageSize));
+
+export const formatSalesDisplayData = (
+  rows: SalesReportRow[],
+): (Omit<SalesReportRow, "amount"> & { amount: number })[] =>
+  rows.map((row) => ({
+    ...row,
+    amount: formatAmount(row.amount) as unknown as number,
+  }));
+
+export const formatStagesDisplayData = (
+  rows: DealsStageReportRow[],
+): (Omit<DealsStageReportRow, "stage" | "totalAmount"> & {
+  stage: DealsStageReportRow["stage"];
+  totalAmount: number;
+})[] =>
+  rows.map((row) => ({
+    ...row,
+    stage: (DEAL_STATUS_LABELS[row.stage] ??
+      row.stage) as unknown as typeof row.stage,
+    totalAmount: formatAmount(row.totalAmount) as unknown as number,
+  }));
+
+export const exportSalesReportPdf = (data: SalesReportRow[]): void => {
+  const doc = new jsPDF();
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("Sales Report", 14, 16);
+
+  autoTable(doc, {
+    startY: 24,
+    head: [["Deal ID", "Title", "Client", "Amount", "Completed At"]],
+    body: data.map((row) => [
+      row.dealId,
+      transliterate(row.title),
+      transliterate(row.clientName),
+      formatPdfAmount(row.amount),
+      transliterate(row.completedAt),
+    ]),
+    styles: { fontSize: 9 },
+    headStyles: { fillColor: [59, 130, 246] },
+  });
+
+  doc.save("sales-report.pdf");
+};
+
+const transliterate = (text: string): string => {
+  const map: Record<string, string> = {
+    А: "A",
+    а: "a",
+    Б: "B",
+    б: "b",
+    В: "V",
+    в: "v",
+    Г: "G",
+    г: "g",
+    Д: "D",
+    д: "d",
+    Е: "E",
+    е: "e",
+    Ё: "Yo",
+    ё: "yo",
+    Ж: "Zh",
+    ж: "zh",
+    З: "Z",
+    з: "z",
+    И: "I",
+    и: "i",
+    Й: "Y",
+    й: "y",
+    К: "K",
+    к: "k",
+    Л: "L",
+    л: "l",
+    М: "M",
+    м: "m",
+    Н: "N",
+    н: "n",
+    О: "O",
+    о: "o",
+    П: "P",
+    п: "p",
+    Р: "R",
+    р: "r",
+    С: "S",
+    с: "s",
+    Т: "T",
+    т: "t",
+    У: "U",
+    у: "u",
+    Ф: "F",
+    ф: "f",
+    Х: "Kh",
+    х: "kh",
+    Ц: "Ts",
+    ц: "ts",
+    Ч: "Ch",
+    ч: "ch",
+    Ш: "Sh",
+    ш: "sh",
+    Щ: "Sch",
+    щ: "sch",
+    Ъ: "",
+    ъ: "",
+    Ы: "Y",
+    ы: "y",
+    Ь: "",
+    ь: "",
+    Э: "E",
+    э: "e",
+    Ю: "Yu",
+    ю: "yu",
+    Я: "Ya",
+    я: "ya",
+  };
+
+  return text
+    .split("")
+    .map((char) => map[char] ?? char)
+    .join("");
+};
+
+const DEAL_STATUS_LABELS_EN: Record<string, string> = {
+  NEW: "New",
+  CANCELLED: "Cancelled",
+  IN_PROGRESS: "In Progress",
+  WON: "Won",
+  LOST: "Lost",
+};
+
+const formatPdfAmount = (amount: number): string => {
+  return new Intl.NumberFormat("en-US").format(amount);
+};
+
+const formatPdfDate = (date: string): string => {
+  return new Date(date).toLocaleDateString("en-US");
+};
+
+export const exportStagesReportPdf = (data: DealsStageReportRow[]): void => {
+  const doc = new jsPDF();
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.text("Deal Stages Report", 14, 16);
+
+  autoTable(doc, {
+    startY: 24,
+    head: [["Stage", "Deals Count", "Total Amount"]],
+    body: data.map((row) => [
+      DEAL_STATUS_LABELS_EN[row.stage] ?? row.stage,
+      row.dealsCount,
+      formatPdfAmount(row.totalAmount),
+    ]),
+    styles: { fontSize: 9 },
+    headStyles: { fillColor: [59, 130, 246] },
+  });
+
+  doc.save("stages-report.pdf");
+};
+
+export const exportSalesReportXlsx = (data: SalesReportRow[]): void => {
+  const rows = data.map((row) => ({
+    "Deal ID": row.dealId,
+    Title: row.title,
+    Client: row.clientName,
+    Amount: row.amount,
+    "Completed At": row.completedAt,
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Sales");
+  XLSX.writeFile(wb, "sales-report.xlsx");
+};
+
+export const exportStagesReportXlsx = (data: DealsStageReportRow[]): void => {
+  const rows = data.map((row) => ({
+    Stage: DEAL_STATUS_LABELS[row.stage] ?? row.stage,
+    "Deals Count": row.dealsCount,
+    "Total Amount": row.totalAmount,
+  }));
+
+  const ws = XLSX.utils.json_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Stages");
+  XLSX.writeFile(wb, "stages-report.xlsx");
 };

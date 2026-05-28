@@ -1,8 +1,9 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
+import { mockUsers } from "../mocks/users";
+
 import type { RootState } from "./index";
 import type { User, UserProfile } from "../types/user";
-import { mockUsers } from "../mocks/users";
 
 type UserState = {
   users: User[];

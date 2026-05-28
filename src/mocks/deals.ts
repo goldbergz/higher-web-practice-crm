@@ -18,8 +18,8 @@ export const mockDeals: Deal[] = [
     clientId: "4",
     amount: 450000,
     status: "completed",
-    createdAt: "2024-10-01",
-    completedAt: "2024-10-20",
+    createdAt: "2026-03-01",
+    completedAt: "2026-03-12",
     createdBy: "user-1",
   },
   {
@@ -29,7 +29,7 @@ export const mockDeals: Deal[] = [
     clientId: "2",
     amount: 800000,
     status: "new",
-    createdAt: "2024-10-20",
+    createdAt: "2026-05-27",
     createdBy: "user-1",
   },
   {
@@ -39,7 +39,7 @@ export const mockDeals: Deal[] = [
     clientId: "8",
     amount: 600000,
     status: "cancelled",
-    createdAt: "2024-09-11",
+    createdAt: "2026-05-27",
     createdBy: "user-1",
   },
   {
@@ -49,7 +49,7 @@ export const mockDeals: Deal[] = [
     clientId: "3",
     amount: 5200000,
     status: "in_progress",
-    createdAt: "2024-10-17",
+    createdAt: "2026-04-01",
     createdBy: "user-1",
   },
   {
@@ -59,8 +59,8 @@ export const mockDeals: Deal[] = [
     clientId: "9",
     amount: 1300000,
     status: "completed",
-    createdAt: "2024-08-08",
-    completedAt: "2024-10-01",
+    createdAt: "2026-03-01",
+    completedAt: "2026-04-01",
     createdBy: "user-1",
   },
   {

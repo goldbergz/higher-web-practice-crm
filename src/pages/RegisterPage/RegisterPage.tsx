@@ -9,11 +9,11 @@ import {
   setUser,
   setUserLoading,
 } from "../../store/userSlice";
-import { registerSchema } from "../../utils/schemas/authSchemas";
 import {
   registerDefaultValues,
   registerSections,
 } from "../../utils/constants/сonstants";
+import { registerSchema } from "../../utils/schemas/authSchemas";
 
 import styles from "./RegisterPage.module.css";
 

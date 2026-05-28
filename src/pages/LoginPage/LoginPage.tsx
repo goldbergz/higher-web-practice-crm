@@ -10,11 +10,11 @@ import {
   setUser,
   setUserLoading,
 } from "../../store/userSlice";
-import { loginSchema } from "../../utils/schemas/authSchemas";
 import {
   loginDefaultValues,
   loginSections,
 } from "../../utils/constants/сonstants";
+import { loginSchema } from "../../utils/schemas/authSchemas";
 
 import styles from "./LoginPage.module.css";
 

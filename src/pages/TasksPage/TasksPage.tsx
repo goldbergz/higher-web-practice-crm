@@ -14,8 +14,10 @@ import {
   selectTasks,
   updateTask,
 } from "../../store/tasksSlice";
-import { formatDate } from "../../utils/formaters";
+import { loadUsers, selectUsers } from "../../store/userSlice";
+import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
 import { taskColumns } from "../../utils/constants/сonstants";
+import { formatDate } from "../../utils/formaters";
 
 import styles from "./TasksPage.module.css";
 
@@ -23,8 +25,6 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Task, TaskDisplay } from "../../types/task";
 import type { TaskFormValues } from "../../utils/schemas/taskSchema";
 import type React from "react";
-import { loadUsers, selectUsers } from "../../store/userSlice";
-import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
 
 type ModalMode = "create" | "edit" | null;
 

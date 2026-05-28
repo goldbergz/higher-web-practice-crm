@@ -14,8 +14,9 @@ import {
   selectDeals,
   updateDeal,
 } from "../../store/dealsSlice";
-import { formatAmount, formatDate } from "../../utils/formaters";
+import { DEAL_STATUS_LABELS } from "../../utils/constants/dealConstants";
 import { dealColumns } from "../../utils/constants/сonstants";
+import { formatAmount, formatDate } from "../../utils/formaters";
 
 import styles from "./DealsPage.module.css";
 
@@ -24,7 +25,7 @@ import type { Deal } from "../../types";
 import type { DealDisplay } from "../../types/deal";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type React from "react";
-import { DEAL_STATUS_LABELS } from "../../utils/constants/dealConstants";
+import { getDealRowStyleKey } from "../../utils/helpers";
 
 type ModalMode = "create" | "edit" | null;
 
@@ -129,17 +130,14 @@ const DealsPage: React.FC = () => {
   const getRowClassName = (item: DealDisplay): string | undefined => {
     const deal = deals.find((d) => d.id === item.id);
     if (!deal) return undefined;
-
-    switch (deal.status) {
-      case "new":
-        return styles.rowNew;
-      case "completed":
-        return styles.rowCompleted;
-      case "cancelled":
-        return styles.rowCancelled;
-      default:
-        return undefined;
-    }
+    const key = getDealRowStyleKey(deal.status);
+    const map = {
+      new: styles.rowNew,
+      completed: styles.rowCompleted,
+      cancelled: styles.rowCancelled,
+      in_progress: undefined,
+    } as const;
+    return key ? map[key] : undefined;
   };
 
   const getCellClassName = (
@@ -147,22 +145,16 @@ const DealsPage: React.FC = () => {
     key: keyof DealDisplay,
   ): string | undefined => {
     if (key !== "status") return undefined;
-
     const deal = deals.find((d) => d.id === item.id);
     if (!deal) return undefined;
-
-    switch (deal.status) {
-      case "new":
-        return styles.statusNew;
-      case "in_progress":
-        return styles.statusInProgress;
-      case "completed":
-        return styles.statusCompleted;
-      case "cancelled":
-        return styles.statusCancelled;
-      default:
-        return undefined;
-    }
+    const statusKey = getDealRowStyleKey(deal.status);
+    const map = {
+      new: styles.statusNew,
+      in_progress: styles.statusInProgress,
+      completed: styles.statusCompleted,
+      cancelled: styles.statusCancelled,
+    } as const;
+    return statusKey ? map[statusKey] : undefined;
   };
 
   const handleSort = (key: keyof DealDisplay) => {

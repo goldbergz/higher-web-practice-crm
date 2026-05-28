@@ -13,8 +13,8 @@ import {
   selectClients,
   updateClient,
 } from "../../store/clientsSlice";
-import { formatDate } from "../../utils/formaters";
 import { clientColumns } from "../../utils/constants/сonstants";
+import { formatDate } from "../../utils/formaters";
 
 import styles from "./ClientsPage.module.css";
 
