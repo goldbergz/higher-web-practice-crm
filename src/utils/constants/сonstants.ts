@@ -6,8 +6,8 @@ import type {
 } from "../../types";
 import type { DealDisplay } from "../../types/deal";
 import type { TaskDisplay } from "../../types/task";
-import type { LoginFormValues } from "../schemas/authSchemas";
-import type { ClientFormValues } from "../schemas/clientSchema";
+import type { LoginFormValues } from "../../utils/schemas/authSchemas";
+import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 
 export const clientColumns: ColumnConfig<Client>[] = [
   {

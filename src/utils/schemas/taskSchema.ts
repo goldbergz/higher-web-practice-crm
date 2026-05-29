@@ -6,7 +6,7 @@ export const taskSchema = z.object({
   description: z.string().trim(),
   dueDate: z.string().optional(),
   assigneeId: z.string().trim().min(1, "Выберите исполнителя"),
-  status: z.enum(["new", "in_progress", "completed"]),
+  status: z.enum(["new", "in_progress", "completed", "overdue"]),
 });
 
 export type TaskFormValues = z.infer<typeof taskSchema>;

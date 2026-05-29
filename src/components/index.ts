@@ -16,6 +16,7 @@ export { default as Input } from "./Input/Input";
 export { default as Logo } from "./Logo/Logo";
 export { default as MainLayout } from "./MainLayout/MainLayout";
 export { default as Modal } from "./Modal/Modal";
+export { default as Pagination } from "./Pagination/Pagination";
 export { default as ProfileForm } from "./Forms/ProfileForm";
 export { default as Sidebar } from "./Sidebar/Sidebar";
 export { default as SidebarItem } from "./Sidebar/SidebarItem";

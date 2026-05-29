@@ -14,9 +14,7 @@ import {
   selectDeals,
   updateDeal,
 } from "../../store/dealsSlice";
-import { DEAL_STATUS_LABELS } from "../../utils/constants/dealConstants";
-import { dealColumns } from "../../utils/constants/сonstants";
-import { formatAmount, formatDate } from "../../utils/formaters";
+import { formatAmount, formatDate } from "../../helpers/formaters";
 
 import styles from "./DealsPage.module.css";
 
@@ -25,7 +23,11 @@ import type { Deal } from "../../types";
 import type { DealDisplay } from "../../types/deal";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type React from "react";
-import { getDealRowStyleKey } from "../../utils/helpers";
+import { dealColumns } from "../../utils/constants/сonstants";
+import {
+  DEAL_STATUS_LABELS,
+  getDealRowStyleKey,
+} from "../../utils/constants/dealConstants";
 
 type ModalMode = "create" | "edit" | null;
 

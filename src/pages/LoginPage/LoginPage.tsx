@@ -10,16 +10,16 @@ import {
   setUser,
   setUserLoading,
 } from "../../store/userSlice";
-import {
-  loginDefaultValues,
-  loginSections,
-} from "../../utils/constants/сonstants";
 import { loginSchema } from "../../utils/schemas/authSchemas";
 
 import styles from "./LoginPage.module.css";
 
 import type { LoginFormValues } from "../../utils/schemas/authSchemas";
 import type React from "react";
+import {
+  loginDefaultValues,
+  loginSections,
+} from "../../utils/constants/сonstants";
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();

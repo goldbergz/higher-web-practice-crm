@@ -9,16 +9,16 @@ import {
   setUser,
   setUserLoading,
 } from "../../store/userSlice";
-import {
-  registerDefaultValues,
-  registerSections,
-} from "../../utils/constants/сonstants";
 import { registerSchema } from "../../utils/schemas/authSchemas";
 
 import styles from "./RegisterPage.module.css";
 
 import type { RegisterFormValues } from "../../utils/schemas/authSchemas";
 import type React from "react";
+import {
+  registerDefaultValues,
+  registerSections,
+} from "../../utils/constants/сonstants";
 
 const RegisterPage: React.FC = () => {
   const dispatch = useAppDispatch();

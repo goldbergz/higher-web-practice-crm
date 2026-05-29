@@ -25,15 +25,7 @@ import {
   selectCurrentUser,
   selectUsers,
 } from "../../store/userSlice";
-import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
-import { dealColumnsMain } from "../../utils/constants/сonstants";
-import { formatDueDate } from "../../utils/formaters";
-import {
-  calculateDashboardStats,
-  getLastTasks,
-  getTopActiveClients,
-  getTopActiveDeals,
-} from "../../utils/helpers";
+import { formatDueDate } from "../../helpers/formaters";
 
 import styles from "./MainPage.module.css";
 
@@ -45,6 +37,12 @@ import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type { TaskFormValues } from "../../utils/schemas/taskSchema";
 import type React from "react";
+import { dealColumnsMain } from "../../utils/constants/сonstants";
+import { getTopActiveClients } from "../../utils/dashboards/clientsDashboard";
+import { calculateDashboardStats } from "../../utils/dashboards/dashboards";
+import { getTopActiveDeals } from "../../utils/dashboards/dealsDashboard";
+import { getLastTasks } from "../../utils/dashboards/tasksDashboard";
+import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
 
 type StatsRow = {
   id: string;

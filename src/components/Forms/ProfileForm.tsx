@@ -1,10 +1,10 @@
-import { profileSections } from "../../utils/constants/сonstants";
 import { profileSchema } from "../../utils/schemas/profileSchema";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
 
 import type { ProfileFormValues } from "../../types";
 import type React from "react";
+import { profileSections } from "../../utils/constants/сonstants";
 
 interface ProfileFormProps {
   defaultValues: ProfileFormValues;

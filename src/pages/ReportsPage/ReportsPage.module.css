@@ -191,3 +191,12 @@
 .statusCancelled {
   color: #f59e0b;
 }
+.rowOverdue {
+  background: #fef2f2;
+}
+.rowOverdue:hover {
+  background: #fee2e2;
+}
+.statusOverdue {
+  color: #ef4444;
+}

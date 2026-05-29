@@ -13,8 +13,7 @@ import {
   selectClients,
   updateClient,
 } from "../../store/clientsSlice";
-import { clientColumns } from "../../utils/constants/сonstants";
-import { formatDate } from "../../utils/formaters";
+import { formatDate } from "../../helpers/formaters";
 
 import styles from "./ClientsPage.module.css";
 
@@ -22,6 +21,7 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Client } from "../../types";
 import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type React from "react";
+import { clientColumns } from "../../utils/constants/сonstants";
 
 type ModalMode = "create" | "edit" | null;
 

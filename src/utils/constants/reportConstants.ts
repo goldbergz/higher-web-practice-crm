@@ -1,6 +1,12 @@
 import type { ColumnConfig } from "../../components/DataList/types";
 import type { DropdownOption } from "../../components/Dropdown/Dropdown";
-import type { DealsStageReportRow, SalesReportRow } from "../../types/reports";
+import type {
+  ClientActivityReportRow,
+  DealsStageReportRow,
+  NewClientReportRow,
+  OverdueTaskReportRow,
+  SalesReportRow,
+} from "../../types/reports";
 
 export type ReportTab = "sales" | "clients" | "tasks";
 
@@ -92,3 +98,95 @@ export const DEAL_STAGE_ROW_COLORS: Record<string, string> = {
   cancelled: "#FFF7ED",
   completed: "#F0FDF4",
 };
+
+export const NEW_CLIENTS_REPORT_COLUMNS: ColumnConfig<NewClientReportRow>[] = [
+  {
+    key: "clientId",
+    label: "ID клиента",
+    flex: "1 1 0",
+    minWidth: "80px",
+  },
+  {
+    key: "clientName",
+    label: "Имя клиента",
+    flex: "1 1 0",
+    minWidth: "120px",
+  },
+  {
+    key: "company",
+    label: "Компания",
+    flex: "1 1 0",
+    minWidth: "120px",
+  },
+  {
+    key: "createdAt",
+    label: "Дата добавления",
+    flex: "1 1 0",
+    minWidth: "120px",
+    align: "right",
+  },
+];
+
+export const CLIENT_ACTIVITY_REPORT_COLUMNS: ColumnConfig<ClientActivityReportRow>[] =
+  [
+    {
+      key: "clientId",
+      label: "ID клиента",
+      flex: "1 1 0",
+      minWidth: "80px",
+    },
+    {
+      key: "clientName",
+      label: "Имя клиента",
+      flex: "1 1 0",
+      minWidth: "120px",
+    },
+    {
+      key: "dealsCount",
+      label: "Количество сделок",
+      flex: "1 1 0",
+      minWidth: "120px",
+      align: "right",
+    },
+    {
+      key: "completedTasks",
+      label: "Завершённые задачи",
+      flex: "1 1 0",
+      minWidth: "120px",
+      align: "right",
+    },
+  ];
+
+export const OVERDUE_TASKS_REPORT_COLUMNS: ColumnConfig<OverdueTaskReportRow>[] =
+  [
+    {
+      key: "taskId",
+      label: "ID задачи",
+      flex: "1 1 0",
+      minWidth: "80px",
+    },
+    {
+      key: "title",
+      label: "Название задачи",
+      flex: "1 1 0",
+      minWidth: "200px",
+    },
+    {
+      key: "assigneeName",
+      label: "Ответственный",
+      flex: "1 1 0",
+      minWidth: "100px",
+    },
+    {
+      key: "status",
+      label: "Статус",
+      flex: "1 1 0",
+      minWidth: "80px",
+    },
+    {
+      key: "dueDate",
+      label: "Дата срока выполенения",
+      flex: "1 1 0",
+      minWidth: "120px",
+    },
+  ];
