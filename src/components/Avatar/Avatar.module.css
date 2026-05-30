@@ -8,9 +8,17 @@
 
 .image {
   border-radius: var(--radius-full);
-  height: 92px;
   object-fit: cover;
+}
+
+.imageMd {
+  height: 92px;
   width: 92px;
+}
+
+.imageSm {
+  height: 40px;
+  width: 40px;
 }
 
 .editButton {

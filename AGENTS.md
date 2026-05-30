@@ -1,18 +1,25 @@
-Rewrite the `renderClientsReport` function on the `ReportsPage` so that the tab displays the following reports:
+Update the logic for saving user data within `userSlice` and utilize this user data in the relevant components. The TypeScript types for the user can be found in `src/types/user.ts`.
+Users should be able to register, and their details must be persisted in the Redux store. Upon both login and registration, the user's data is saved in the store under the `currentUser` field (of type `UserProfile`). The current user's data should be displayed on the `ProfilePage` and in the sidebar menu—specifically, the user's avatar (using the `Avatar` component) and the account name within the `<span className={styles.userName}>{accName}</span>` element.
 
-1. New Clients Report: The number of new clients added during a specific period (week, month, or quarter). Report fields: Client ID, Client Name, Company, Date Added.
-2. Client Activity Report: Information regarding client interactions (number of deals, completed tasks). Report fields: Client ID, Client Name, Number of Deals, Completed Tasks.
+The user profile page must include functionality to edit user details (ProfileForm). This includes changing/adding a profile picture, updating first and last names, changing the account username, updating the password, and deleting the account. All changes made to the current user's data must be synchronized with the store.
+When a user account is deleted, it should be removed from the store, and the user should be redirected to the login page.
+For form validation on the user data editing form, use the schema located at `src/utils/schemas/profileSchema.ts`.
 
-Structure this similarly to `renderSalesReport`, but with the different reports listed above. Define the functions for calculating client activity and new clients separately within the `helpers` file. Retrieve the necessary data from the `store`—specifically `createSlice`, `dealsSlice`, and `tasksSlice`.
+For now, do not implement the logic for asynchronous actions or server requests.
 
-Since the client reports do not require any highlighting for list items, there is no need to add CSS classes for such styling.
-
-For each report, buttons for exporting data to PDF and XLSX formats should be available.
-
-For the report lists, use the existing DataList component, which includes filtering capabilities; simply pass the necessary data to it. For the buttons, use the existing Button component. Additionally, create a separate component for the dropdown list so that it can be reused with different data sets.
-
-Write all utility functions in the `utils` folder in a file named `helpers`. Write common constants in the constants folder. Write form schemas in the `schemas` folder. Refer to the types in the `types` folder.
+Write all utility functions that participate in the business logic in the `utils` folder src/utils. Write common constants in the constants folder src/utils/constants. Write form schemas in the `schemas` folder src/utils/schemas. Write all auxiliary functions in the folder src/helpers. Refer to the types in the `types` folder src/types.
 If necessary, utilize existing helper functions within the files helpers, formaters and constants, and modify them as needed. Do not create a new function that exactly or nearly duplicates one that already exists.
+
+Recommendations for Forms: react-hook-form + zod
+For pages containing forms (Clients, Deals, Tasks, Profile), it is convenient to utilize schema-based validation:
+`react-hook-form` handles the collection of form values, error management, and `onSubmit` processing.
+`zod` defines the field contract—including types, required status, and formats—in a single location, and allows for centralized input normalization.
+If you choose this combination, integrate `zodResolver` so that `zod` errors are automatically passed to `react-hook-form`.
+Recommended Best Practices:
+Perform validation via a schema rather than "inline" within your event handlers. This makes errors predictable and easier to test.
+For text-based fields (e.g., comments), it is beneficial to normalize the input at the schema level—using methods like `trim()` and whitespace removal—to ensure that the final submission payload contains clean values.
+In "edit" mode, use `defaultValues` or `reset` to pre-populate the form with the initial data.
+Display validation errors directly adjacent to the relevant field (typically beneath the corresponding input), and mark required fields with an asterisk (\*) within their labels.
 
 Coding Style
 All code is formatted using Prettier.

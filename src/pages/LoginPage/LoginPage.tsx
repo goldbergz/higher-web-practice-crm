@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
           createdAt: new Date().toISOString(),
         }),
       );
-      navigate("/profile");
+      navigate("/main");
     }, 800);
   };
 

@@ -5,8 +5,8 @@ import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
+  registerUser,
   selectUserLoading,
-  setUser,
   setUserLoading,
 } from "../../store/userSlice";
 import { registerSchema } from "../../utils/schemas/authSchemas";
@@ -31,7 +31,7 @@ const RegisterPage: React.FC = () => {
     setTimeout(() => {
       dispatch(setUserLoading(false));
       dispatch(
-        setUser({
+        registerUser({
           id: crypto.randomUUID(),
           email: data.email,
           name: data.name,
@@ -40,7 +40,7 @@ const RegisterPage: React.FC = () => {
           createdAt: new Date().toISOString(),
         }),
       );
-      navigate("/profile");
+      navigate("/main");
     }, 800);
   };
 

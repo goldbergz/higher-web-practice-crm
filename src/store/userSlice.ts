@@ -49,6 +49,23 @@ const userSlice = createSlice({
         state.currentUser = { ...state.currentUser, ...action.payload };
       }
     },
+    registerUser(state, action: PayloadAction<UserProfile>) {
+      const exists = state.users.some((u) => u.id === action.payload.id);
+      if (!exists) {
+        state.users.push(action.payload);
+      }
+      state.currentUser = action.payload;
+      state.isAuthenticated = true;
+      state.error = null;
+    },
+    deleteAccount(state) {
+      if (state.currentUser) {
+        state.users = state.users.filter((u) => u.id !== state.currentUser!.id);
+      }
+      state.currentUser = null;
+      state.isAuthenticated = false;
+      state.error = null;
+    },
     clearUserError(state) {
       state.error = null;
     },
@@ -62,6 +79,8 @@ export const {
   setUserLoading,
   setUserError,
   updateUser,
+  registerUser,
+  deleteAccount,
   clearUserError,
 } = userSlice.actions;
 

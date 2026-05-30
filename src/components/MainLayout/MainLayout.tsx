@@ -14,7 +14,7 @@ const MainLayout: React.FC = () => {
     <div className={styles.layout}>
       <Sidebar
         accName={currentUser?.accName ?? "User"}
-        avatarSrc="https://placehold.co/40x40"
+        avatarSrc={currentUser?.avatar ?? "https://placehold.co/40x40"}
       />
       <main className={styles.content}>
         <Outlet />
