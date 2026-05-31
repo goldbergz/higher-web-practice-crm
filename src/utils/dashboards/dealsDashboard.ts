@@ -1,7 +1,8 @@
 import { formatAmount, formatDate } from "../../helpers/formaters";
+import { DEAL_STATUS_LABELS } from "../constants/dealConstants";
+
 import type { Client, Deal } from "../../types";
 import type { DealDisplay } from "../../types/deal";
-import { DEAL_STATUS_LABELS } from "../constants/dealConstants";
 
 export const getTopActiveDeals = (
   activeDeals: Deal[],

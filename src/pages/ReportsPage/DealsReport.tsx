@@ -4,6 +4,17 @@ import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Pagination from "../../components/Pagination/Pagination";
+import {
+  formatSalesDisplayData,
+  formatStagesDisplayData,
+} from "../../helpers/formaters";
+import { getTotalPages, paginateData } from "../../helpers/pagination";
+import {
+  exportSalesReportPdf,
+  exportSalesReportXlsx,
+  exportStagesReportPdf,
+  exportStagesReportXlsx,
+} from "../../helpers/print";
 import { useAppSelector } from "../../store";
 import { selectClients } from "../../store/clientsSlice";
 import { selectDeals } from "../../store/dealsSlice";
@@ -19,17 +30,6 @@ import {
   SALES_REPORT_COLUMNS,
   VIEW_OPTIONS,
 } from "../../utils/constants/reportConstants";
-import {
-  formatSalesDisplayData,
-  formatStagesDisplayData,
-} from "../../helpers/formaters";
-import { getTotalPages, paginateData } from "../../helpers/pagination";
-import {
-  exportSalesReportPdf,
-  exportSalesReportXlsx,
-  exportStagesReportPdf,
-  exportStagesReportXlsx,
-} from "../../helpers/print";
 import {
   getCompletedDealsReport,
   getDealStagesReport,

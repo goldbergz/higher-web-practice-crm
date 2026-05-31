@@ -1,21 +1,22 @@
-import { useEffect, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useMemo, useState } from "react";
 
+import {
+  useCompleteTaskMutation,
+  useCreateTaskMutation,
+  useGetDealsQuery,
+  useGetTasksQuery,
+  useGetUsersQuery,
+  useUpdateTaskMutation,
+} from "../../api";
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import TaskForm from "../../components/Forms/TaskForm";
 import Modal from "../../components/Modal/Modal";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { loadDeals, selectDeals } from "../../store/dealsSlice";
-import {
-  addTask,
-  completeTask,
-  loadTasks,
-  selectTasks,
-  updateTask,
-} from "../../store/tasksSlice";
-import { loadUsers, selectUsers } from "../../store/userSlice";
 import { formatDate } from "../../helpers/formaters";
+import { useAppSelector } from "../../store";
+import { selectCurrentUser } from "../../store/userSlice";
+import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
+import { taskColumns } from "../../utils/constants/сonstants";
 
 import styles from "./TasksPage.module.css";
 
@@ -23,16 +24,17 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Task, TaskDisplay } from "../../types/task";
 import type { TaskFormValues } from "../../utils/schemas/taskSchema";
 import type React from "react";
-import { taskColumns } from "../../utils/constants/сonstants";
-import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
 
 type ModalMode = "create" | "edit" | null;
 
 const TasksPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const tasks = useAppSelector(selectTasks);
-  const deals = useAppSelector(selectDeals);
-  const users = useAppSelector(selectUsers);
+  const currentUser = useAppSelector(selectCurrentUser);
+  const { data: tasks = [] } = useGetTasksQuery();
+  const { data: deals = [] } = useGetDealsQuery();
+  const { data: users = [] } = useGetUsersQuery();
+  const [createTask] = useCreateTaskMutation();
+  const [updateTask] = useUpdateTaskMutation();
+  const [completeTask] = useCompleteTaskMutation();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<TaskDisplay> | null>(
@@ -40,12 +42,6 @@ const TasksPage: React.FC = () => {
   );
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [modalMode, setModalMode] = useState<ModalMode>(null);
-
-  useEffect(() => {
-    dispatch(loadTasks());
-    dispatch(loadDeals());
-    dispatch(loadUsers());
-  }, [dispatch]);
 
   const getDealTitle = (dealId?: string): string => {
     if (!dealId) return "—";
@@ -180,44 +176,40 @@ const TasksPage: React.FC = () => {
     setSelectedTask(null);
   };
 
-  const handleCreate = (data: TaskFormValues) => {
-    const newTask: Task = {
-      id: uuidv4(),
+  const handleCreate = async (data: TaskFormValues) => {
+    if (!currentUser) return;
+
+    await createTask({
       title: data.title,
       description: data.description || undefined,
       dealId: data.dealId || undefined,
       assigneeId: data.assigneeId,
-      status: data.status,
       dueDate: data.dueDate || undefined,
-      createdAt: new Date().toISOString().split("T")[0],
-      createdBy: "user-1",
-    };
-    dispatch(addTask(newTask));
+      createdBy: currentUser.id,
+    });
     handleModalClose();
   };
 
-  const handleEdit = (data: TaskFormValues) => {
+  const handleEdit = async (data: TaskFormValues) => {
     if (selectedTask) {
-      dispatch(
-        updateTask({
-          id: selectedTask.id,
-          changes: {
-            title: data.title,
-            description: data.description || undefined,
-            dealId: data.dealId || undefined,
-            assigneeId: data.assigneeId,
-            status: data.status,
-            dueDate: data.dueDate || undefined,
-          },
-        }),
-      );
+      await updateTask({
+        id: selectedTask.id,
+        changes: {
+          title: data.title,
+          description: data.description || undefined,
+          dealId: data.dealId || undefined,
+          assigneeId: data.assigneeId,
+          status: data.status,
+          dueDate: data.dueDate || undefined,
+        },
+      });
       handleModalClose();
     }
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     if (selectedTask) {
-      dispatch(completeTask(selectedTask.id));
+      await completeTask(selectedTask.id);
       handleModalClose();
     }
   };

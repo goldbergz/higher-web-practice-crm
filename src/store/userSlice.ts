@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { mockUsers } from "../mocks/users";
+import { userApi } from "../api/userApi";
 
 import type { RootState } from "./index";
 import type { User, UserProfile } from "../types/user";
@@ -25,9 +25,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    loadUsers(state) {
-      state.users = mockUsers;
-    },
     setUser(state, action: PayloadAction<UserProfile>) {
       state.currentUser = action.payload;
       state.isAuthenticated = true;
@@ -49,38 +46,26 @@ const userSlice = createSlice({
         state.currentUser = { ...state.currentUser, ...action.payload };
       }
     },
-    registerUser(state, action: PayloadAction<UserProfile>) {
-      const exists = state.users.some((u) => u.id === action.payload.id);
-      if (!exists) {
-        state.users.push(action.payload);
-      }
-      state.currentUser = action.payload;
-      state.isAuthenticated = true;
-      state.error = null;
-    },
-    deleteAccount(state) {
-      if (state.currentUser) {
-        state.users = state.users.filter((u) => u.id !== state.currentUser!.id);
-      }
-      state.currentUser = null;
-      state.isAuthenticated = false;
-      state.error = null;
-    },
     clearUserError(state) {
       state.error = null;
     },
   },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      userApi.endpoints.getUsers.matchFulfilled,
+      (state, action) => {
+        state.users = action.payload;
+      },
+    );
+  },
 });
 
 export const {
-  loadUsers,
   setUser,
   logout,
   setUserLoading,
   setUserError,
   updateUser,
-  registerUser,
-  deleteAccount,
   clearUserError,
 } = userSlice.actions;
 

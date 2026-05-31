@@ -1,19 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useMemo, useState } from "react";
 
+import {
+  useCreateClientMutation,
+  useDeleteClientMutation,
+  useGetClientsQuery,
+  useUpdateClientMutation,
+} from "../../api";
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import ClientForm from "../../components/Forms/ClientForm";
 import Modal from "../../components/Modal/Modal";
-import { useAppDispatch, useAppSelector } from "../../store";
-import {
-  addClient,
-  deleteClient,
-  loadClients,
-  selectClients,
-  updateClient,
-} from "../../store/clientsSlice";
 import { formatDate } from "../../helpers/formaters";
+import { useAppSelector } from "../../store";
+import { selectCurrentUser } from "../../store/userSlice";
+import { clientColumns } from "../../utils/constants/сonstants";
 
 import styles from "./ClientsPage.module.css";
 
@@ -21,22 +21,20 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Client } from "../../types";
 import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type React from "react";
-import { clientColumns } from "../../utils/constants/сonstants";
 
 type ModalMode = "create" | "edit" | null;
 
 const ClientsPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const clients = useAppSelector(selectClients);
+  const currentUser = useAppSelector(selectCurrentUser);
+  const { data: clients = [] } = useGetClientsQuery();
+  const [createClient] = useCreateClientMutation();
+  const [updateClient] = useUpdateClientMutation();
+  const [deleteClient] = useDeleteClientMutation();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<Client> | null>(null);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [modalMode, setModalMode] = useState<ModalMode>(null);
-
-  useEffect(() => {
-    dispatch(loadClients());
-  }, [dispatch]);
 
   const filteredClients = useMemo(() => {
     const query = searchQuery.toLowerCase().trim();
@@ -104,45 +102,41 @@ const ClientsPage: React.FC = () => {
     setSelectedClient(null);
   };
 
-  const handleCreate = (data: ClientFormValues) => {
-    const newClient: Client = {
-      id: uuidv4(),
+  const handleCreate = async (data: ClientFormValues) => {
+    if (!currentUser) return;
+
+    await createClient({
       name: data.name,
       phone: data.phone,
       email: data.email,
       company: data.company,
       website: data.website || undefined,
       comment: data.comment || undefined,
-      createdAt: new Date().toISOString().split("T")[0],
-      createdBy: "user-1",
-      deleted: false,
-    };
-    dispatch(addClient(newClient));
+      createdBy: currentUser.id,
+    });
     handleModalClose();
   };
 
-  const handleEdit = (data: ClientFormValues) => {
+  const handleEdit = async (data: ClientFormValues) => {
     if (selectedClient) {
-      dispatch(
-        updateClient({
-          id: selectedClient.id,
-          changes: {
-            name: data.name,
-            phone: data.phone,
-            email: data.email,
-            company: data.company,
-            website: data.website || undefined,
-            comment: data.comment || undefined,
-          },
-        }),
-      );
+      await updateClient({
+        id: selectedClient.id,
+        changes: {
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          company: data.company,
+          website: data.website || undefined,
+          comment: data.comment || undefined,
+        },
+      });
       handleModalClose();
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (selectedClient) {
-      dispatch(deleteClient(selectedClient.id));
+      await deleteClient(selectedClient.id);
       handleModalClose();
     }
   };

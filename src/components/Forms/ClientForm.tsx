@@ -1,10 +1,10 @@
+import { emptyValues, clientSections } from "../../utils/constants/сonstants";
 import { clientSchema } from "../../utils/schemas/clientSchema";
 import Button from "../Button/Button";
 import Form from "../Form/Form";
 
 import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type React from "react";
-import { emptyValues, clientSections } from "../../utils/constants/сonstants";
 
 interface ClientFormProps {
   defaultValues?: ClientFormValues;

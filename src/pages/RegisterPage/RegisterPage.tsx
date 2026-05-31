@@ -1,47 +1,42 @@
 import { useNavigate } from "react-router-dom";
 
+import { useRegisterUserMutation } from "../../api";
 import AuthLayout from "../../components/AuthLayout/AuthLayuot";
 import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { useAppDispatch } from "../../store";
+import { setUser } from "../../store/userSlice";
 import {
-  registerUser,
-  selectUserLoading,
-  setUserLoading,
-} from "../../store/userSlice";
+  registerDefaultValues,
+  registerSections,
+} from "../../utils/constants/сonstants";
 import { registerSchema } from "../../utils/schemas/authSchemas";
 
 import styles from "./RegisterPage.module.css";
 
 import type { RegisterFormValues } from "../../utils/schemas/authSchemas";
 import type React from "react";
-import {
-  registerDefaultValues,
-  registerSections,
-} from "../../utils/constants/сonstants";
 
 const RegisterPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isLoading = useAppSelector(selectUserLoading);
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
 
-  const handleSubmit = (data: RegisterFormValues) => {
-    dispatch(setUserLoading(true));
+  const handleSubmit = async (data: RegisterFormValues) => {
+    try {
+      const profile = await registerUser({
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        surname: data.surname,
+        accName: data.accName,
+      }).unwrap();
 
-    setTimeout(() => {
-      dispatch(setUserLoading(false));
-      dispatch(
-        registerUser({
-          id: crypto.randomUUID(),
-          email: data.email,
-          name: data.name,
-          surname: data.surname,
-          accName: data.accName,
-          createdAt: new Date().toISOString(),
-        }),
-      );
+      dispatch(setUser(profile));
       navigate("/main");
-    }, 800);
+    } catch {
+      /* error is handled by RTK Query */
+    }
   };
 
   return (

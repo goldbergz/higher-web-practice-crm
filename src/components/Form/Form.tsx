@@ -46,6 +46,7 @@ interface FormProps<T extends FieldValues> {
   onSubmit: (data: T) => void;
   schema: ZodType;
   sections: FormSection<T>[];
+  serverErrors?: Partial<Record<string, string>>;
 }
 
 function Form<T extends FieldValues>({
@@ -55,6 +56,7 @@ function Form<T extends FieldValues>({
   onSubmit,
   schema,
   sections,
+  serverErrors,
 }: FormProps<T>) {
   const {
     formState: { errors },
@@ -74,12 +76,15 @@ function Form<T extends FieldValues>({
   const renderField = (field: FieldConfig<T>) => {
     const error = errors[field.name];
     const errorMessage = error?.message as string | undefined;
+    const serverError = serverErrors?.[field.name as string];
+
+    const displayError = serverError ?? errorMessage;
 
     if (field.type === "textarea") {
       return (
         <Textarea
           key={field.name}
-          error={errorMessage}
+          error={displayError}
           label={field.label}
           placeholder={field.placeholder}
           required={field.required}
@@ -92,7 +97,7 @@ function Form<T extends FieldValues>({
       return (
         <Select
           key={field.name}
-          error={errorMessage}
+          error={displayError}
           label={field.label}
           options={field.options ?? []}
           placeholder={field.placeholder}
@@ -106,7 +111,7 @@ function Form<T extends FieldValues>({
       <Input
         key={field.name}
         autoComplete={field.autoComplete}
-        error={errorMessage}
+        error={displayError}
         label={field.label}
         placeholder={field.placeholder}
         required={field.required}

@@ -1,20 +1,24 @@
-import { useEffect, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useMemo, useState } from "react";
 
+import {
+  useCompleteDealMutation,
+  useCreateDealMutation,
+  useGetClientsQuery,
+  useGetDealsQuery,
+  useUpdateDealMutation,
+} from "../../api";
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import DealForm from "../../components/Forms/DealForm";
 import Modal from "../../components/Modal/Modal";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { loadClients, selectClients } from "../../store/clientsSlice";
-import {
-  addDeal,
-  completeDeal,
-  loadDeals,
-  selectDeals,
-  updateDeal,
-} from "../../store/dealsSlice";
 import { formatAmount, formatDate } from "../../helpers/formaters";
+import { useAppSelector } from "../../store";
+import { selectCurrentUser } from "../../store/userSlice";
+import {
+  DEAL_STATUS_LABELS,
+  getDealRowStyleKey,
+} from "../../utils/constants/dealConstants";
+import { dealColumns } from "../../utils/constants/сonstants";
 
 import styles from "./DealsPage.module.css";
 
@@ -23,18 +27,16 @@ import type { Deal } from "../../types";
 import type { DealDisplay } from "../../types/deal";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type React from "react";
-import { dealColumns } from "../../utils/constants/сonstants";
-import {
-  DEAL_STATUS_LABELS,
-  getDealRowStyleKey,
-} from "../../utils/constants/dealConstants";
 
 type ModalMode = "create" | "edit" | null;
 
 const DealsPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const deals = useAppSelector(selectDeals);
-  const clients = useAppSelector(selectClients);
+  const currentUser = useAppSelector(selectCurrentUser);
+  const { data: deals = [] } = useGetDealsQuery();
+  const { data: clients = [] } = useGetClientsQuery();
+  const [createDeal] = useCreateDealMutation();
+  const [updateDeal] = useUpdateDealMutation();
+  const [completeDeal] = useCompleteDealMutation();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<DealDisplay> | null>(
@@ -42,11 +44,6 @@ const DealsPage: React.FC = () => {
   );
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null);
   const [modalMode, setModalMode] = useState<ModalMode>(null);
-
-  useEffect(() => {
-    dispatch(loadDeals());
-    dispatch(loadClients());
-  }, [dispatch]);
 
   const getClientName = (clientId: string): string => {
     const client = clients.find((c) => c.id === clientId);
@@ -186,41 +183,38 @@ const DealsPage: React.FC = () => {
     setSelectedDeal(null);
   };
 
-  const handleCreate = (data: DealFormValues) => {
-    const newDeal: Deal = {
-      id: uuidv4(),
+  const handleCreate = async (data: DealFormValues) => {
+    if (!currentUser) return;
+
+    await createDeal({
       title: data.title,
       description: data.description || undefined,
       clientId: data.clientId,
       amount: Number(data.amount.replace(/\s/g, "")),
-      status: data.status,
-      createdAt: new Date().toISOString().split("T")[0],
-      createdBy: "user-1",
-    };
-    dispatch(addDeal(newDeal));
+      createdBy: currentUser.id,
+    });
     handleModalClose();
   };
 
-  const handleEdit = (data: DealFormValues) => {
+  const handleEdit = async (data: DealFormValues) => {
     if (selectedDeal) {
-      dispatch(
-        updateDeal({
-          id: selectedDeal.id,
-          changes: {
-            title: data.title,
-            description: data.description || undefined,
-            amount: Number(data.amount.replace(/\s/g, "")),
-            status: data.status,
-          },
-        }),
-      );
+      await updateDeal({
+        id: selectedDeal.id,
+        changes: {
+          title: data.title,
+          description: data.description || undefined,
+          amount: Number(data.amount.replace(/\s/g, "")),
+          status:
+            selectedDeal.status === "completed" ? "completed" : data.status,
+        },
+      });
       handleModalClose();
     }
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     if (selectedDeal) {
-      dispatch(completeDeal(selectedDeal.id));
+      await completeDeal(selectedDeal.id);
       handleModalClose();
     }
   };

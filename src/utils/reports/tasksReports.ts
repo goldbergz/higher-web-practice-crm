@@ -1,6 +1,7 @@
-import type { SortConfig } from "../../components";
 import { formatDueDate } from "../../helpers/formaters";
 import { filterByPeriod } from "../../helpers/period";
+
+import type { SortConfig } from "../../components";
 import type { Task, User } from "../../types";
 import type { ReportPeriod, OverdueTaskReportRow } from "../../types/reports";
 

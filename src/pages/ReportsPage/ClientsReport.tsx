@@ -4,10 +4,6 @@ import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import Pagination from "../../components/Pagination/Pagination";
-import { useAppSelector } from "../../store";
-import { selectClients } from "../../store/clientsSlice";
-import { selectDeals } from "../../store/dealsSlice";
-import { selectTasks } from "../../store/tasksSlice";
 import { getTotalPages, paginateData } from "../../helpers/pagination";
 import {
   exportClientActivityReportPdf,
@@ -15,6 +11,10 @@ import {
   exportNewClientsReportPdf,
   exportNewClientsReportXlsx,
 } from "../../helpers/print";
+import { useAppSelector } from "../../store";
+import { selectClients } from "../../store/clientsSlice";
+import { selectDeals } from "../../store/dealsSlice";
+import { selectTasks } from "../../store/tasksSlice";
 import {
   CLIENT_ACTIVITY_REPORT_COLUMNS,
   NEW_CLIENTS_REPORT_COLUMNS,

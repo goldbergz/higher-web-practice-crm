@@ -1,5 +1,6 @@
-import type { SalesReportRow, DealsStageReportRow } from "../types/reports";
 import { DEAL_STATUS_LABELS } from "../utils/constants/dealConstants";
+
+import type { SalesReportRow, DealsStageReportRow } from "../types/reports";
 
 export const formatDate = (dateStr: string): string => {
   const date = new Date(dateStr);

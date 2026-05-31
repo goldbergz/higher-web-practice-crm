@@ -1,49 +1,44 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useLoginUserMutation } from "../../api";
 import AuthLayout from "../../components/AuthLayout/AuthLayuot";
 import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { useAppDispatch } from "../../store";
+import { setUser } from "../../store/userSlice";
 import {
-  selectUserError,
-  selectUserLoading,
-  setUser,
-  setUserLoading,
-} from "../../store/userSlice";
+  loginDefaultValues,
+  loginSections,
+} from "../../utils/constants/сonstants";
 import { loginSchema } from "../../utils/schemas/authSchemas";
 
 import styles from "./LoginPage.module.css";
 
 import type { LoginFormValues } from "../../utils/schemas/authSchemas";
 import type React from "react";
-import {
-  loginDefaultValues,
-  loginSections,
-} from "../../utils/constants/сonstants";
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isLoading = useAppSelector(selectUserLoading);
-  const authError = useAppSelector(selectUserError);
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const [authError, setAuthError] = useState<string | null>(null);
 
-  const handleSubmit = (data: LoginFormValues) => {
-    dispatch(setUserLoading(true));
+  const handleSubmit = async (data: LoginFormValues) => {
+    try {
+      setAuthError(null);
 
-    setTimeout(() => {
-      dispatch(setUserLoading(false));
-      dispatch(
-        setUser({
-          id: "1",
-          email: data.email,
-          name: "",
-          surname: "",
-          accName: "",
-          createdAt: new Date().toISOString(),
-        }),
-      );
+      const profile = await loginUser({
+        email: data.email,
+        password: data.password,
+      }).unwrap();
+
+      dispatch(setUser(profile));
       navigate("/main");
-    }, 800);
+    } catch (err) {
+      const error = err as { data?: { message?: string } };
+      setAuthError(error?.data?.message ?? "Ошибка входа. Попробуйте снова.");
+    }
   };
 
   return (

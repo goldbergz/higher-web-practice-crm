@@ -1,48 +1,39 @@
-import { useEffect, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useMemo, useState } from "react";
 
+import {
+  useCreateClientMutation,
+  useCreateDealMutation,
+  useCreateTaskMutation,
+  useGetClientsQuery,
+  useGetDealsQuery,
+  useGetTasksQuery,
+  useGetUsersQuery,
+} from "../../api";
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import ClientForm from "../../components/Forms/ClientForm";
 import DealForm from "../../components/Forms/DealForm";
 import TaskForm from "../../components/Forms/TaskForm";
 import Modal from "../../components/Modal/Modal";
-import { useAppDispatch, useAppSelector } from "../../store";
-import {
-  addClient,
-  loadClients,
-  selectClients,
-} from "../../store/clientsSlice";
-import {
-  addDeal,
-  loadDeals,
-  selectActiveDeals,
-  selectDeals,
-} from "../../store/dealsSlice";
-import { addTask, loadTasks, selectTasks } from "../../store/tasksSlice";
-import {
-  loadUsers,
-  selectCurrentUser,
-  selectUsers,
-} from "../../store/userSlice";
 import { formatDueDate } from "../../helpers/formaters";
-
-import styles from "./MainPage.module.css";
-
-import type { ColumnConfig } from "../../components/DataList/types";
-import type { Client } from "../../types/client";
-import type { Deal, DealDisplay } from "../../types/deal";
-import type { Task } from "../../types/task";
-import type { ClientFormValues } from "../../utils/schemas/clientSchema";
-import type { DealFormValues } from "../../utils/schemas/dealSchema";
-import type { TaskFormValues } from "../../utils/schemas/taskSchema";
-import type React from "react";
+import { useAppSelector } from "../../store";
+import { selectCurrentUser } from "../../store/userSlice";
+import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
 import { dealColumnsMain } from "../../utils/constants/сonstants";
 import { getTopActiveClients } from "../../utils/dashboards/clientsDashboard";
 import { calculateDashboardStats } from "../../utils/dashboards/dashboards";
 import { getTopActiveDeals } from "../../utils/dashboards/dealsDashboard";
 import { getLastTasks } from "../../utils/dashboards/tasksDashboard";
-import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
+
+import styles from "./MainPage.module.css";
+
+import type { ColumnConfig } from "../../components/DataList/types";
+import type { DealDisplay } from "../../types/deal";
+import type { Task } from "../../types/task";
+import type { ClientFormValues } from "../../utils/schemas/clientSchema";
+import type { DealFormValues } from "../../utils/schemas/dealSchema";
+import type { TaskFormValues } from "../../utils/schemas/taskSchema";
+import type React from "react";
 
 type StatsRow = {
   id: string;
@@ -169,24 +160,22 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
 ];
 
 const MainPage: React.FC = () => {
-  const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
-  const clients = useAppSelector(selectClients);
-  const deals = useAppSelector(selectDeals);
-  const activeDeals = useAppSelector(selectActiveDeals);
-  const tasks = useAppSelector(selectTasks);
-  const users = useAppSelector(selectUsers);
+  const { data: clients = [] } = useGetClientsQuery();
+  const { data: deals = [] } = useGetDealsQuery();
+  const { data: tasks = [] } = useGetTasksQuery();
+  const { data: users = [] } = useGetUsersQuery();
+  const [createClient] = useCreateClientMutation();
+  const [createDeal] = useCreateDealMutation();
+  const [createTask] = useCreateTaskMutation();
 
   const [modalType, setModalType] = useState<ModalType>(null);
 
-  useEffect(() => {
-    dispatch(loadClients());
-    dispatch(loadDeals());
-    dispatch(loadTasks());
-    dispatch(loadUsers());
-  }, [dispatch]);
-
-  const userId = currentUser?.id ?? "user-1";
+  const userId = currentUser?.id ?? "";
+  const activeDeals = useMemo(
+    () => deals.filter((d) => d.status === "new" || d.status === "in_progress"),
+    [deals],
+  );
 
   const stats = useMemo(
     () => calculateDashboardStats(clients, deals, userId),
@@ -322,51 +311,45 @@ const MainPage: React.FC = () => {
     setModalType(null);
   };
 
-  const handleCreateClient = (data: ClientFormValues) => {
-    const newClient: Client = {
-      id: uuidv4(),
+  const handleCreateClient = async (data: ClientFormValues) => {
+    if (!currentUser) return;
+
+    await createClient({
       name: data.name,
       phone: data.phone,
       email: data.email,
       company: data.company,
       website: data.website || undefined,
       comment: data.comment || undefined,
-      createdAt: new Date().toISOString().split("T")[0],
-      createdBy: userId,
-      deleted: false,
-    };
-    dispatch(addClient(newClient));
+      createdBy: currentUser.id,
+    });
     handleCloseModal();
   };
 
-  const handleCreateDeal = (data: DealFormValues) => {
-    const newDeal: Deal = {
-      id: uuidv4(),
+  const handleCreateDeal = async (data: DealFormValues) => {
+    if (!currentUser) return;
+
+    await createDeal({
       title: data.title,
       description: data.description || undefined,
       clientId: data.clientId,
       amount: Number(data.amount.replace(/\s/g, "")),
-      status: data.status,
-      createdAt: new Date().toISOString().split("T")[0],
-      createdBy: userId,
-    };
-    dispatch(addDeal(newDeal));
+      createdBy: currentUser.id,
+    });
     handleCloseModal();
   };
 
-  const handleCreateTask = (data: TaskFormValues) => {
-    const newTask: Task = {
-      id: uuidv4(),
+  const handleCreateTask = async (data: TaskFormValues) => {
+    if (!currentUser) return;
+
+    await createTask({
       title: data.title,
       description: data.description || undefined,
       dealId: data.dealId || undefined,
       assigneeId: data.assigneeId,
-      status: data.status,
       dueDate: data.dueDate || undefined,
-      createdAt: new Date().toISOString().split("T")[0],
-      createdBy: userId,
-    };
-    dispatch(addTask(newTask));
+      createdBy: currentUser.id,
+    });
     handleCloseModal();
   };
 

@@ -4,9 +4,16 @@ export type User = {
   name: string;
   createdAt: string;
   password?: string;
+  surname?: string;
+  accName?: string;
+  avatar?: string;
 };
 
-export type UserProfile = User & {
+export type UserProfile = {
+  id: string;
+  email: string;
+  name: string;
+  createdAt: string;
   surname: string;
   accName: string;
   avatar?: string;

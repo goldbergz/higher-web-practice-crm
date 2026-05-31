@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { mockTasks } from "../mocks/tasks";
+import { tasksApi } from "../api/tasksApi";
 
 import type { RootState } from "./index";
 import type { Task, TaskStatus, UpdateTaskPayload } from "../types/task";
@@ -21,9 +21,6 @@ const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    loadTasks(state) {
-      state.items = mockTasks;
-    },
     setTasks(state, action: PayloadAction<Task[]>) {
       state.items = action.payload;
     },
@@ -61,10 +58,54 @@ const tasksSlice = createSlice({
       state.error = null;
     },
   },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      tasksApi.endpoints.getTasks.matchFulfilled,
+      (state, action) => {
+        state.items = action.payload;
+        state.loading = false;
+        state.error = null;
+      },
+    );
+    builder.addMatcher(tasksApi.endpoints.getTasks.matchPending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addMatcher(
+      tasksApi.endpoints.getTasks.matchRejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? "Failed to load tasks";
+      },
+    );
+    builder.addMatcher(
+      tasksApi.endpoints.createTask.matchFulfilled,
+      (state, action) => {
+        state.items.push(action.payload);
+      },
+    );
+    builder.addMatcher(
+      tasksApi.endpoints.updateTask.matchFulfilled,
+      (state, action) => {
+        const index = state.items.findIndex((t) => t.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      },
+    );
+    builder.addMatcher(
+      tasksApi.endpoints.completeTask.matchFulfilled,
+      (state, action) => {
+        const index = state.items.findIndex((t) => t.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      },
+    );
+  },
 });
 
 export const {
-  loadTasks,
   setTasks,
   addTask,
   updateTask,

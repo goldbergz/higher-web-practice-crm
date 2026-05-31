@@ -1,7 +1,12 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
+
+import { DEAL_STATUS_LABELS } from "../utils/constants/dealConstants";
+import { TASK_STATUS_LABELS } from "../utils/constants/taskConstants";
+
 import { formatPdfAmount } from "./formaters";
+
 import type {
   ClientActivityReportRow,
   DealsStageReportRow,
@@ -9,8 +14,6 @@ import type {
   OverdueTaskReportRow,
   SalesReportRow,
 } from "../types/reports";
-import { DEAL_STATUS_LABELS } from "../utils/constants/dealConstants";
-import { TASK_STATUS_LABELS } from "../utils/constants/taskConstants";
 
 const DEAL_STATUS_LABELS_EN: Record<string, string> = {
   NEW: "New",

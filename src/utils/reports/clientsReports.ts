@@ -1,6 +1,7 @@
-import type { SortConfig } from "../../components";
 import { formatDate } from "../../helpers/formaters";
 import { filterByPeriod } from "../../helpers/period";
+
+import type { SortConfig } from "../../components";
 import type { Client, Deal, Task } from "../../types";
 import type {
   ReportPeriod,

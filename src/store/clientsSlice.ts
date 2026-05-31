@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { mockClients } from "../mocks/clients";
+import { clientsApi } from "../api/clientsApi";
 
 import type { RootState } from "./index";
 import type { Client, UpdateClientPayload } from "../types/client";
@@ -21,9 +21,6 @@ const clientsSlice = createSlice({
   name: "clients",
   initialState,
   reducers: {
-    loadClients(state) {
-      state.items = mockClients;
-    },
     setClients(state, action: PayloadAction<Client[]>) {
       state.items = action.payload;
     },
@@ -58,10 +55,59 @@ const clientsSlice = createSlice({
       state.error = null;
     },
   },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      clientsApi.endpoints.getClients.matchFulfilled,
+      (state, action) => {
+        state.items = action.payload;
+        state.loading = false;
+        state.error = null;
+      },
+    );
+    builder.addMatcher(
+      clientsApi.endpoints.getClients.matchPending,
+      (state) => {
+        state.loading = true;
+        state.error = null;
+      },
+    );
+    builder.addMatcher(
+      clientsApi.endpoints.getClients.matchRejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? "Failed to load clients";
+      },
+    );
+    builder.addMatcher(
+      clientsApi.endpoints.createClient.matchFulfilled,
+      (state, action) => {
+        state.items.push(action.payload);
+      },
+    );
+    builder.addMatcher(
+      clientsApi.endpoints.updateClient.matchFulfilled,
+      (state, action) => {
+        const index = state.items.findIndex((c) => c.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      },
+    );
+    builder.addMatcher(
+      clientsApi.endpoints.deleteClient.matchFulfilled,
+      (state, action) => {
+        const index = state.items.findIndex(
+          (c) => c.id === action.meta.arg.originalArgs,
+        );
+        if (index !== -1) {
+          state.items[index].deleted = true;
+        }
+      },
+    );
+  },
 });
 
 export const {
-  loadClients,
   setClients,
   addClient,
   updateClient,

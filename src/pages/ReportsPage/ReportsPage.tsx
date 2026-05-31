@@ -1,32 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { useAppDispatch } from "../../store";
-import { loadClients } from "../../store/clientsSlice";
-import { loadDeals } from "../../store/dealsSlice";
-import { loadTasks } from "../../store/tasksSlice";
-import { loadUsers } from "../../store/userSlice";
 import { REPORT_TABS } from "../../utils/constants/reportConstants";
 
 import ClientsReport from "./ClientsReport";
 import DealsReport from "./DealsReport";
-import TasksReport from "./TasksReport";
-
 import styles from "./ReportsPage.module.css";
+import TasksReport from "./TasksReport";
 
 import type { ReportTab } from "../../utils/constants/reportConstants";
 import type React from "react";
 
 const ReportsPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-
   const [activeTab, setActiveTab] = useState<ReportTab>("sales");
-
-  useEffect(() => {
-    dispatch(loadDeals());
-    dispatch(loadClients());
-    dispatch(loadTasks());
-    dispatch(loadUsers());
-  }, [dispatch]);
 
   return (
     <div className={styles.page}>

@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import { mockDeals } from "../mocks/deals";
+import { dealsApi } from "../api/dealsApi";
 
 import type { RootState } from "./index";
 import type { Deal, DealStatus, UpdateDealPayload } from "../types/deal";
@@ -21,9 +21,6 @@ const dealsSlice = createSlice({
   name: "deals",
   initialState,
   reducers: {
-    loadDeals(state) {
-      state.items = mockDeals;
-    },
     setDeals(state, action: PayloadAction<Deal[]>) {
       state.items = action.payload;
     },
@@ -65,10 +62,63 @@ const dealsSlice = createSlice({
       state.error = null;
     },
   },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      dealsApi.endpoints.getDeals.matchFulfilled,
+      (state, action) => {
+        state.items = action.payload;
+        state.loading = false;
+        state.error = null;
+      },
+    );
+    builder.addMatcher(dealsApi.endpoints.getDeals.matchPending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addMatcher(
+      dealsApi.endpoints.getDeals.matchRejected,
+      (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? "Failed to load deals";
+      },
+    );
+    builder.addMatcher(
+      dealsApi.endpoints.createDeal.matchFulfilled,
+      (state, action) => {
+        state.items.push(action.payload);
+      },
+    );
+    builder.addMatcher(
+      dealsApi.endpoints.updateDeal.matchFulfilled,
+      (state, action) => {
+        const index = state.items.findIndex((d) => d.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      },
+    );
+    builder.addMatcher(
+      dealsApi.endpoints.completeDeal.matchFulfilled,
+      (state, action) => {
+        const index = state.items.findIndex((d) => d.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      },
+    );
+    builder.addMatcher(
+      dealsApi.endpoints.cancelDeal.matchFulfilled,
+      (state, action) => {
+        const index = state.items.findIndex((d) => d.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      },
+    );
+  },
 });
 
 export const {
-  loadDeals,
   setDeals,
   addDeal,
   updateDeal,
