@@ -68,7 +68,7 @@ function DataListRow<T>({
                   : column.align === "center"
                     ? "center"
                     : "flex-start",
-              minWidth: column.minWidth,
+              maxWidth: column.maxWidth,
               textAlign: column.align ?? "left",
             }}
             title={String(value ?? "")}

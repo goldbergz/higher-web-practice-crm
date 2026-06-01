@@ -42,6 +42,7 @@ export type FormSection<T extends FieldValues> = {
 interface FormProps<T extends FieldValues> {
   ariaLabel?: string;
   children?: React.ReactNode;
+  className?: string;
   defaultValues: DefaultValues<T>;
   onSubmit: (data: T) => void;
   schema: ZodType;
@@ -52,6 +53,7 @@ interface FormProps<T extends FieldValues> {
 function Form<T extends FieldValues>({
   ariaLabel,
   children,
+  className,
   defaultValues,
   onSubmit,
   schema,
@@ -136,7 +138,7 @@ function Form<T extends FieldValues>({
     <form
       noValidate
       aria-label={ariaLabel}
-      className={styles.form}
+      className={[styles.form, className].filter(Boolean).join(" ")}
       onSubmit={handleSubmit(onSubmit)}
     >
       {sections.map((section, sectionIndex) => (

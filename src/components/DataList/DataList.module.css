@@ -1,9 +1,9 @@
 .header {
   align-items: stretch;
+  border-radius: 8px;
   display: flex;
-  gap: 16px;
   overflow: hidden;
-  padding: 0 24px;
+  padding-left: 18px;
 }
 
 .headerCell {
@@ -14,8 +14,6 @@
   font-size: 0.75rem;
   gap: 2px;
   line-height: 1rem;
-  min-width: 0;
-  padding: 6px 0;
   user-select: none;
 }
 
@@ -50,7 +48,6 @@
   height: 36px;
   cursor: pointer;
   display: flex;
-  gap: 16px;
   overflow: hidden;
   padding: 8px 24px;
   transition: background-color var(--transition-base);

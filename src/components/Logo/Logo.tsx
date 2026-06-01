@@ -5,30 +5,24 @@ import styles from "./Logo.module.css";
 const Logo: React.FC = () => (
   <div className={styles.wrapper}>
     <svg
-      aria-hidden="true"
-      className={styles.icon}
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
       fill="none"
-      height="36"
-      viewBox="0 0 36 36"
-      width="36"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect fill="#1e293b" height="36" rx="8" width="36" />
       <path
-        d="M10 10 L18 18 L10 26"
-        stroke="#2563eb"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="3.5"
+        d="M0 6C0 2.68629 2.68629 0 6 0H20C31.0457 0 40 8.95431 40 20C40 31.0457 31.0457 40 20 40H6C2.68629 40 0 37.3137 0 34V6Z"
+        fill="#1F2937"
       />
       <path
-        d="M18 10 L26 18 L18 26"
-        stroke="#60a5fa"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="3.5"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M3.89258 39.6194L15.4507 20.3343L3.57422 0.510622C4.31597 0.182345 5.13673 0 6.00007 0H16.476L23.2473 12.0163L28.9777 2.12332C32.493 3.89215 35.4149 6.66736 37.3651 10.0707L31.2161 20.3343L37.1681 30.2654C35.1599 33.6169 32.198 36.3315 28.6576 38.0342L23.3334 28.8601L16.8683 40H6.00007C5.25846 40 4.54827 39.8655 3.89258 39.6194Z"
+        fill="#3B82F6"
       />
     </svg>
+
     <span className={styles.wordmark}>
       Ya<span className={styles.wordmarkAccent}>Plex</span>
     </span>

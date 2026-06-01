@@ -50,6 +50,7 @@ const RegisterPage: React.FC = () => {
 
         <Form<RegisterFormValues>
           ariaLabel="Форма регистрации"
+          className={styles.form}
           defaultValues={registerDefaultValues}
           schema={registerSchema}
           sections={registerSections}

@@ -75,7 +75,7 @@ function DataListHeader<T>({
             role="columnheader"
             style={{
               flex: column.flex,
-              minWidth: column.minWidth,
+              maxWidth: column.maxWidth,
               textAlign: column.align ?? "left",
               justifyContent:
                 column.align === "right"

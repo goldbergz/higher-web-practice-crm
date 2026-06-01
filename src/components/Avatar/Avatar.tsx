@@ -4,7 +4,7 @@ import styles from "./Avatar.module.css";
 
 interface AvatarProps {
   onAvatarChange?: (file: File) => void;
-  size?: "sm" | "md";
+  size?: "xs" | "sm" | "md";
   src: string;
 }
 
@@ -26,13 +26,19 @@ const Avatar: React.FC<AvatarProps> = ({
     }
   };
 
-  const imageClass = `${styles.image} ${size === "sm" ? styles.imageSm : styles.imageMd}`;
+  const sizeClass =
+    size === "xs"
+      ? styles.imageXs
+      : size === "sm"
+        ? styles.imageSm
+        : styles.imageMd;
+  const imageClass = `${styles.image} ${sizeClass}`;
 
   return (
     <div className={styles.wrapper}>
-      <img alt="Аватар пользователя" className={imageClass} src={src} />
-      {onAvatarChange && (
-        <>
+      <div className={styles.imageWrapper}>
+        <img alt="Аватар пользователя" className={imageClass} src={src} />
+        {onAvatarChange && (
           <button
             aria-label="Изменить аватар"
             className={styles.editButton}
@@ -59,15 +65,17 @@ const Avatar: React.FC<AvatarProps> = ({
               />
             </svg>
           </button>
-          <input
-            ref={fileInputRef}
-            accept="image/*"
-            className={styles.hiddenInput}
-            tabIndex={-1}
-            type="file"
-            onChange={handleFileChange}
-          />
-        </>
+        )}
+      </div>
+      {onAvatarChange && (
+        <input
+          ref={fileInputRef}
+          accept="image/*"
+          className={styles.hiddenInput}
+          tabIndex={-1}
+          type="file"
+          onChange={handleFileChange}
+        />
       )}
     </div>
   );

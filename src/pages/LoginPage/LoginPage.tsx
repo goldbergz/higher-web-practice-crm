@@ -52,25 +52,27 @@ const LoginPage: React.FC = () => {
 
         <Form<LoginFormValues>
           ariaLabel="Форма входа"
+          className={styles.form}
           defaultValues={loginDefaultValues}
           schema={loginSchema}
           sections={loginSections}
           onSubmit={handleSubmit}
         >
-          <a className={styles.forgotLink} href="/forgot-password">
-            Забыли пароль?
-          </a>
+          <div className={styles.formBottom}>
+            <a className={styles.forgotLink} href="/forgot-password">
+              Забыли пароль?
+            </a>
 
-          {authError ? (
-            <p className={styles.authError} role="alert">
-              {authError}
-            </p>
-          ) : null}
-
-          <Button isLoading={isLoading} size="lg" type="submit">
-            Войти
-          </Button>
+            <Button isLoading={isLoading} size="lg" type="submit">
+              Войти
+            </Button>
+          </div>
         </Form>
+        {authError ? (
+          <p className={styles.authError} role="alert">
+            {authError}
+          </p>
+        ) : null}
       </div>
     </AuthLayout>
   );

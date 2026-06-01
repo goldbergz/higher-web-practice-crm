@@ -1,8 +1,9 @@
 .wrapper {
-  align-items: center;
   display: inline-flex;
-  gap: 0;
-  overflow: hidden;
+}
+
+.imageWrapper {
+  line-height: 0;
   position: relative;
 }
 
@@ -21,9 +22,13 @@
   width: 40px;
 }
 
+.imageXs {
+  height: 32px;
+  width: 32px;
+}
+
 .editButton {
   align-items: center;
-  align-self: flex-end;
   background-color: var(--color-brand-primary);
   border: none;
   border-radius: var(--radius-full);
@@ -32,6 +37,9 @@
   height: 40px;
   justify-content: center;
   padding: 8px;
+  position: absolute;
+  right: -5px;
+  bottom: -10px;
   transition: background-color var(--transition-base);
   width: 40px;
 }

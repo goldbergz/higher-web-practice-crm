@@ -218,7 +218,7 @@ const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
         onClick={handleProfileClick}
       >
         <div className={styles.userAvatar}>
-          <Avatar size="sm" src={avatarSrc} />
+          <Avatar size={isExpanded ? "sm" : "xs"} src={avatarSrc} />
         </div>
         {isExpanded && <span className={styles.userName}>{accName}</span>}
       </a>

@@ -46,6 +46,8 @@ const ClientsReport: React.FC = () => {
 
   const [newClientsPeriod, setNewClientsPeriod] =
     useState<ReportPeriod>("week");
+  const [activeClientsPeriod, setActiveClientsPeriod] =
+    useState<ReportPeriod>("week");
   const [newClientsView, setNewClientsView] = useState("list");
   const [activityView, setActivityView] = useState("list");
   const [newClientsPage, setNewClientsPage] = useState(1);
@@ -58,6 +60,11 @@ const ClientsReport: React.FC = () => {
   const handleNewClientsPeriodChange = (val: string) => {
     setNewClientsPeriod(val as ReportPeriod);
     setNewClientsPage(1);
+  };
+
+  const handleActivityClientsPeriodChange = (val: string) => {
+    setActiveClientsPeriod(val as ReportPeriod);
+    setActivityPage(1);
   };
 
   const newClientsReportData = useMemo(
@@ -186,6 +193,11 @@ const ClientsReport: React.FC = () => {
         <h2 className={styles.sectionTitle}>Активность клиентов</h2>
         <div className={styles.toolbar}>
           <div className={styles.toolbarLeft}>
+            <Dropdown
+              options={PERIOD_OPTIONS}
+              value={activeClientsPeriod}
+              onChange={handleActivityClientsPeriodChange}
+            />
             <Dropdown
               options={VIEW_OPTIONS}
               value={activityView}

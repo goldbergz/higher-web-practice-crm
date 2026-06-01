@@ -168,24 +168,6 @@
   align-items: center;
   display: flex;
   justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.avatarImage {
-  border-radius: var(--radius-full);
-  object-fit: cover;
-}
-
-.avatarImageExpanded {
-  border: 1px solid var(--color-brand-primary);
-  height: 40px;
-  width: 40px;
-}
-
-.avatarImageCollapsed {
-  height: 32px;
-  width: 32px;
 }
 
 .userName {
