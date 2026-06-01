@@ -52,8 +52,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
   {
     key: "label",
     label: "",
-    flex: "0 0 240px",
-    maxWidth: "240px",
+    flex: "240 1 0",
     renderCell: (item) => (
       <span
         style={{
@@ -70,8 +69,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
   {
     key: "total",
     label: "на сегодня",
-    flex: "0 0 203px",
-    maxWidth: "203px",
+    flex: "203 1 0",
     renderCell: (item) => (
       <span
         style={{
@@ -88,8 +86,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
   {
     key: "todayNew",
     label: "за сегодня",
-    flex: "0 0 203px",
-    maxWidth: "203px",
+    flex: "203 1 0",
     renderCell: (item) => (
       <span
         style={{
@@ -106,8 +103,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
   {
     key: "week",
     label: "за неделю",
-    flex: "0 0 203px",
-    maxWidth: "203px",
+    flex: "203 1 0",
     renderCell: (item) => (
       <span
         style={{
@@ -124,8 +120,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
   {
     key: "month",
     label: "за месяц",
-    flex: "0 0 203px",
-    maxWidth: "203px",
+    flex: "203 1 0",
     renderCell: (item) => (
       <span
         style={{
@@ -142,8 +137,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
   {
     key: "quarter",
     label: "за квартал",
-    flex: "0 0 203px",
-    maxWidth: "203px",
+    flex: "203 1 0",
     renderCell: (item) => (
       <span
         style={{

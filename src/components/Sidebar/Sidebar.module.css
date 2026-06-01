@@ -113,8 +113,7 @@
 }
 
 .itemLink:hover {
-  background: var(--color-gray-100);
-  opacity: 1;
+  color: var(--color-brand-primary-hover);
 }
 
 .itemLinkActive {
