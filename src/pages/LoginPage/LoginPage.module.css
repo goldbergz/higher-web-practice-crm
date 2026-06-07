@@ -7,6 +7,15 @@
   max-width: 420px;
 }
 
+@media (max-width: 899px) {
+  .card {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0;
+    max-width: none;
+  }
+}
+
 .title {
   color: var(--color-text-primary);
   font-size: 1.75rem;
