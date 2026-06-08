@@ -37,6 +37,12 @@
   gap: 32px;
 }
 
+@media (max-width: 640px) {
+  .cardContent > :first-child {
+    align-self: center;
+  }
+}
+
 .cardFooter {
   align-items: flex-end;
   display: inline-flex;

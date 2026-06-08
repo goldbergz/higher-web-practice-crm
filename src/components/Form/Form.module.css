@@ -46,6 +46,11 @@
 
 @media (max-width: 640px) {
   .fieldRow {
+    align-items: stretch;
     flex-direction: column;
+  }
+
+  .fieldRow > * {
+    width: 100%;
   }
 }
