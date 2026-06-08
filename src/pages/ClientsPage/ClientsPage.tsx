@@ -21,6 +21,8 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Client } from "../../types";
 import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type React from "react";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
+import { MobileList } from "../../components";
 
 type ModalMode = "create" | "edit" | null;
 
@@ -30,6 +32,8 @@ const ClientsPage: React.FC = () => {
   const [createClient] = useCreateClientMutation();
   const [updateClient] = useUpdateClientMutation();
   const [deleteClient] = useDeleteClientMutation();
+
+  const isMobile = useMediaQuery("(max-width: 1099px)");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<Client> | null>(null);
@@ -155,37 +159,71 @@ const ClientsPage: React.FC = () => {
       }
     : undefined;
 
+const newClientButton = (
+    <Button size="md" variant="primary" onClick={handleNewClient}>
+      Новый клиент
+    </Button>
+  );
+
   return (
     <div className={styles.page}>
       <div>
         <h1 className={styles.title}>Клиенты</h1>
       </div>
       <div className={styles.listSection}>
-        <div className={styles.toolbar}>
-          <Button size="md" variant="primary" onClick={handleNewClient}>
-            Новый клиент
-          </Button>
-          <div className={styles.searchInput}>
-            <input
-              className={styles.searchField}
-              placeholder="Искать"
-              type="search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+        {!isMobile && (
+          <>
+            <div className={styles.toolbar}>
+              {newClientButton}
+              <div className={styles.searchInput}>
+                <input
+                  className={styles.searchField}
+                  placeholder="Искать"
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className={styles.listContainer}>
+              <DataList
+                columns={clientColumns}
+                getItemId={(item) => item.id}
+                isItemDeleted={(item) => item.deleted === true}
+                items={displayClients}
+                sortConfig={sortConfig}
+                onItemClick={handleRowClick}
+                onSort={handleSort}
+              />
+            </div>
+          </>
+        )}
+        {isMobile && (
+          <>
+            <div className={styles.mobileToolbar}>
+              <div className={styles.mobileNewButton}>{newClientButton}</div>
+              <div className={styles.mobileSearchInput}>
+                <input
+                  className={styles.searchField}
+                  placeholder="Искать"
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+            <MobileList
+              clients={sortedClients}
+              stickyButton={newClientButton}
+              type="client"
+              onItemClick={(item) => {
+                if ("name" in item && "phone" in item) {
+                  handleRowClick(item as Client);
+                }
+              }}
             />
-          </div>
-        </div>
-        <div className={styles.listContainer}>
-          <DataList
-            columns={clientColumns}
-            getItemId={(item) => item.id}
-            isItemDeleted={(item) => item.deleted === true}
-            items={displayClients}
-            sortConfig={sortConfig}
-            onItemClick={handleRowClick}
-            onSort={handleSort}
-          />
-        </div>
+          </>
+        )}
       </div>
       <Modal
         headerRight={

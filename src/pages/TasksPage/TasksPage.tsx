@@ -24,6 +24,8 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Task, TaskDisplay } from "../../types/task";
 import type { TaskFormValues } from "../../utils/schemas/taskSchema";
 import type React from "react";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
+import { MobileList } from "../../components";
 
 type ModalMode = "create" | "edit" | null;
 
@@ -35,6 +37,8 @@ const TasksPage: React.FC = () => {
   const [createTask] = useCreateTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
   const [completeTask] = useCompleteTaskMutation();
+
+  const isMobile = useMediaQuery("(max-width: 1099px)");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<TaskDisplay> | null>(
@@ -231,38 +235,73 @@ const TasksPage: React.FC = () => {
   const showCompleteButton =
     selectedTask && selectedTask.status !== "completed";
 
+  const newTaskButton = (
+    <Button size="md" variant="primary" onClick={handleNewTask}>
+      Новая задача
+    </Button>
+  );
+
   return (
     <div className={styles.page}>
       <div>
         <h1 className={styles.title}>Задачи</h1>
       </div>
       <div className={styles.listSection}>
-        <div className={styles.toolbar}>
-          <Button size="md" variant="primary" onClick={handleNewTask}>
-            Новая задача
-          </Button>
-          <div className={styles.searchInput}>
-            <input
-              className={styles.searchField}
-              placeholder="Искать"
-              type="search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+        {!isMobile && (
+          <>
+            <div className={styles.toolbar}>
+              {newTaskButton}
+              <div className={styles.searchInput}>
+                <input
+                  className={styles.searchField}
+                  placeholder="Искать"
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className={styles.listContainer}>
+              <DataList
+                columns={taskColumns}
+                getCellClassName={getCellClassName}
+                getItemId={(item) => item.id}
+                getRowClassName={getRowClassName}
+                items={displayTasks}
+                sortConfig={sortConfig}
+                onItemClick={handleRowClick}
+                onSort={handleSort}
+              />
+            </div>
+          </>
+        )}
+        {isMobile && (
+          <>
+            <div className={styles.mobileToolbar}>
+              <div className={styles.mobileNewButton}>{newTaskButton}</div>
+              <div className={styles.mobileSearchInput}>
+                <input
+                  className={styles.searchField}
+                  placeholder="Искать"
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+            <MobileList
+              rawTasks={tasks}
+              stickyButton={newTaskButton}
+              tasks={displayTasks}
+              type="task"
+              onItemClick={(item) => {
+                if ("assignee" in item && "dueDate" in item) {
+                  handleRowClick(item as TaskDisplay);
+                }
+              }}
             />
-          </div>
-        </div>
-        <div className={styles.listContainer}>
-          <DataList
-            columns={taskColumns}
-            getCellClassName={getCellClassName}
-            getItemId={(item) => item.id}
-            getRowClassName={getRowClassName}
-            items={displayTasks}
-            sortConfig={sortConfig}
-            onItemClick={handleRowClick}
-            onSort={handleSort}
-          />
-        </div>
+          </>
+        )}
       </div>
       <Modal
         headerRight={

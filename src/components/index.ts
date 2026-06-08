@@ -22,3 +22,4 @@ export { default as Sidebar } from "./Sidebar/Sidebar";
 export { default as SidebarItem } from "./Sidebar/SidebarItem";
 export { default as SidebarList } from "./Sidebar/SidebarList";
 export { default as Textarea } from "./Textarea/Textarea";
+export { default as MobileList } from "./MobileList/MobileList";

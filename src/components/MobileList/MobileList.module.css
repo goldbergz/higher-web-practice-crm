@@ -1,0 +1,474 @@
+.wrapper {
+  display: none;
+}
+
+@media (max-width: 1099px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+    margin: 20px;
+    overflow-y: auto;
+    flex: 1 1 0;
+  }
+
+  .card {
+    width: 335px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background: white;
+    box-shadow: 0px 4px 8px #E5E7EB;
+    overflow: hidden;
+    border-radius: 8px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .cardNew {
+    background: #eff6ff;
+  }
+
+  .cardNew:hover {
+    background: #dbeafe;
+  }
+
+  .cardCompleted {
+    background: #f0fdf4;
+  }
+
+  .cardCompleted:hover {
+    background: #dcfce7;
+  }
+
+  .cardCancelled {
+    background: #fff7ed;
+  }
+
+  .cardCancelled:hover {
+    background: #ffedd5;
+  }
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    position: relative;
+  }
+
+  .stickyButton {
+    position: sticky;
+    bottom: 0;
+    margin-top: 16px;
+    padding: 0 20px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to top, var(--color-gray-50, #F9FAFB) 80%, transparent);
+    z-index: 10;
+  }
+
+  .stickyButton > * {
+    width: 100%;
+  }
+}
+
+.clientCard {
+  gap: 12px;
+}
+
+.clientNameRow {
+  align-self: stretch;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  display: inline-flex;
+}
+
+.clientName {
+  flex: 1 1 0;
+  color: #1F2937;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.clientDate {
+  text-align: right;
+  color: #6B7280;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.clientInfoCol {
+  align-self: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 4px;
+  display: flex;
+}
+
+.clientInfoRow {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 16px;
+  display: inline-flex;
+}
+
+.clientPhone {
+  flex: 1 1 0;
+  color: #1F2937;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.clientCompany {
+  color: #1F2937;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.clientEmail {
+  flex: 1 1 0;
+  color: #3B82F6;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.clientWebsite {
+  color: #1F2937;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.clientComment {
+  color: #6B7280;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.dealCard {
+  gap: 6px;
+}
+
+.dealTitleRow {
+  align-self: stretch;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  display: inline-flex;
+}
+
+.dealTitle {
+  flex: 1 1 0;
+  color: #1F2937;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.dealStatus {
+  color: #3B82F6;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.dealClientRow {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 6px;
+  display: inline-flex;
+}
+
+.dealClient {
+  flex: 1 1 0;
+  color: #1F2937;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.dealAmount {
+  text-align: right;
+  color: #1F2937;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-weight: 700;
+  line-height: 20px;
+  word-wrap:
+  break-word;
+}
+
+.dealDescRow {
+  align-self: stretch;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  display: inline-flex;
+}
+
+.dealDesc {
+  flex: 1 1 0;
+  color: #6B7280;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.dealDatesRow {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 12px;
+  display: inline-flex;
+}
+
+.dealDateCol {
+  flex: 1 1 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2px;
+  display: inline-flex;
+}
+
+.dealDateLabel {
+  color: #9CA3AF;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.dealDateValue {
+  color: #1F2937;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.dealDateColEnd {
+  height: 34px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2px;
+  display: inline-flex;
+}
+
+.statusTextNew {
+  color: var(--color-text-primary, #1F2937);
+}
+
+.statusTextInProgress {
+  color: #3B82F6;
+}
+
+.statusTextCompleted {
+  color: #10B981;
+}
+
+.statusTextCancelled {
+  color: #F59E0B;
+}
+
+.taskCard {
+  gap: 8px;
+}
+
+.taskTitleRow {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 16px;
+  display: inline-flex;
+}
+
+.taskTitleCol {
+  flex: 1 1 0;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3px;
+  display: inline-flex;
+}
+
+.taskTitle {
+  color: #1F2937;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.taskProject {
+  color: #1F2937;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.taskStatusChip {
+  width: 60px;
+  color: #1D4ED8;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.taskDescRow {
+  align-self: stretch;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  display: inline-flex;
+}
+
+.taskDesc {
+  flex: 1 1 0;
+  color: #6B7280;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.taskDueRow {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  display: inline-flex;
+}
+
+.taskDue {
+  color: #3B82F6;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.taskBottomRow {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 6px;
+  display: inline-flex;
+}
+
+.taskAssigneeCol {
+  flex: 1 1 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  display: inline-flex;
+}
+
+.taskAssigneeName {
+  align-self: stretch;
+  color: #1F2937;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.taskAssigneeRole {
+  color: #6B7280;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.taskDate {
+  width: 116px;
+  text-align: right;
+  color: #6B7280;
+  font-size: 12px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.taskStatusNew {
+  color: var(--color-text-primary, #1F2937);
+}
+
+.taskStatusInProgress {
+  color: #3B82F6;
+}
+
+.taskStatusCompleted {
+  color: #10B981;
+}
+
+.taskStatusOverdue {
+  color: #EF4444;
+}
