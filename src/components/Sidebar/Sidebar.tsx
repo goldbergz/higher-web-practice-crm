@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import Avatar from "../Avatar/Avatar";
 import Logo from "../Logo/Logo";
 
@@ -149,6 +150,59 @@ const ExpandIcon: React.FC = () => (
   </svg>
 );
 
+const MenuIcon: React.FC = () => (
+  <svg
+    fill="none"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      clipRule="evenodd"
+      d="M2 5.9375C2 5.68886 2.09877 5.4504 2.27459 5.27459C2.4504 5.09877 2.68886 5 2.9375 5H21.0625C21.3111 5 21.5496 5.09877 21.7254 5.27459C21.9012 5.4504 22 5.68886 22 5.9375C22 6.18614 21.9012 6.4246 21.7254 6.60041C21.5496 6.77623 21.3111 6.875 21.0625 6.875H2.9375C2.68886 6.875 2.4504 6.77623 2.27459 6.60041C2.09877 6.4246 2 6.18614 2 5.9375ZM2 12.5C2 12.2514 2.09877 12.0129 2.27459 11.8371C2.4504 11.6613 2.68886 11.5625 2.9375 11.5625H21.0625C21.3111 11.5625 21.5496 11.6613 21.7254 11.8371C21.9012 12.0129 22 12.2514 22 12.5C22 12.7486 21.9012 12.9871 21.7254 13.1629C21.5496 13.3387 21.3111 13.4375 21.0625 13.4375H2.9375C2.68886 13.4375 2.4504 13.3387 2.27459 13.1629C2.09877 12.9871 2 12.7486 2 12.5ZM2 19.0625C2 18.8139 2.09877 18.5754 2.27459 18.3996C2.4504 18.2238 2.68886 18.125 2.9375 18.125H21.0625C21.3111 18.125 21.5496 18.2238 21.7254 18.3996C21.9012 18.5754 22 18.8139 22 19.0625C22 19.3111 21.9012 19.5496 21.7254 19.7254C21.5496 19.9012 21.3111 20 21.0625 20H2.9375C2.68886 20 2.4504 19.9012 2.27459 19.7254C2.09877 19.5496 2 19.3111 2 19.0625Z"
+      fill="#1F2937"
+      fillRule="evenodd"
+    />
+  </svg>
+);
+
+const CloseIcon: React.FC = () => (
+  <svg
+    fill="none"
+    height="20"
+    viewBox="0 0 20 20"
+    width="20"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M0.75 18.75L18.75 0.75M0.75 0.75L18.75 18.75"
+      stroke="#4B5563"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+    />
+  </svg>
+);
+
+const ProfileIcon: React.FC = () => (
+  <svg
+    fill="none"
+    height="24"
+    viewBox="0 0 24 24"
+    width="24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M16.249 5.75C16.249 6.74456 15.8539 7.69839 15.1507 8.40165C14.4474 9.10491 13.4936 9.5 12.499 9.5C11.5044 9.5 10.5506 9.10491 9.84735 8.40165C9.14409 7.69839 8.749 6.74456 8.749 5.75C8.749 4.75544 9.14409 3.80161 9.84735 3.09835C10.5506 2.39509 11.5044 2 12.499 2C13.4936 2 14.4474 2.39509 15.1507 3.09835C15.8539 3.80161 16.249 4.75544 16.249 5.75ZM5 19.868C5.03213 17.9004 5.83634 16.0242 7.23918 14.644C8.64202 13.2639 10.5311 12.4905 12.499 12.4905C14.4669 12.4905 16.356 13.2639 17.7588 14.644C19.1617 16.0242 19.9659 17.9004 19.998 19.868C17.6454 20.9468 15.0871 21.5035 12.499 21.5C9.823 21.5 7.283 20.916 5 19.868Z"
+      stroke="#1F2937"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.5"
+    />
+  </svg>
+);
+
 const menuItems = [
   { icon: <HomeIcon />, label: "Главная", path: "/main" },
   { icon: <ClientsIcon />, label: "Клиенты", path: "/clients" },
@@ -159,6 +213,8 @@ const menuItems = [
 
 const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 640px)");
   const navigate = useNavigate();
 
   const handleToggle = () => {
@@ -169,6 +225,62 @@ const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
     e.preventDefault();
     navigate("/profile");
   };
+
+  if (isMobile) {
+    if (isMobileMenuOpen) {
+      return (
+        <aside className={`${styles.sidebar} ${styles.mobile} ${styles.mobileOpen}`}>
+          <div className={styles.mobileHeader}>
+            <Logo />
+            <button
+              aria-label="Закрыть меню"
+              className={styles.toggleButton}
+              type="button"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <CloseIcon />
+            </button>
+          </div>
+          <SidebarList>
+            {menuItems.map((item) => (
+              <SidebarItem
+                key={item.label}
+                isExpanded
+                icon={item.icon}
+                label={item.label}
+                path={item.path}
+                onNavigate={() => setIsMobileMenuOpen(false)}
+              />
+            ))}
+          </SidebarList>
+        </aside>
+      );
+    }
+
+    return (
+      <aside className={`${styles.sidebar} ${styles.mobile}`}>
+        <div className={styles.mobileBar}>
+          <button
+            aria-label="Открыть меню"
+            className={styles.toggleButton}
+            type="button"
+            onClick={() => setIsMobileMenuOpen(true)}
+          >
+            <MenuIcon />
+          </button>
+          <Logo />
+          <a
+            aria-label="Перейти в профиль"
+            className={styles.toggleButton}
+            href="/profile"
+            onClick={handleProfileClick}
+          >
+            <ProfileIcon />
+          </a>
+        </div>
+      </aside>
+    );
+  }
 
   return (
     <aside

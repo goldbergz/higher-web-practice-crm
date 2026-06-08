@@ -8,6 +8,7 @@ interface SidebarItemProps {
   isExpanded: boolean;
   label: string;
   path: string;
+  onNavigate?: () => void;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
@@ -15,6 +16,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   isExpanded,
   label,
   path,
+  onNavigate,
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     navigate(path);
+    onNavigate?.();
   };
 
   return (

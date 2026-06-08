@@ -177,3 +177,47 @@
   line-height: 24px;
   word-wrap: break-word;
 }
+
+/* Mobile (screen width < 641px) */
+.mobile {
+  background: transparent;
+  border-right: none;
+  gap: 0;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+}
+
+.mobileBar {
+  align-items: center;
+  background: var(--color-white);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-sizing: border-box;
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.mobileOpen {
+  background: var(--color-white);
+  bottom: 0;
+  gap: 20px;
+  left: 0;
+  padding: 20px;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 100;
+}
+
+.mobileHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

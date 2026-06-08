@@ -7,3 +7,9 @@
   flex: 1 1 0;
   overflow-y: auto;
 }
+
+@media (max-width: 640px) {
+  .layout {
+    flex-direction: column;
+  }
+}
