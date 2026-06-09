@@ -63,12 +63,12 @@
   gap: 4px;
 }
 
+.mobileButton {
+  display: none;
+}
+
 @media (max-width: 1099px) {
   .listContainer {
-    display: none;
-  }
-
-  .toolbar {
     display: none;
   }
 
@@ -81,26 +81,16 @@
 
   .page {
     overflow: hidden;
-  }
-
-  .mobileToolbar {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    padding: 0 32px;
-  }
-
-  .mobileSearchInput {
-    flex: 1 1 0;
-  }
-
-  .mobileNewButton {
-    display: none;
+    padding: 20px;
   }
 }
 
 @media (max-width: 640px) {
-  .mobileToolbar {
-    padding: 0 20px;
+  .mobileButton {
+    display: block;
+  }
+
+  .mobileButton > button {
+    width: 100%;
   }
 }

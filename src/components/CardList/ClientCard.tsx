@@ -18,7 +18,9 @@ const ClientCard: React.FC<ClientCardProps> = ({ client }) => {
         >
           {client.name}
         </span>
-        <span className={`${styles.text} ${styles.t12} ${styles.muted} ${styles.right}`}>
+        <span
+          className={`${styles.text} ${styles.t12} ${styles.muted} ${styles.right}`}
+        >
           {client.createdAt}
         </span>
       </div>
@@ -31,7 +33,9 @@ const ClientCard: React.FC<ClientCardProps> = ({ client }) => {
           </span>
         </div>
         <div className={`${styles.row} ${styles.rowStart} ${styles.gap16}`}>
-          <span className={`${styles.text} ${styles.t12} ${styles.blue} ${styles.flex1}`}>
+          <span
+            className={`${styles.text} ${styles.t12} ${styles.blue} ${styles.flex1}`}
+          >
             {client.email}
           </span>
           {client.website && <span className={t12dark}>{client.website}</span>}

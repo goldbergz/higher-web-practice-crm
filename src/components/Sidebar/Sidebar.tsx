@@ -229,7 +229,9 @@ const Sidebar: React.FC<SidebarProps> = ({ avatarSrc, accName }) => {
   if (isMobile) {
     if (isMobileMenuOpen) {
       return (
-        <aside className={`${styles.sidebar} ${styles.mobile} ${styles.mobileOpen}`}>
+        <aside
+          className={`${styles.sidebar} ${styles.mobile} ${styles.mobileOpen}`}
+        >
           <div className={styles.mobileHeader}>
             <Logo />
             <button

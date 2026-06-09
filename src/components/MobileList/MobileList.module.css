@@ -12,22 +12,23 @@
 
   .list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 2px;
-    margin: 20px;
     overflow-y: auto;
     flex: 1 1 0;
+    padding: 0 4px;
   }
 
   .card {
-    width: 335px;
+    width: 100%;
+    max-width: 640px;
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 12px;
     padding-bottom: 12px;
     background: white;
-    box-shadow: 0px 4px 8px #E5E7EB;
+    box-shadow: 0px 4px 8px #e5e7eb;
     overflow: hidden;
     border-radius: 8px;
     display: inline-flex;
@@ -71,22 +72,6 @@
   .wrapper {
     position: relative;
   }
-
-  .stickyButton {
-    position: sticky;
-    bottom: 0;
-    margin-top: 16px;
-    padding: 0 20px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to top, var(--color-gray-50, #F9FAFB) 80%, transparent);
-    z-index: 10;
-  }
-
-  .stickyButton > * {
-    width: 100%;
-  }
 }
 
 .clientCard {
@@ -103,7 +88,7 @@
 
 .clientName {
   flex: 1 1 0;
-  color: #1F2937;
+  color: #1f2937;
   font-size: 14px;
   font-family: Inter, sans-serif;
   font-weight: 700;
@@ -113,7 +98,7 @@
 
 .clientDate {
   text-align: right;
-  color: #6B7280;
+  color: #6b7280;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -140,7 +125,7 @@
 
 .clientPhone {
   flex: 1 1 0;
-  color: #1F2937;
+  color: #1f2937;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -149,7 +134,7 @@
 }
 
 .clientCompany {
-  color: #1F2937;
+  color: #1f2937;
   font-size: 14px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -159,7 +144,7 @@
 
 .clientEmail {
   flex: 1 1 0;
-  color: #3B82F6;
+  color: #3b82f6;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -168,7 +153,7 @@
 }
 
 .clientWebsite {
-  color: #1F2937;
+  color: #1f2937;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -177,7 +162,7 @@
 }
 
 .clientComment {
-  color: #6B7280;
+  color: #6b7280;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -200,7 +185,7 @@
 
 .dealTitle {
   flex: 1 1 0;
-  color: #1F2937;
+  color: #1f2937;
   font-size: 14px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -209,7 +194,7 @@
 }
 
 .dealStatus {
-  color: #3B82F6;
+  color: #3b82f6;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -227,7 +212,7 @@
 
 .dealClient {
   flex: 1 1 0;
-  color: #1F2937;
+  color: #1f2937;
   font-size: 14px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -237,13 +222,12 @@
 
 .dealAmount {
   text-align: right;
-  color: #1F2937;
+  color: #1f2937;
   font-size: 14px;
   font-family: Inter, sans-serif;
   font-weight: 700;
   line-height: 20px;
-  word-wrap:
-  break-word;
+  word-wrap: break-word;
 }
 
 .dealDescRow {
@@ -257,7 +241,7 @@
 
 .dealDesc {
   flex: 1 1 0;
-  color: #6B7280;
+  color: #6b7280;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -283,7 +267,7 @@
 }
 
 .dealDateLabel {
-  color: #9CA3AF;
+  color: #9ca3af;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -292,7 +276,7 @@
 }
 
 .dealDateValue {
-  color: #1F2937;
+  color: #1f2937;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -310,19 +294,19 @@
 }
 
 .statusTextNew {
-  color: var(--color-text-primary, #1F2937);
+  color: var(--color-text-primary, #1f2937);
 }
 
 .statusTextInProgress {
-  color: #3B82F6;
+  color: #3b82f6;
 }
 
 .statusTextCompleted {
-  color: #10B981;
+  color: #10b981;
 }
 
 .statusTextCancelled {
-  color: #F59E0B;
+  color: #f59e0b;
 }
 
 .taskCard {
@@ -348,7 +332,7 @@
 }
 
 .taskTitle {
-  color: #1F2937;
+  color: #1f2937;
   font-size: 14px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -357,7 +341,7 @@
 }
 
 .taskProject {
-  color: #1F2937;
+  color: #1f2937;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -367,7 +351,7 @@
 
 .taskStatusChip {
   width: 60px;
-  color: #1D4ED8;
+  color: #1d4ed8;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -386,7 +370,7 @@
 
 .taskDesc {
   flex: 1 1 0;
-  color: #6B7280;
+  color: #6b7280;
   font-size: 14px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -403,7 +387,7 @@
 }
 
 .taskDue {
-  color: #3B82F6;
+  color: #3b82f6;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -429,7 +413,7 @@
 
 .taskAssigneeName {
   align-self: stretch;
-  color: #1F2937;
+  color: #1f2937;
   font-size: 14px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -438,7 +422,7 @@
 }
 
 .taskAssigneeRole {
-  color: #6B7280;
+  color: #6b7280;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -449,7 +433,7 @@
 .taskDate {
   width: 116px;
   text-align: right;
-  color: #6B7280;
+  color: #6b7280;
   font-size: 12px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -458,17 +442,17 @@
 }
 
 .taskStatusNew {
-  color: var(--color-text-primary, #1F2937);
+  color: var(--color-text-primary, #1f2937);
 }
 
 .taskStatusInProgress {
-  color: #3B82F6;
+  color: #3b82f6;
 }
 
 .taskStatusCompleted {
-  color: #10B981;
+  color: #10b981;
 }
 
 .taskStatusOverdue {
-  color: #EF4444;
+  color: #ef4444;
 }

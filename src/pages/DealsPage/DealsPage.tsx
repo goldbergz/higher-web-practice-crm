@@ -40,7 +40,7 @@ const DealsPage: React.FC = () => {
   const [updateDeal] = useUpdateDealMutation();
   const [completeDeal] = useCompleteDealMutation();
 
-  const isMobile = useMediaQuery("(max-width: 1099px)");
+  const isMobile = useMediaQuery("(max-width: 640px)");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<DealDisplay> | null>(
@@ -266,61 +266,43 @@ const DealsPage: React.FC = () => {
         <h1 className={styles.title}>Сделки</h1>
       </div>
       <div className={styles.listSection}>
-        {!isMobile && (
-          <>
-            <div className={styles.toolbar}>
-              {newDealButton}
-              <div className={styles.searchInput}>
-                <input
-                  className={styles.searchField}
-                  placeholder="Искать"
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className={styles.listContainer}>
-              <DataList
-                columns={dealColumns}
-                getCellClassName={getCellClassName}
-                getItemId={(item) => item.id}
-                getRowClassName={getRowClassName}
-                items={displayDeals}
-                sortConfig={sortConfig}
-                onItemClick={handleRowClick}
-                onSort={handleSort}
+        <>
+          <div className={styles.toolbar}>
+            {!isMobile && newDealButton}
+            <div className={styles.searchInput}>
+              <input
+                className={styles.searchField}
+                placeholder="Искать"
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-          </>
-        )}
-        {isMobile && (
-          <>
-            <div className={styles.mobileToolbar}>
-              <div className={styles.mobileNewButton}>{newDealButton}</div>
-              <div className={styles.mobileSearchInput}>
-                <input
-                  className={styles.searchField}
-                  placeholder="Искать"
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
-            <MobileList
-              deals={displayDeals}
-              rawDeals={deals}
-              stickyButton={newDealButton}
-              type="deal"
-              onItemClick={(item) => {
-                if ("client" in item && "amount" in item) {
-                  handleRowClick(item as DealDisplay);
-                }
-              }}
+          </div>
+          <div className={styles.listContainer}>
+            <DataList
+              columns={dealColumns}
+              getCellClassName={getCellClassName}
+              getItemId={(item) => item.id}
+              getRowClassName={getRowClassName}
+              items={displayDeals}
+              sortConfig={sortConfig}
+              onItemClick={handleRowClick}
+              onSort={handleSort}
             />
-          </>
-        )}
+          </div>
+          <MobileList
+            deals={displayDeals}
+            rawDeals={deals}
+            type="deal"
+            onItemClick={(item) => {
+              if ("client" in item && "amount" in item) {
+                handleRowClick(item as DealDisplay);
+              }
+            }}
+          />
+          <div className={styles.mobileButton}>{newDealButton}</div>
+        </>
       </div>
       <Modal
         headerRight={

@@ -9,7 +9,6 @@ import type { Deal, DealDisplay } from "../../types/deal";
 import type { Task, TaskDisplay } from "../../types/task";
 import type React from "react";
 
-
 interface MobileCardListProps {
   type: "client" | "deal" | "task";
   clients?: Client[];
@@ -18,7 +17,6 @@ interface MobileCardListProps {
   tasks?: TaskDisplay[];
   rawTasks?: Task[];
   onItemClick?: (item: Client | DealDisplay | TaskDisplay) => void;
-  stickyButton?: React.ReactNode;
 }
 
 function getDealStatusClass(status: string): string {
@@ -205,9 +203,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, rawTask, onClick }) => {
       </div>
       <div className={styles.taskDueRow}>
         <div className={styles.taskDue}>
-          {rawTask?.dueDate
-            ? formatDueDate(rawTask.dueDate)
-            : "выполнить до —"}
+          {rawTask?.dueDate ? formatDueDate(rawTask.dueDate) : "выполнить до —"}
         </div>
       </div>
       <div className={styles.taskBottomRow}>
@@ -221,7 +217,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, rawTask, onClick }) => {
   );
 };
 
-
 const MobileList: React.FC<MobileCardListProps> = ({
   type,
   clients,
@@ -230,7 +225,6 @@ const MobileList: React.FC<MobileCardListProps> = ({
   tasks,
   rawTasks,
   onItemClick,
-  stickyButton,
 }) => {
   const rawDealMap = useMemo(() => {
     if (!rawDeals) return new Map<string, Deal>();
@@ -258,11 +252,7 @@ const MobileList: React.FC<MobileCardListProps> = ({
             <ClientCard
               key={client.id}
               client={client}
-              onClick={
-                onItemClick as
-                  | ((item: Client) => void)
-                  | undefined
-              }
+              onClick={onItemClick as ((item: Client) => void) | undefined}
             />
           ))}
         {type === "deal" &&
@@ -271,11 +261,7 @@ const MobileList: React.FC<MobileCardListProps> = ({
               key={deal.id}
               deal={deal}
               rawDeal={rawDealMap.get(deal.id)}
-              onClick={
-                onItemClick as
-                  | ((item: DealDisplay) => void)
-                  | undefined
-              }
+              onClick={onItemClick as ((item: DealDisplay) => void) | undefined}
             />
           ))}
         {type === "task" &&
@@ -284,17 +270,10 @@ const MobileList: React.FC<MobileCardListProps> = ({
               key={task.id}
               rawTask={rawTaskMap.get(task.id)}
               task={task}
-              onClick={
-                onItemClick as
-                  | ((item: TaskDisplay) => void)
-                  | undefined
-              }
+              onClick={onItemClick as ((item: TaskDisplay) => void) | undefined}
             />
           ))}
       </div>
-      {stickyButton && (
-        <div className={styles.stickyButton}>{stickyButton}</div>
-      )}
     </div>
   );
 };

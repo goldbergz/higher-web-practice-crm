@@ -38,7 +38,7 @@ const TasksPage: React.FC = () => {
   const [updateTask] = useUpdateTaskMutation();
   const [completeTask] = useCompleteTaskMutation();
 
-  const isMobile = useMediaQuery("(max-width: 1099px)");
+  const isMobile = useMediaQuery("(max-width: 640px)");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState<SortConfig<TaskDisplay> | null>(
@@ -247,61 +247,43 @@ const TasksPage: React.FC = () => {
         <h1 className={styles.title}>Задачи</h1>
       </div>
       <div className={styles.listSection}>
-        {!isMobile && (
-          <>
-            <div className={styles.toolbar}>
-              {newTaskButton}
-              <div className={styles.searchInput}>
-                <input
-                  className={styles.searchField}
-                  placeholder="Искать"
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
-            <div className={styles.listContainer}>
-              <DataList
-                columns={taskColumns}
-                getCellClassName={getCellClassName}
-                getItemId={(item) => item.id}
-                getRowClassName={getRowClassName}
-                items={displayTasks}
-                sortConfig={sortConfig}
-                onItemClick={handleRowClick}
-                onSort={handleSort}
+        <>
+          <div className={styles.toolbar}>
+            {!isMobile && newTaskButton}
+            <div className={styles.searchInput}>
+              <input
+                className={styles.searchField}
+                placeholder="Искать"
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-          </>
-        )}
-        {isMobile && (
-          <>
-            <div className={styles.mobileToolbar}>
-              <div className={styles.mobileNewButton}>{newTaskButton}</div>
-              <div className={styles.mobileSearchInput}>
-                <input
-                  className={styles.searchField}
-                  placeholder="Искать"
-                  type="search"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
-            <MobileList
-              rawTasks={tasks}
-              stickyButton={newTaskButton}
-              tasks={displayTasks}
-              type="task"
-              onItemClick={(item) => {
-                if ("assignee" in item && "dueDate" in item) {
-                  handleRowClick(item as TaskDisplay);
-                }
-              }}
+          </div>
+          <div className={styles.listContainer}>
+            <DataList
+              columns={taskColumns}
+              getCellClassName={getCellClassName}
+              getItemId={(item) => item.id}
+              getRowClassName={getRowClassName}
+              items={displayTasks}
+              sortConfig={sortConfig}
+              onItemClick={handleRowClick}
+              onSort={handleSort}
             />
-          </>
-        )}
+          </div>
+          <MobileList
+            rawTasks={tasks}
+            tasks={displayTasks}
+            type="task"
+            onItemClick={(item) => {
+              if ("assignee" in item && "dueDate" in item) {
+                handleRowClick(item as TaskDisplay);
+              }
+            }}
+          />
+          <div className={styles.mobileButton}>{newTaskButton}</div>
+        </>
       </div>
       <Modal
         headerRight={

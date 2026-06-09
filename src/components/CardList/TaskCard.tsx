@@ -9,7 +9,8 @@ interface TaskCardProps {
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ statusClassName, task }) => {
-  const dueDateText = task.dueDate === "—" ? "—" : `выполнить до ${task.dueDate}`;
+  const dueDateText =
+    task.dueDate === "—" ? "—" : `выполнить до ${task.dueDate}`;
 
   return (
     <div className={`${styles.card} ${styles.cardTask}`}>
@@ -31,7 +32,9 @@ const TaskCard: React.FC<TaskCardProps> = ({ statusClassName, task }) => {
 
       {task.description && (
         <div className={styles.row}>
-          <span className={`${styles.text} ${styles.t14} ${styles.muted} ${styles.flex1}`}>
+          <span
+            className={`${styles.text} ${styles.t14} ${styles.muted} ${styles.flex1}`}
+          >
             {task.description}
           </span>
         </div>

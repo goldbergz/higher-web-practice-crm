@@ -15,16 +15,22 @@ const DealCard: React.FC<DealCardProps> = ({ deal, statusClassName }) => {
   return (
     <div className={`${styles.card} ${styles.cardDeal}`}>
       <div className={styles.row}>
-        <span className={`${styles.text} ${styles.t14} ${styles.dark} ${styles.flex1}`}>
+        <span
+          className={`${styles.text} ${styles.t14} ${styles.dark} ${styles.flex1}`}
+        >
           {deal.title}
         </span>
-        <span className={`${styles.text} ${styles.t12} ${statusClassName ?? ""}`}>
+        <span
+          className={`${styles.text} ${styles.t12} ${statusClassName ?? ""}`}
+        >
           {deal.status}
         </span>
       </div>
 
       <div className={`${styles.row} ${styles.rowStart} ${styles.gap6}`}>
-        <span className={`${styles.text} ${styles.t14} ${styles.dark} ${styles.flex1}`}>
+        <span
+          className={`${styles.text} ${styles.t14} ${styles.dark} ${styles.flex1}`}
+        >
           {deal.client}
         </span>
         <span
@@ -36,7 +42,9 @@ const DealCard: React.FC<DealCardProps> = ({ deal, statusClassName }) => {
 
       {deal.description && (
         <div className={styles.row}>
-          <span className={`${styles.text} ${styles.t12} ${styles.muted} ${styles.flex1}`}>
+          <span
+            className={`${styles.text} ${styles.t12} ${styles.muted} ${styles.flex1}`}
+          >
             {deal.description}
           </span>
         </div>
@@ -47,9 +55,13 @@ const DealCard: React.FC<DealCardProps> = ({ deal, statusClassName }) => {
           <span className={t12faint}>создана</span>
           <span className={t12dark}>{deal.createdAt}</span>
         </div>
-        <div className={`${styles.col} ${styles.colAuto} ${styles.rowEnd} ${styles.gap2}`}>
+        <div
+          className={`${styles.col} ${styles.colAuto} ${styles.rowEnd} ${styles.gap2}`}
+        >
           <span className={t12faint}>завершена</span>
-          <span className={`${t12dark} ${styles.right}`}>{deal.completedAt}</span>
+          <span className={`${t12dark} ${styles.right}`}>
+            {deal.completedAt}
+          </span>
         </div>
       </div>
     </div>

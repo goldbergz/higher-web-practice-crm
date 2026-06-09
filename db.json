@@ -57,6 +57,16 @@
       "createdAt": "2026-06-01T14:00:00Z",
       "deleted": false,
       "createdBy": "2c4c0c9a-6b1e-4f7c-9a6b-1f9a7a2e1001"
+    },
+    {
+      "name": "d",
+      "phone": "+79115622915",
+      "email": "povesttvoeiyunosti@mail.ru",
+      "company": "d",
+      "createdBy": "426f5ff4-0610-4ade-9b1e-ec734d3107ea",
+      "id": "7d27de19-a902-4912-8fb1-c133c33a6d26",
+      "deleted": false,
+      "createdAt": "2026-06-09T08:59:00.261Z"
     }
   ],
   "deals": [
