@@ -44,6 +44,37 @@
   flex: 1;
 }
 
+@media (max-width: 599px) {
+  .form {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: 40px;
+    min-height: 0;
+  }
+
+  .form > :first-child {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 16px;
+  }
+
+  .actions > button:first-child {
+    flex: none;
+  }
+
+  .actions > button {
+    width: 100%;
+  }
+}
+
 @media (max-width: 640px) {
   .fieldRow {
     align-items: stretch;

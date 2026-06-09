@@ -178,7 +178,6 @@
   word-wrap: break-word;
 }
 
-/* Mobile (screen width < 641px) */
 .mobile {
   background: transparent;
   border-right: none;
@@ -220,4 +219,12 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+@media (max-width: 640px) {
+
+.item {
+
+  padding: 8px 0;
+}
 }

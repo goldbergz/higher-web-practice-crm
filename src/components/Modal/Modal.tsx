@@ -56,9 +56,33 @@ const Modal: React.FC<ModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.header}>
-          <h2 className={styles.title} id="modal-title">
-            {title}
-          </h2>
+          <div className={styles.headerTopRow}>
+            <button
+              type="button"
+              className={styles.backButton}
+              onClick={onClose}
+              aria-label="Закрыть"
+            >
+              <svg
+                width="18"
+                height="16"
+                viewBox="0 0 18 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.08333 4L0.75 8L4.08333 12M0.75 8H16.75"
+                  stroke="#1F2937"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <h2 className={styles.title} id="modal-title">
+              {title}
+            </h2>
+          </div>
           {headerRight && (
             <span className={styles.headerRight}>{headerRight}</span>
           )}
