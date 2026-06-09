@@ -14,8 +14,11 @@ import DataList from "../../components/DataList/DataList";
 import ClientForm from "../../components/Forms/ClientForm";
 import DealForm from "../../components/Forms/DealForm";
 import TaskForm from "../../components/Forms/TaskForm";
+import MobileDataList from "../../components/MobileDataList/MobileDataList";
+import MobileDataListRow from "../../components/MobileDataList/MobileDataListRow";
 import Modal from "../../components/Modal/Modal";
 import { formatDueDate } from "../../helpers/formaters";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { useAppSelector } from "../../store";
 import { selectCurrentUser } from "../../store/userSlice";
 import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
@@ -28,12 +31,12 @@ import { getLastTasks } from "../../utils/dashboards/tasksDashboard";
 import styles from "./MainPage.module.css";
 
 import type { ColumnConfig } from "../../components/DataList/types";
-import type { DealDisplay } from "../../types/deal";
-import type { Task } from "../../types/task";
+import type { Deal, Task } from "../../types";
 import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type { TaskFormValues } from "../../utils/schemas/taskSchema";
 import type React from "react";
+import type { DealDisplay } from "../../types/deal";
 
 type StatsRow = {
   id: string;
@@ -47,6 +50,15 @@ type StatsRow = {
 };
 
 type ModalType = "client" | "deal" | "task" | null;
+
+type MainTab = "home" | "clients" | "deals" | "tasks";
+
+const MAIN_TABS: { label: string; value: MainTab }[] = [
+  { label: "Главная", value: "home" },
+  { label: "Клиенты", value: "clients" },
+  { label: "Сделки", value: "deals" },
+  { label: "Задачи", value: "tasks" },
+];
 
 const statsColumns: ColumnConfig<StatsRow>[] = [
   {
@@ -153,6 +165,58 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
   },
 ];
 
+const getDealStatusColor = (status: string): string => {
+  switch (status) {
+    case "new":
+      return "#1F2937";
+    case "in_progress":
+      return "#3B82F6";
+    case "completed":
+      return "#10B981";
+    case "cancelled":
+      return "#F59E0B";
+    default:
+      return "#1F2937";
+  }
+};
+
+const getDealCardBackground = (status: string): string => {
+  switch (status) {
+    case "new":
+      return "#EFF6FF";
+    case "completed":
+      return "#F0FDF4";
+    case "cancelled":
+      return "#FFF7ED";
+    default:
+      return "#FFFFFF";
+  }
+};
+
+const getTaskCardBackground = (status: string): string => {
+  switch (status) {
+    case "new":
+      return "#EFF6FF";
+    case "completed":
+      return "#F0FDF4";
+    default:
+      return "#FFFFFF";
+  }
+};
+
+const getTaskStatusColor = (status: string): string => {
+  switch (status) {
+    case "new":
+      return "#1F2937";
+    case "in_progress":
+      return "#3B82F6";
+    case "completed":
+      return "#10B981";
+    default:
+      return "#1F2937";
+  }
+};
+
 const MainPage: React.FC = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const { data: clients = [] } = useGetClientsQuery();
@@ -164,6 +228,9 @@ const MainPage: React.FC = () => {
   const [createTask] = useCreateTaskMutation();
 
   const [modalType, setModalType] = useState<ModalType>(null);
+  const [activeTab, setActiveTab] = useState<MainTab>("home");
+
+  const isMobile = useMediaQuery("(max-width: 999px)");
 
   const userId = currentUser?.id ?? "";
   const activeDeals = useMemo(
@@ -352,17 +419,8 @@ const MainPage: React.FC = () => {
     [clients],
   );
 
-  return (
-    <section className={styles.page}>
-      <header className={styles.greeting}>
-        <h1 className={styles.greetingTitle}>
-          Добро пожаловать, {currentUser?.name ?? "Пользователь"}!
-        </h1>
-        <p className={styles.greetingSubtitle}>
-          Посмотрите сводную информацию по вашим клиентам, сделкам и задачам
-        </p>
-      </header>
-
+  const renderDesktopContent = (): React.ReactElement => (
+    <>
       <div className={styles.statsSection}>
         <DataList
           columns={statsColumns}
@@ -451,6 +509,261 @@ const MainPage: React.FC = () => {
           Новая задача
         </Button>
       </div>
+    </>
+  );
+
+  const renderMobileHomeTab = (): React.ReactElement => (
+    <div className={styles.mobileTabContent}>
+      <MobileDataList
+        getItemId={(item: StatsRow) => item.id}
+        items={statsItems}
+        renderItem={(item) => (
+          <div className={styles.mobileStatsCard}>
+            <div className={styles.mobileStatsTitle}>{item.label}</div>
+            <div className={styles.mobileStatsBody}>
+              <div className={styles.mobileStatsTotal}>
+                <span className={styles.mobileStatsTotalValue}>
+                  {item.total}
+                </span>
+                <span className={styles.mobileStatsTotalLabel}>на сегодня</span>
+              </div>
+              <div className={styles.mobileStatsIncrements}>
+                <div className={styles.mobileStatsIncrement}>
+                  <span className={styles.mobileStatsIncrementLabel}>
+                    за сегодня
+                  </span>
+                  <span className={styles.mobileStatsIncrementValue}>
+                    {item.todayNew}
+                  </span>
+                </div>
+                <div className={styles.mobileStatsIncrement}>
+                  <span className={styles.mobileStatsIncrementLabel}>
+                    за неделю
+                  </span>
+                  <span className={styles.mobileStatsIncrementValue}>
+                    {item.week}
+                  </span>
+                </div>
+              </div>
+              <div className={styles.mobileStatsIncrements}>
+                <div className={styles.mobileStatsIncrement}>
+                  <span className={styles.mobileStatsIncrementLabel}>
+                    за месяц
+                  </span>
+                  <span className={styles.mobileStatsIncrementValue}>
+                    {item.month}
+                  </span>
+                </div>
+                <div className={styles.mobileStatsIncrement}>
+                  <span className={styles.mobileStatsIncrementLabel}>
+                    за квартал
+                  </span>
+                  <span className={styles.mobileStatsIncrementValue}>
+                    {item.quarter}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      />
+    </div>
+  );
+
+  const renderMobileClientsTab = (): React.ReactElement => (
+    <div className={styles.mobileTabContent}>
+      <MobileDataList
+        getItemId={(item) => item.id}
+        items={topClients}
+        renderItem={(client) => (
+          <div className={styles.mobileClientCard}>
+            <div className={styles.topClientInfo}>
+              <span className={styles.topClientName}>{client.name}</span>
+              <span className={styles.topClientCompany}>
+                &laquo;{client.company}&raquo;
+              </span>
+            </div>
+            <div className={styles.topClientDeals}>
+              <span className={styles.topClientDealsCount}>
+                {client.dealsCount}
+              </span>
+              <span className={styles.topClientDealsLabel}>сделок</span>
+            </div>
+          </div>
+        )}
+      />
+      <div className={styles.mobileTabButton}>
+        <Button
+          size="md"
+          variant="primary"
+          onClick={() => handleOpenModal("client")}
+        >
+          Новый клиент
+        </Button>
+      </div>
+    </div>
+  );
+
+  const renderMobileDealsTab = (): React.ReactElement => (
+    <div className={styles.mobileTabContent}>
+      <MobileDataList
+        getItemId={(item) => item.id}
+        items={topActiveDeals}
+        renderItem={(dealDisplay) => {
+          const deal: Deal | undefined = deals.find(
+            (d) => d.id === dealDisplay.id,
+          );
+          const status = deal?.status ?? "new";
+          const bg = getDealCardBackground(status);
+          return (
+            <MobileDataListRow>
+              <div style={{ padding: "8px 12px", background: bg }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <span className={styles.mobileDealTitle}>
+                    {dealDisplay.title}
+                  </span>
+                  <span className={styles.mobileDealClient}>
+                    {dealDisplay.client}
+                  </span>
+                  <span className={styles.mobileDealAmount}>
+                    {dealDisplay.amount}
+                  </span>
+                  <div className={styles.mobileDealFooter}>
+                    <span style={{ color: getDealStatusColor(status) }}>
+                      {dealDisplay.status}
+                    </span>
+                    <span className={styles.mobileDealDate}>
+                      {dealDisplay.createdAt}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </MobileDataListRow>
+          );
+        }}
+      />
+      <div className={styles.mobileTabButton}>
+        <Button
+          size="md"
+          variant="primary"
+          onClick={() => handleOpenModal("deal")}
+        >
+          Новая сделка
+        </Button>
+      </div>
+    </div>
+  );
+
+  const renderMobileTasksTab = (): React.ReactElement => (
+    <div className={styles.mobileTabContent}>
+      <MobileDataList
+        getItemId={(item) => item.id}
+        items={lastTasks}
+        renderItem={(task) => {
+          const bg = getTaskCardBackground(task.status);
+          return (
+            <MobileDataListRow>
+              <div style={{ padding: "12px 16px", background: bg }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div className={styles.taskCardInfo}>
+                    <span className={styles.taskCardTitle}>{task.title}</span>
+                    <div className={styles.taskCardDeal}>
+                      <span className={styles.taskCardDealLabel}>сделка</span>
+                      <span className={styles.taskCardDealTitle}>
+                        {getDealTitle(task.dealId)}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.taskCardFooter}>
+                    <span className={styles.taskCardDueDate}>
+                      {formatDueDate(task.dueDate)}
+                    </span>
+                    <span
+                      style={{ color: getTaskStatusColor(task.status) }}
+                    >
+                      {TASK_STATUS_LABELS[task.status] ?? task.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </MobileDataListRow>
+          );
+        }}
+      />
+      <div className={styles.mobileTabButton}>
+        <Button
+          size="md"
+          variant="primary"
+          onClick={() => handleOpenModal("task")}
+        >
+          Новая задача
+        </Button>
+      </div>
+    </div>
+  );
+
+  const renderMobileContent = (): React.ReactElement => {
+    switch (activeTab) {
+      case "home":
+        return renderMobileHomeTab();
+      case "clients":
+        return renderMobileClientsTab();
+      case "deals":
+        return renderMobileDealsTab();
+      case "tasks":
+        return renderMobileTasksTab();
+    }
+  };
+
+  return (
+    <section className={styles.page}>
+      <header className={styles.greeting}>
+        <h1 className={styles.greetingTitle}>
+          Добро пожаловать, {currentUser?.name ?? "Пользователь"}!
+        </h1>
+        <p className={styles.greetingSubtitle}>
+          Посмотрите сводную информацию по вашим клиентам, сделкам и задачам
+        </p>
+      </header>
+
+      {isMobile ? (
+        <>
+          <nav className={styles.mobileTabs}>
+            {MAIN_TABS.map((tab) => (
+              <button
+                key={tab.value}
+                className={styles.mobileTab}
+                type="button"
+                onClick={() => setActiveTab(tab.value)}
+              >
+                <span
+                  className={[
+                    styles.mobileTabLabel,
+                    activeTab === tab.value ? styles.mobileTabLabelActive : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {tab.label}
+                </span>
+                <div
+                  className={[
+                    styles.mobileTabIndicator,
+                    activeTab === tab.value
+                      ? styles.mobileTabIndicatorActive
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                />
+              </button>
+            ))}
+          </nav>
+          {renderMobileContent()}
+        </>
+      ) : (
+        renderDesktopContent()
+      )}
 
       <Modal
         isOpen={modalType === "client"}

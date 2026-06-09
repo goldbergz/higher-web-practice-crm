@@ -3,12 +3,15 @@ import { useMemo, useState } from "react";
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import Dropdown from "../../components/Dropdown/Dropdown";
+import FlexContainer from "../../components/FlexContainer/FlexContainer";
+import MobileDataListRow from "../../components/MobileDataList/MobileDataListRow";
 import Pagination from "../../components/Pagination/Pagination";
 import { getTotalPages, paginateData } from "../../helpers/pagination";
 import {
   exportOverdueTasksReportPdf,
   exportOverdueTasksReportXlsx,
 } from "../../helpers/print";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { useAppSelector } from "../../store";
 import { selectTasks } from "../../store/tasksSlice";
 import { selectUsers } from "../../store/userSlice";
@@ -16,7 +19,6 @@ import {
   OVERDUE_TASKS_REPORT_COLUMNS,
   PERIOD_OPTIONS,
   REPORTS_PAGE_SIZE,
-  VIEW_OPTIONS,
 } from "../../utils/constants/reportConstants";
 import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
 import {
@@ -33,9 +35,9 @@ import type React from "react";
 const TasksReport: React.FC = () => {
   const tasks = useAppSelector(selectTasks);
   const users = useAppSelector(selectUsers);
+  const isMobile = useMediaQuery("(max-width: 999px)");
 
   const [overduePeriod, setOverduePeriod] = useState<ReportPeriod>("week");
-  const [overdueView, setOverdueView] = useState("list");
   const [overduePage, setOverduePage] = useState(1);
   const [overdueSort, setOverdueSort] =
     useState<SortConfig<OverdueTaskReportRow> | null>(null);
@@ -97,24 +99,55 @@ const TasksReport: React.FC = () => {
   const handleOverdueExportXlsx = () =>
     exportOverdueTasksReportXlsx(sortedOverdueTasksData);
 
-  return (
-    <div className={styles.content}>
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Просроченные задачи</h2>
-        <div className={styles.toolbar}>
-          <div className={styles.toolbarLeft}>
-            <Dropdown
-              options={PERIOD_OPTIONS}
-              value={overduePeriod}
-              onChange={handleOverduePeriodChange}
-            />
-            <Dropdown
-              options={VIEW_OPTIONS}
-              value={overdueView}
-              onChange={setOverdueView}
-            />
-          </div>
-          <div className={styles.toolbarRight}>
+  const renderOverdueReport = (): React.ReactElement => (
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>Просроченные задачи</h2>
+      {isMobile ? (
+        <>
+          <Dropdown
+            options={PERIOD_OPTIONS}
+            value={overduePeriod}
+            onChange={handleOverduePeriodChange}
+          />
+          {paginatedOverdueTasksData.length > 0 ? (
+            <FlexContainer gap="8px">
+              {paginatedOverdueTasksData.map((item) => (
+                <MobileDataListRow key={item.taskId}>
+                  <div className={styles.mobileOverdueCard}>
+                    <div className={styles.mobileOverdueTopRow}>
+                      <span className={styles.mobileOverdueId}>
+                        id {item.taskId}
+                      </span>
+                      <span className={styles.mobileOverdueStatus}>
+                        {TASK_STATUS_LABELS[item.status] ?? item.status}
+                      </span>
+                    </div>
+                    <span className={styles.mobileOverdueTitle}>
+                      {item.title}
+                    </span>
+                    <div className={styles.mobileOverdueBottomRow}>
+                      <div className={styles.mobileOverdueAssignee}>
+                        <span className={styles.mobileOverdueAssigneeName}>
+                          {item.assigneeName}
+                        </span>
+                        <span className={styles.mobileOverdueAssigneeLabel}>
+                          Ответственный
+                        </span>
+                      </div>
+                      <span className={styles.mobileOverdueDate}>
+                        {item.dueDate}
+                      </span>
+                    </div>
+                  </div>
+                </MobileDataListRow>
+              ))}
+            </FlexContainer>
+          ) : (
+            <p className={styles.placeholder}>
+              Нет просроченных задач за выбранный период
+            </p>
+          )}
+          <div className={styles.mobileExportButtons}>
             <Button
               size="md"
               variant="secondary"
@@ -130,29 +163,64 @@ const TasksReport: React.FC = () => {
               Экспорт в XLSX
             </Button>
           </div>
-        </div>
-        {paginatedOverdueTasksData.length > 0 ? (
-          <DataList
-            columns={overdueColumnsWithRender}
-            getItemId={(item) => item.taskId}
-            getRowClassName={() => styles.rowOverdue}
-            items={paginatedOverdueTasksData}
-            sortConfig={overdueSort}
-            onSort={handleOverdueSort}
+          <Pagination
+            currentPage={overduePage}
+            totalPages={overdueTotalPages}
+            onPageChange={setOverduePage}
           />
-        ) : (
-          <p className={styles.placeholder}>
-            Нет просроченных задач за выбранный период
-          </p>
-        )}
-        <Pagination
-          currentPage={overduePage}
-          totalPages={overdueTotalPages}
-          onPageChange={setOverduePage}
-        />
-      </section>
-    </div>
+        </>
+      ) : (
+        <>
+          <div className={styles.toolbar}>
+            <div className={styles.toolbarLeft}>
+              <Dropdown
+                options={PERIOD_OPTIONS}
+                value={overduePeriod}
+                onChange={handleOverduePeriodChange}
+              />
+            </div>
+            <div className={styles.toolbarRight}>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleOverdueExportPdf}
+              >
+                Экспорт в PDF
+              </Button>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleOverdueExportXlsx}
+              >
+                Экспорт в XLSX
+              </Button>
+            </div>
+          </div>
+          {paginatedOverdueTasksData.length > 0 ? (
+            <DataList
+              columns={overdueColumnsWithRender}
+              getItemId={(item) => item.taskId}
+              getRowClassName={() => styles.rowOverdue}
+              items={paginatedOverdueTasksData}
+              sortConfig={overdueSort}
+              onSort={handleOverdueSort}
+            />
+          ) : (
+            <p className={styles.placeholder}>
+              Нет просроченных задач за выбранный период
+            </p>
+          )}
+          <Pagination
+            currentPage={overduePage}
+            totalPages={overdueTotalPages}
+            onPageChange={setOverduePage}
+          />
+        </>
+      )}
+    </section>
   );
+
+  return <div className={styles.content}>{renderOverdueReport()}</div>;
 };
 
 export default TasksReport;

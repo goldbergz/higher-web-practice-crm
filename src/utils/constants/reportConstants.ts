@@ -10,10 +10,26 @@ import type {
 
 export type ReportTab = "sales" | "clients" | "tasks";
 
-export const REPORT_TABS: { label: string; value: ReportTab }[] = [
-  { label: "Отчёты по продажам", value: "sales" },
-  { label: "Отчёты по клиентам", value: "clients" },
-  { label: "Отчёты по задачам", value: "tasks" },
+export const REPORT_TABS: {
+  label: string;
+  mobileLabel: string;
+  value: ReportTab;
+}[] = [
+  {
+    label: "Отчёты по продажам",
+    mobileLabel: "По продажам",
+    value: "sales",
+  },
+  {
+    label: "Отчёты по клиентам",
+    mobileLabel: "По клиентам",
+    value: "clients",
+  },
+  {
+    label: "Отчёты по задачам",
+    mobileLabel: "По задачам",
+    value: "tasks",
+  },
 ];
 
 export const PERIOD_OPTIONS: DropdownOption[] = [

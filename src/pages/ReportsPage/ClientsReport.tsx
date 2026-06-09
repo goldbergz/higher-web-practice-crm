@@ -3,6 +3,8 @@ import { useMemo, useState } from "react";
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import Dropdown from "../../components/Dropdown/Dropdown";
+import FlexContainer from "../../components/FlexContainer/FlexContainer";
+import MobileDataListRow from "../../components/MobileDataList/MobileDataListRow";
 import Pagination from "../../components/Pagination/Pagination";
 import { getTotalPages, paginateData } from "../../helpers/pagination";
 import {
@@ -11,6 +13,7 @@ import {
   exportNewClientsReportPdf,
   exportNewClientsReportXlsx,
 } from "../../helpers/print";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { useAppSelector } from "../../store";
 import { selectClients } from "../../store/clientsSlice";
 import { selectDeals } from "../../store/dealsSlice";
@@ -20,7 +23,6 @@ import {
   NEW_CLIENTS_REPORT_COLUMNS,
   PERIOD_OPTIONS,
   REPORTS_PAGE_SIZE,
-  VIEW_OPTIONS,
 } from "../../utils/constants/reportConstants";
 import {
   getClientActivityReport,
@@ -43,13 +45,12 @@ const ClientsReport: React.FC = () => {
   const clients = useAppSelector(selectClients);
   const deals = useAppSelector(selectDeals);
   const tasks = useAppSelector(selectTasks);
+  const isMobile = useMediaQuery("(max-width: 999px)");
 
   const [newClientsPeriod, setNewClientsPeriod] =
     useState<ReportPeriod>("week");
   const [activeClientsPeriod, setActiveClientsPeriod] =
     useState<ReportPeriod>("week");
-  const [newClientsView, setNewClientsView] = useState("list");
-  const [activityView, setActivityView] = useState("list");
   const [newClientsPage, setNewClientsPage] = useState(1);
   const [activityPage, setActivityPage] = useState(1);
   const [newClientsSort, setNewClientsSort] =
@@ -135,24 +136,53 @@ const ClientsReport: React.FC = () => {
   const handleActivityExportXlsx = () =>
     exportClientActivityReportXlsx(sortedClientActivityData);
 
-  return (
-    <div className={styles.content}>
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Новые клиенты</h2>
-        <div className={styles.toolbar}>
-          <div className={styles.toolbarLeft}>
-            <Dropdown
-              options={PERIOD_OPTIONS}
-              value={newClientsPeriod}
-              onChange={handleNewClientsPeriodChange}
-            />
-            <Dropdown
-              options={VIEW_OPTIONS}
-              value={newClientsView}
-              onChange={setNewClientsView}
-            />
-          </div>
-          <div className={styles.toolbarRight}>
+  const renderNewClientsReport = (): React.ReactElement => (
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>Новые клиенты</h2>
+      {isMobile ? (
+        <>
+          <Dropdown
+            options={PERIOD_OPTIONS}
+            value={newClientsPeriod}
+            onChange={handleNewClientsPeriodChange}
+          />
+          {paginatedNewClientsData.length > 0 ? (
+            <FlexContainer gap="8px">
+              {paginatedNewClientsData.map((item) => (
+                <MobileDataListRow key={item.clientId}>
+                  <div className={styles.mobileNewClientCard}>
+                    <div className={styles.mobileNewClientTopRow}>
+                      <div className={styles.mobileNewClientField}>
+                        <span className={styles.mobileFieldLabel}>id</span>
+                        <span className={styles.mobileFieldValue}>
+                          {item.clientId}
+                        </span>
+                      </div>
+                      <div className={styles.mobileNewClientField}>
+                        <span className={styles.mobileFieldLabel}>Клиент</span>
+                        <span className={styles.mobileFieldValue}>
+                          {item.clientName}
+                        </span>
+                      </div>
+                      <span className={styles.mobileNewClientCompany}>
+                        &laquo;{item.company}&raquo;
+                      </span>
+                    </div>
+                    <div className={styles.mobileNewClientBottomRow}>
+                      <span className={styles.mobileNewClientDate}>
+                        {item.createdAt}
+                      </span>
+                    </div>
+                  </div>
+                </MobileDataListRow>
+              ))}
+            </FlexContainer>
+          ) : (
+            <p className={styles.placeholder}>
+              Нет новых клиентов за выбранный период
+            </p>
+          )}
+          <div className={styles.mobileExportButtons}>
             <Button
               size="md"
               variant="secondary"
@@ -168,43 +198,109 @@ const ClientsReport: React.FC = () => {
               Экспорт в XLSX
             </Button>
           </div>
-        </div>
-        {paginatedNewClientsData.length > 0 ? (
-          <DataList
-            columns={NEW_CLIENTS_REPORT_COLUMNS}
-            getItemId={(item) => item.clientId}
-            items={paginatedNewClientsData}
-            sortConfig={newClientsSort}
-            onSort={handleNewClientsSort}
+          <Pagination
+            currentPage={newClientsPage}
+            totalPages={newClientsTotalPages}
+            onPageChange={setNewClientsPage}
           />
-        ) : (
-          <p className={styles.placeholder}>
-            Нет новых клиентов за выбранный период
-          </p>
-        )}
-        <Pagination
-          currentPage={newClientsPage}
-          totalPages={newClientsTotalPages}
-          onPageChange={setNewClientsPage}
-        />
-      </section>
-
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Активность клиентов</h2>
-        <div className={styles.toolbar}>
-          <div className={styles.toolbarLeft}>
-            <Dropdown
-              options={PERIOD_OPTIONS}
-              value={activeClientsPeriod}
-              onChange={handleActivityClientsPeriodChange}
-            />
-            <Dropdown
-              options={VIEW_OPTIONS}
-              value={activityView}
-              onChange={setActivityView}
-            />
+        </>
+      ) : (
+        <>
+          <div className={styles.toolbar}>
+            <div className={styles.toolbarLeft}>
+              <Dropdown
+                options={PERIOD_OPTIONS}
+                value={newClientsPeriod}
+                onChange={handleNewClientsPeriodChange}
+              />
+            </div>
+            <div className={styles.toolbarRight}>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleNewClientsExportPdf}
+              >
+                Экспорт в PDF
+              </Button>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleNewClientsExportXlsx}
+              >
+                Экспорт в XLSX
+              </Button>
+            </div>
           </div>
-          <div className={styles.toolbarRight}>
+          {paginatedNewClientsData.length > 0 ? (
+            <DataList
+              columns={NEW_CLIENTS_REPORT_COLUMNS}
+              getItemId={(item) => item.clientId}
+              items={paginatedNewClientsData}
+              sortConfig={newClientsSort}
+              onSort={handleNewClientsSort}
+            />
+          ) : (
+            <p className={styles.placeholder}>
+              Нет новых клиентов за выбранный период
+            </p>
+          )}
+          <Pagination
+            currentPage={newClientsPage}
+            totalPages={newClientsTotalPages}
+            onPageChange={setNewClientsPage}
+          />
+        </>
+      )}
+    </section>
+  );
+
+  const renderActivityReport = (): React.ReactElement => (
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>Активность клиентов</h2>
+      {isMobile ? (
+        <>
+          <Dropdown
+            options={PERIOD_OPTIONS}
+            value={activeClientsPeriod}
+            onChange={handleActivityClientsPeriodChange}
+          />
+          {paginatedClientActivityData.length > 0 ? (
+            <FlexContainer gap="8px">
+              {paginatedClientActivityData.map((item) => (
+                <MobileDataListRow key={item.clientId}>
+                  <div className={styles.mobileActivityCard}>
+                    <div className={styles.mobileActivityField}>
+                      <span className={styles.mobileFieldLabel}>id</span>
+                      <span className={styles.mobileFieldValue}>
+                        {item.clientId}
+                      </span>
+                    </div>
+                    <span className={styles.mobileFieldLabel}>Клиент</span>
+                    <span className={styles.mobileActivityName}>
+                      {item.clientName}
+                    </span>
+                    <div className={styles.mobileActivityField}>
+                      <span className={styles.mobileFieldValue}>
+                        {item.dealsCount}
+                      </span>
+                      <span className={styles.mobileFieldLabel}>сделки</span>
+                    </div>
+                    <div className={styles.mobileActivityField}>
+                      <span className={styles.mobileFieldValue}>
+                        {item.completedTasks}
+                      </span>
+                      <span className={styles.mobileFieldLabel}>задач</span>
+                    </div>
+                  </div>
+                </MobileDataListRow>
+              ))}
+            </FlexContainer>
+          ) : (
+            <p className={styles.placeholder}>
+              Нет данных по активности клиентов
+            </p>
+          )}
+          <div className={styles.mobileExportButtons}>
             <Button
               size="md"
               variant="secondary"
@@ -220,26 +316,66 @@ const ClientsReport: React.FC = () => {
               Экспорт в XLSX
             </Button>
           </div>
-        </div>
-        {paginatedClientActivityData.length > 0 ? (
-          <DataList
-            columns={CLIENT_ACTIVITY_REPORT_COLUMNS}
-            getItemId={(item) => item.clientId}
-            items={paginatedClientActivityData}
-            sortConfig={activitySort}
-            onSort={handleActivitySort}
+          <Pagination
+            currentPage={activityPage}
+            totalPages={clientActivityTotalPages}
+            onPageChange={setActivityPage}
           />
-        ) : (
-          <p className={styles.placeholder}>
-            Нет данных по активности клиентов
-          </p>
-        )}
-        <Pagination
-          currentPage={activityPage}
-          totalPages={clientActivityTotalPages}
-          onPageChange={setActivityPage}
-        />
-      </section>
+        </>
+      ) : (
+        <>
+          <div className={styles.toolbar}>
+            <div className={styles.toolbarLeft}>
+              <Dropdown
+                options={PERIOD_OPTIONS}
+                value={activeClientsPeriod}
+                onChange={handleActivityClientsPeriodChange}
+              />
+            </div>
+            <div className={styles.toolbarRight}>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleActivityExportPdf}
+              >
+                Экспорт в PDF
+              </Button>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleActivityExportXlsx}
+              >
+                Экспорт в XLSX
+              </Button>
+            </div>
+          </div>
+          {paginatedClientActivityData.length > 0 ? (
+            <DataList
+              columns={CLIENT_ACTIVITY_REPORT_COLUMNS}
+              getItemId={(item) => item.clientId}
+              items={paginatedClientActivityData}
+              sortConfig={activitySort}
+              onSort={handleActivitySort}
+            />
+          ) : (
+            <p className={styles.placeholder}>
+              Нет данных по активности клиентов
+            </p>
+          )}
+          <Pagination
+            currentPage={activityPage}
+            totalPages={clientActivityTotalPages}
+            onPageChange={setActivityPage}
+          />
+        </>
+      )}
+    </section>
+  );
+
+  return (
+    <div className={styles.content}>
+      {renderNewClientsReport()}
+      {renderActivityReport()}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { REPORT_TABS } from "../../utils/constants/reportConstants";
 
 import ClientsReport from "./ClientsReport";
@@ -12,6 +13,7 @@ import type React from "react";
 
 const ReportsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ReportTab>("sales");
+  const isMobile = useMediaQuery("(max-width: 999px)");
 
   return (
     <div className={styles.page}>
@@ -34,7 +36,7 @@ const ReportsPage: React.FC = () => {
                 .filter(Boolean)
                 .join(" ")}
             >
-              {tab.label}
+              {isMobile ? tab.mobileLabel : tab.label}
             </span>
             <div
               className={[

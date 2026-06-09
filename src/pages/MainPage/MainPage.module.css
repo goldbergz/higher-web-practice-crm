@@ -402,6 +402,201 @@
   align-self: flex-start;
 }
 
+.mobileTabs {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.mobileTab {
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.mobileTabLabel {
+  color: #6b7280;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.75rem;
+  padding: 0 8px;
+}
+
+.mobileTabLabelActive {
+  color: #2563eb;
+}
+
+.mobileTabIndicator {
+  border-radius: 2px;
+  height: 2px;
+  margin-top: 2px;
+  width: 100%;
+}
+
+.mobileTabIndicatorActive {
+  background: #2563eb;
+}
+
+.mobileTabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mobileTabButton {
+  align-self: flex-start;
+}
+
+.mobileStatsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 12px;
+}
+
+.mobileStatsTitle {
+  align-self: stretch;
+  color: #1f2937;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.mobileStatsBody {
+  align-self: stretch;
+  height: 48px;
+  justify-content: space-between;
+  align-items: flex-end;
+  display: inline-flex;
+}
+
+.mobileStatsTotal {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.mobileStatsTotalValue {
+  color: #3b82f6;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  word-wrap: break-word;
+}
+
+.mobileStatsTotalLabel {
+  color: #6b7280;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.mobileStatsIncrements {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.mobileStatsIncrement {
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 2px;
+  display: inline-flex;
+}
+
+.mobileStatsIncrementLabel {
+  color: #6b7280;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.mobileStatsIncrementValue {
+  color: #10b981;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.mobileClientCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 80px;
+  padding: 12px 16px;
+  gap: 8px;
+}
+
+.mobileDealTitle {
+  color: #1f2937;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.mobileDealClient {
+  color: #6b7280;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.mobileDealAmount {
+  color: #1f2937;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  word-wrap: break-word;
+}
+
+.mobileDealFooter {
+  align-self: stretch;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  display: inline-flex;
+}
+
+.mobileDealFooter span:first-child {
+  flex: 1 1 0;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
+.mobileDealDate {
+  color: #6b7280;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  word-wrap: break-word;
+}
+
 @media (max-width: 1024px) {
   .topClientsRow {
     flex-wrap: wrap;
@@ -421,6 +616,14 @@
 @media (max-width: 768px) {
   .page {
     padding: 16px;
+  }
+
+  .greeting {
+    align-items: center;
+  }
+
+  .greetingSubtitle {
+    text-align: center;
   }
 
   .statsHeader {
@@ -461,3 +664,10 @@
     min-width: unset;
   }
 }
+
+@media (max-width: 400px) {
+  .mobileTabs {
+    gap: 8px;
+  }
+}
+

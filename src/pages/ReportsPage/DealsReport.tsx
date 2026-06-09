@@ -3,6 +3,8 @@ import { useMemo, useState } from "react";
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import Dropdown from "../../components/Dropdown/Dropdown";
+import FlexContainer from "../../components/FlexContainer/FlexContainer";
+import MobileDataListRow from "../../components/MobileDataList/MobileDataListRow";
 import Pagination from "../../components/Pagination/Pagination";
 import {
   formatSalesDisplayData,
@@ -15,6 +17,7 @@ import {
   exportStagesReportPdf,
   exportStagesReportXlsx,
 } from "../../helpers/print";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { useAppSelector } from "../../store";
 import { selectClients } from "../../store/clientsSlice";
 import { selectDeals } from "../../store/dealsSlice";
@@ -28,7 +31,6 @@ import {
   PERIOD_OPTIONS,
   REPORTS_PAGE_SIZE,
   SALES_REPORT_COLUMNS,
-  VIEW_OPTIONS,
 } from "../../utils/constants/reportConstants";
 import {
   getCompletedDealsReport,
@@ -50,11 +52,10 @@ import type React from "react";
 const DealsReport: React.FC = () => {
   const deals = useAppSelector(selectDeals);
   const clients = useAppSelector(selectClients);
+  const isMobile = useMediaQuery("(max-width: 999px)");
 
   const [salesPeriod, setSalesPeriod] = useState<ReportPeriod>("week");
   const [stagesPeriod, setStagesPeriod] = useState<ReportPeriod>("week");
-  const [salesView, setSalesView] = useState("list");
-  const [stagesView, setStagesView] = useState("list");
   const [salesPage, setSalesPage] = useState(1);
   const [stagesPage, setStagesPage] = useState(1);
   const [salesSort, setSalesSort] = useState<SortConfig<SalesReportRow> | null>(
@@ -191,24 +192,59 @@ const DealsReport: React.FC = () => {
     [paginatedStagesData],
   );
 
-  return (
-    <div className={styles.content}>
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Общий, продажи</h2>
-        <div className={styles.toolbar}>
-          <div className={styles.toolbarLeft}>
-            <Dropdown
-              options={PERIOD_OPTIONS}
-              value={salesPeriod}
-              onChange={handleSalesPeriodChange}
-            />
-            <Dropdown
-              options={VIEW_OPTIONS}
-              value={salesView}
-              onChange={setSalesView}
-            />
-          </div>
-          <div className={styles.toolbarRight}>
+  const getStageColor = (item: DealsStageReportRow): string => {
+    const original = paginatedStagesData.find(
+      (r) =>
+        (DEAL_STATUS_LABELS[r.stage] ?? r.stage) ===
+        (item.stage as unknown as string),
+    );
+    return DEAL_STAGE_COLORS[original?.stage ?? ""] ?? "#1F2937";
+  };
+
+  const renderSalesReport = (): React.ReactElement => (
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>Общий, продажи</h2>
+      {isMobile ? (
+        <>
+          <Dropdown
+            options={PERIOD_OPTIONS}
+            value={salesPeriod}
+            onChange={handleSalesPeriodChange}
+          />
+          {salesDisplayData.length > 0 ? (
+            <FlexContainer gap="8px">
+              {salesDisplayData.map((item) => (
+                <MobileDataListRow key={item.dealId}>
+                  <div className={styles.mobileSalesCard}>
+                    <div className={styles.mobileSalesTopRow}>
+                      <span className={styles.mobileSalesId}>
+                        {item.dealId}
+                      </span>
+                      <span className={styles.mobileSalesClient}>
+                        {item.clientName}
+                      </span>
+                      <span className={styles.mobileSalesTitle}>
+                        {item.title}
+                      </span>
+                    </div>
+                    <div className={styles.mobileSalesBottomRow}>
+                      <span className={styles.mobileSalesAmount}>
+                        {item.amount as unknown as string}
+                      </span>
+                      <span className={styles.mobileSalesDate}>
+                        {item.completedAt}
+                      </span>
+                    </div>
+                  </div>
+                </MobileDataListRow>
+              ))}
+            </FlexContainer>
+          ) : (
+            <p className={styles.placeholder}>
+              Нет завершённых сделок за выбранный период
+            </p>
+          )}
+          <div className={styles.mobileExportButtons}>
             <Button
               size="md"
               variant="secondary"
@@ -224,43 +260,101 @@ const DealsReport: React.FC = () => {
               Экспорт в XLSX
             </Button>
           </div>
-        </div>
-        {salesDisplayData.length > 0 ? (
-          <DataList
-            columns={SALES_REPORT_COLUMNS}
-            getItemId={(item) => item.dealId}
-            items={salesDisplayData}
-            sortConfig={salesSort}
-            onSort={handleSalesSort}
+          <Pagination
+            currentPage={salesPage}
+            totalPages={salesTotalPages}
+            onPageChange={setSalesPage}
           />
-        ) : (
-          <p className={styles.placeholder}>
-            Нет завершённых сделок за выбранный период
-          </p>
-        )}
-        <Pagination
-          currentPage={salesPage}
-          totalPages={salesTotalPages}
-          onPageChange={setSalesPage}
-        />
-      </section>
-
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Этапы сделок</h2>
-        <div className={styles.toolbar}>
-          <div className={styles.toolbarLeft}>
-            <Dropdown
-              options={PERIOD_OPTIONS}
-              value={stagesPeriod}
-              onChange={handleStagesPeriodChange}
-            />
-            <Dropdown
-              options={VIEW_OPTIONS}
-              value={stagesView}
-              onChange={setStagesView}
-            />
+        </>
+      ) : (
+        <>
+          <div className={styles.toolbar}>
+            <div className={styles.toolbarLeft}>
+              <Dropdown
+                options={PERIOD_OPTIONS}
+                value={salesPeriod}
+                onChange={handleSalesPeriodChange}
+              />
+            </div>
+            <div className={styles.toolbarRight}>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleSalesExportPdf}
+              >
+                Экспорт в PDF
+              </Button>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleSalesExportXlsx}
+              >
+                Экспорт в XLSX
+              </Button>
+            </div>
           </div>
-          <div className={styles.toolbarRight}>
+          {salesDisplayData.length > 0 ? (
+            <DataList
+              columns={SALES_REPORT_COLUMNS}
+              getItemId={(item) => item.dealId}
+              items={salesDisplayData}
+              sortConfig={salesSort}
+              onSort={handleSalesSort}
+            />
+          ) : (
+            <p className={styles.placeholder}>
+              Нет завершённых сделок за выбранный период
+            </p>
+          )}
+          <Pagination
+            currentPage={salesPage}
+            totalPages={salesTotalPages}
+            onPageChange={setSalesPage}
+          />
+        </>
+      )}
+    </section>
+  );
+
+  const renderStagesReport = (): React.ReactElement => (
+    <section className={styles.section}>
+      <h2 className={styles.sectionTitle}>Этапы сделок</h2>
+      {isMobile ? (
+        <>
+          <Dropdown
+            options={PERIOD_OPTIONS}
+            value={stagesPeriod}
+            onChange={handleStagesPeriodChange}
+          />
+          {stagesDisplayData.length > 0 ? (
+            <FlexContainer gap="8px">
+              {stagesDisplayData.map((item) => (
+                <MobileDataListRow key={item.stage as unknown as string}>
+                  <div className={styles.mobileStagesCard}>
+                    <div className={styles.mobileStagesRow}>
+                      <span
+                        className={styles.mobileStagesStage}
+                        style={{ color: getStageColor(item) }}
+                      >
+                        {item.stage as unknown as string}
+                      </span>
+                      <span className={styles.mobileStagesAmount}>
+                        {item.totalAmount as unknown as string} сумма
+                      </span>
+                      <span className={styles.mobileStagesCount}>
+                        {item.dealsCount} сделок
+                      </span>
+                    </div>
+                  </div>
+                </MobileDataListRow>
+              ))}
+            </FlexContainer>
+          ) : (
+            <p className={styles.placeholder}>
+              Нет данных по этапам за выбранный период
+            </p>
+          )}
+          <div className={styles.mobileExportButtons}>
             <Button
               size="md"
               variant="secondary"
@@ -276,27 +370,67 @@ const DealsReport: React.FC = () => {
               Экспорт в XLSX
             </Button>
           </div>
-        </div>
-        {stagesDisplayData.length > 0 ? (
-          <DataList
-            columns={stagesColumnsWithRender}
-            getItemId={(item) => item.stage as unknown as string}
-            getRowClassName={getStageRowClassName}
-            items={stagesDisplayData}
-            sortConfig={stagesSort}
-            onSort={handleStagesSort}
+          <Pagination
+            currentPage={stagesPage}
+            totalPages={stagesTotalPages}
+            onPageChange={setStagesPage}
           />
-        ) : (
-          <p className={styles.placeholder}>
-            Нет данных по этапам за выбранный период
-          </p>
-        )}
-        <Pagination
-          currentPage={stagesPage}
-          totalPages={stagesTotalPages}
-          onPageChange={setStagesPage}
-        />
-      </section>
+        </>
+      ) : (
+        <>
+          <div className={styles.toolbar}>
+            <div className={styles.toolbarLeft}>
+              <Dropdown
+                options={PERIOD_OPTIONS}
+                value={stagesPeriod}
+                onChange={handleStagesPeriodChange}
+              />
+            </div>
+            <div className={styles.toolbarRight}>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleStagesExportPdf}
+              >
+                Экспорт в PDF
+              </Button>
+              <Button
+                size="md"
+                variant="secondary"
+                onClick={handleStagesExportXlsx}
+              >
+                Экспорт в XLSX
+              </Button>
+            </div>
+          </div>
+          {stagesDisplayData.length > 0 ? (
+            <DataList
+              columns={stagesColumnsWithRender}
+              getItemId={(item) => item.stage as unknown as string}
+              getRowClassName={getStageRowClassName}
+              items={stagesDisplayData}
+              sortConfig={stagesSort}
+              onSort={handleStagesSort}
+            />
+          ) : (
+            <p className={styles.placeholder}>
+              Нет данных по этапам за выбранный период
+            </p>
+          )}
+          <Pagination
+            currentPage={stagesPage}
+            totalPages={stagesTotalPages}
+            onPageChange={setStagesPage}
+          />
+        </>
+      )}
+    </section>
+  );
+
+  return (
+    <div className={styles.content}>
+      {renderSalesReport()}
+      {renderStagesReport()}
     </div>
   );
 };
