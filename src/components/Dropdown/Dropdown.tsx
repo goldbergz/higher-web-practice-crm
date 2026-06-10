@@ -11,6 +11,12 @@ interface DropdownProps {
   options: DropdownOption[];
   value: string;
   onChange: (value: string) => void;
+  className?: string;
+  error?: string;
+  id?: string;
+  label?: string;
+  placeholder?: string;
+  required?: boolean;
 }
 
 const ChevronIcon: React.FC = () => (
@@ -31,11 +37,22 @@ const ChevronIcon: React.FC = () => (
   </svg>
 );
 
-const Dropdown: React.FC<DropdownProps> = ({ onChange, options, value }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  className = "",
+  error,
+  id,
+  label,
+  onChange,
+  options,
+  placeholder,
+  required,
+  value,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find((opt) => opt.value === value);
+  const fieldId = id ?? (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
@@ -68,16 +85,25 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange, options, value }) => {
     };
   }, [handleClickOutside]);
 
-  return (
-    <div ref={wrapperRef} className={styles.wrapper} onKeyDown={handleKeyDown}>
+  const dropdownElement = (
+    <div
+      ref={wrapperRef}
+      className={[styles.wrapper, className].filter(Boolean).join(" ")}
+      onKeyDown={handleKeyDown}
+    >
       <button
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        className={styles.trigger}
+        className={[
+          styles.trigger,
+          error ? styles.triggerError : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
         type="button"
         onClick={handleToggle}
       >
-        <span>{selectedOption?.label ?? ""}</span>
+        <span>{selectedOption?.label || placeholder || ""}</span>
         <span
           className={[styles.triggerIcon, isOpen ? styles.triggerIconOpen : ""]
             .filter(Boolean)
@@ -108,6 +134,31 @@ const Dropdown: React.FC<DropdownProps> = ({ onChange, options, value }) => {
       )}
     </div>
   );
+
+  if (label) {
+    return (
+      <div className={styles.fieldGroup}>
+        {label && (
+          <label className={styles.label} htmlFor={fieldId}>
+            {label}
+            {required && <span className={styles.required}>*</span>}
+          </label>
+        )}
+        {dropdownElement}
+        {error && (
+          <p
+            className={styles.errorMessage}
+            id={fieldId ? `${fieldId}-error` : undefined}
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  return <>{dropdownElement}</>;
 };
 
 export default Dropdown;

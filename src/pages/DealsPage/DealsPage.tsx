@@ -28,7 +28,7 @@ import type { DealDisplay } from "../../types/deal";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type React from "react";
 import { useMediaQuery } from "../../helpers/useMediaQuery";
-import { MobileList } from "../../components";
+import MobileList from "../../components/MobileList/MobileList";
 
 type ModalMode = "create" | "edit" | null;
 

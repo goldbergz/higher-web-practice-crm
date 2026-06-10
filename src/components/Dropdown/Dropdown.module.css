@@ -1,6 +1,24 @@
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.label {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.required {
+  color: var(--color-text-error);
+  margin-left: 0.125rem;
+}
+
 .wrapper {
   position: relative;
-  display: inline-flex;
+  display: flex;
+  width: 100%;
 }
 
 .trigger {
@@ -15,7 +33,9 @@
   font-size: 0.875rem;
   gap: 16px;
   line-height: 1.25rem;
+  min-height: 2.875rem;
   padding: 10px 14px;
+  width: 100%;
 }
 
 .trigger:hover {
@@ -67,4 +87,15 @@
 .menuItemActive {
   background: var(--color-gray-100);
   font-weight: 500;
+}
+
+.triggerError {
+  border-color: var(--color-border-error);
+}
+
+.errorMessage {
+  color: var(--color-text-error);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  margin: 0;
 }

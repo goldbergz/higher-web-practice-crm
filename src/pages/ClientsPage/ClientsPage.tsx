@@ -22,7 +22,7 @@ import type { Client } from "../../types";
 import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type React from "react";
 import { useMediaQuery } from "../../helpers/useMediaQuery";
-import { MobileList } from "../../components";
+import MobileList from "../../components/MobileList/MobileList";
 
 type ModalMode = "create" | "edit" | null;
 

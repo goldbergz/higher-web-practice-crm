@@ -5,11 +5,12 @@ import {
   type FieldValues,
   type Path,
   type Resolver,
+  Controller,
   useForm,
 } from "react-hook-form";
 
+import Dropdown, { type DropdownOption } from "../Dropdown/Dropdown";
 import Input from "../Input/Input";
-import Select from "../Select/Select";
 import Textarea from "../Textarea/Textarea";
 
 import styles from "./Form.module.css";
@@ -17,10 +18,7 @@ import styles from "./Form.module.css";
 import type React from "react";
 import type { ZodType } from "zod";
 
-export type SelectOption = {
-  label: string;
-  value: string;
-};
+export type SelectOption = DropdownOption;
 
 export type FieldConfig<T extends FieldValues> = {
   autoComplete?: string;
@@ -61,6 +59,7 @@ function Form<T extends FieldValues>({
   serverErrors,
 }: FormProps<T>) {
   const {
+    control,
     formState: { errors },
     handleSubmit,
     register,
@@ -97,14 +96,21 @@ function Form<T extends FieldValues>({
 
     if (field.type === "select") {
       return (
-        <Select
+        <Controller
           key={field.name}
-          error={displayError}
-          label={field.label}
-          options={field.options ?? []}
-          placeholder={field.placeholder}
-          required={field.required}
-          {...register(field.name)}
+          name={field.name}
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Dropdown
+              error={displayError}
+              label={field.label}
+              options={field.options ?? []}
+              placeholder={field.placeholder}
+              required={field.required}
+              value={value}
+              onChange={onChange}
+            />
+          )}
         />
       );
     }
