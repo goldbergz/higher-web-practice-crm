@@ -52,7 +52,8 @@ const Dropdown: React.FC<DropdownProps> = ({
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const selectedOption = options.find((opt) => opt.value === value);
-  const fieldId = id ?? (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
+  const fieldId =
+    id ?? (label ? label.toLowerCase().replace(/\s+/g, "-") : undefined);
 
   const handleToggle = () => {
     setIsOpen((prev) => !prev);
@@ -89,15 +90,13 @@ const Dropdown: React.FC<DropdownProps> = ({
     <div
       ref={wrapperRef}
       className={[styles.wrapper, className].filter(Boolean).join(" ")}
+      role="presentation"
       onKeyDown={handleKeyDown}
     >
       <button
         aria-expanded={isOpen}
         aria-haspopup="listbox"
-        className={[
-          styles.trigger,
-          error ? styles.triggerError : "",
-        ]
+        className={[styles.trigger, error ? styles.triggerError : ""]
           .filter(Boolean)
           .join(" ")}
         type="button"
@@ -125,7 +124,14 @@ const Dropdown: React.FC<DropdownProps> = ({
                 .filter(Boolean)
                 .join(" ")}
               role="option"
+              tabIndex={0}
               onClick={() => handleSelect(option.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleSelect(option.value);
+                }
+              }}
             >
               {option.label}
             </li>

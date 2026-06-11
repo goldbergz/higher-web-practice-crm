@@ -1,4 +1,4 @@
-import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 
 import MainLayout from "../components/MainLayout/MainLayout";
 import ClientsPage from "../pages/ClientsPage/ClientsPage";
@@ -10,22 +10,8 @@ import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import ReportsPage from "../pages/ReportsPage/ReportsPage";
 import StartPage from "../pages/StartPage/StartPage";
 import TasksPage from "../pages/TasksPage/TasksPage";
-import { useAppSelector } from "../store";
-import { selectIsAuthenticated } from "../store/userSlice";
 
-import type React from "react";
-
-const RequireAuth: React.FC = () => {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
-  return <Outlet />;
-};
-
-const RedirectIfAuth: React.FC = () => {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  if (isAuthenticated) return <Navigate to="/main" replace />;
-  return <Outlet />;
-};
+import { RedirectIfAuth, RequireAuth } from "./guards";
 
 export const router = createBrowserRouter([
   {

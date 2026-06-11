@@ -84,7 +84,14 @@ function DataListHeader<T>({
                     ? "center"
                     : "flex-start",
             }}
+            tabIndex={onSort ? 0 : undefined}
             onClick={() => onSort?.(column.key)}
+            onKeyDown={(e) => {
+              if (onSort && (e.key === "Enter" || e.key === " ")) {
+                e.preventDefault();
+                onSort(column.key);
+              }
+            }}
           >
             <span>{column.label}</span>
             {onSort && (

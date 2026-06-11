@@ -222,9 +222,7 @@
 }
 
 @media (max-width: 640px) {
-
-.item {
-
-  padding: 8px 0;
-}
+  .item {
+    padding: 8px 0;
+  }
 }

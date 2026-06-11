@@ -1,4 +1,5 @@
 import { calculateDashboardStats } from "./dashboards";
+
 import type { Client, Deal } from "../../types";
 
 describe("calculateDashboardStats", () => {
@@ -6,15 +7,65 @@ describe("calculateDashboardStats", () => {
   const today = new Date().toISOString();
 
   const clients: Client[] = [
-    { id: "c1", name: "Client 1", phone: "", email: "", company: "", createdAt: today, createdBy: userId },
-    { id: "c2", name: "Client 2", phone: "", email: "", company: "", createdAt: today, createdBy: "other-user" },
-    { id: "c3", name: "Deleted", phone: "", email: "", company: "", createdAt: today, createdBy: userId, deleted: true },
+    {
+      id: "c1",
+      name: "Client 1",
+      phone: "",
+      email: "",
+      company: "",
+      createdAt: today,
+      createdBy: userId,
+    },
+    {
+      id: "c2",
+      name: "Client 2",
+      phone: "",
+      email: "",
+      company: "",
+      createdAt: today,
+      createdBy: "other-user",
+    },
+    {
+      id: "c3",
+      name: "Deleted",
+      phone: "",
+      email: "",
+      company: "",
+      createdAt: today,
+      createdBy: userId,
+      deleted: true,
+    },
   ];
 
   const deals: Deal[] = [
-    { id: "d1", title: "Deal 1", clientId: "c1", amount: 1000, status: "new", createdAt: today, createdBy: userId },
-    { id: "d2", title: "Deal 2", clientId: "c1", amount: 2000, status: "completed", createdAt: today, completedAt: today, createdBy: userId },
-    { id: "d3", title: "Other Deal", clientId: "c1", amount: 3000, status: "new", createdAt: today, createdBy: "other-user" },
+    {
+      id: "d1",
+      title: "Deal 1",
+      clientId: "c1",
+      amount: 1000,
+      status: "new",
+      createdAt: today,
+      createdBy: userId,
+    },
+    {
+      id: "d2",
+      title: "Deal 2",
+      clientId: "c1",
+      amount: 2000,
+      status: "completed",
+      createdAt: today,
+      completedAt: today,
+      createdBy: userId,
+    },
+    {
+      id: "d3",
+      title: "Other Deal",
+      clientId: "c1",
+      amount: 3000,
+      status: "new",
+      createdAt: today,
+      createdBy: "other-user",
+    },
   ];
 
   it("calculates stats correctly", () => {

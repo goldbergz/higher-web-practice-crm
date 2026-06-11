@@ -1,10 +1,11 @@
+import { configureStore } from "@reduxjs/toolkit";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "../../store/userSlice";
+import { MemoryRouter } from "react-router-dom";
+
 import LoginPage from "../../pages/LoginPage/LoginPage";
+import userReducer from "../../store/userSlice";
 
 const mockLoginUser = jest.fn();
 

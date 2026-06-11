@@ -1,18 +1,76 @@
 import { getTopActiveClients } from "./clientsDashboard";
+
 import type { Client, Deal } from "../../types";
 
 describe("getTopActiveClients", () => {
   const clients: Client[] = [
-    { id: "c1", name: "Alice", phone: "", email: "", company: "Acme", createdAt: "", createdBy: "u1" },
-    { id: "c2", name: "Bob", phone: "", email: "", company: "Beta", createdAt: "", createdBy: "u1" },
-    { id: "c3", name: "Charlie", phone: "", email: "", company: "Gamma", createdAt: "", createdBy: "u1", deleted: true },
+    {
+      id: "c1",
+      name: "Alice",
+      phone: "",
+      email: "",
+      company: "Acme",
+      createdAt: "",
+      createdBy: "u1",
+    },
+    {
+      id: "c2",
+      name: "Bob",
+      phone: "",
+      email: "",
+      company: "Beta",
+      createdAt: "",
+      createdBy: "u1",
+    },
+    {
+      id: "c3",
+      name: "Charlie",
+      phone: "",
+      email: "",
+      company: "Gamma",
+      createdAt: "",
+      createdBy: "u1",
+      deleted: true,
+    },
   ];
 
   const deals: Deal[] = [
-    { id: "d1", title: "D1", clientId: "c1", amount: 100, status: "new", createdAt: "", createdBy: "u1" },
-    { id: "d2", title: "D2", clientId: "c1", amount: 200, status: "completed", createdAt: "", createdBy: "u1" },
-    { id: "d3", title: "D3", clientId: "c2", amount: 300, status: "new", createdAt: "", createdBy: "u1" },
-    { id: "d4", title: "D4", clientId: "c3", amount: 400, status: "new", createdAt: "", createdBy: "u1" },
+    {
+      id: "d1",
+      title: "D1",
+      clientId: "c1",
+      amount: 100,
+      status: "new",
+      createdAt: "",
+      createdBy: "u1",
+    },
+    {
+      id: "d2",
+      title: "D2",
+      clientId: "c1",
+      amount: 200,
+      status: "completed",
+      createdAt: "",
+      createdBy: "u1",
+    },
+    {
+      id: "d3",
+      title: "D3",
+      clientId: "c2",
+      amount: 300,
+      status: "new",
+      createdAt: "",
+      createdBy: "u1",
+    },
+    {
+      id: "d4",
+      title: "D4",
+      clientId: "c3",
+      amount: 400,
+      status: "new",
+      createdAt: "",
+      createdBy: "u1",
+    },
   ];
 
   it("returns top clients sorted by deals count descending", () => {

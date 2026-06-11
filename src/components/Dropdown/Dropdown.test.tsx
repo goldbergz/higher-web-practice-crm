@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import Dropdown from "./Dropdown";
+
 import type { DropdownOption } from "./Dropdown";
 
 const options: DropdownOption[] = [
@@ -14,34 +16,22 @@ describe("Dropdown", () => {
     render(
       <Dropdown
         options={options}
+        placeholder="Select..."
         value=""
         onChange={jest.fn()}
-        placeholder="Select..."
       />,
     );
     expect(screen.getByText("Select...")).toBeInTheDocument();
   });
 
   it("renders selected option label", () => {
-    render(
-      <Dropdown
-        options={options}
-        value="opt2"
-        onChange={jest.fn()}
-      />,
-    );
+    render(<Dropdown options={options} value="opt2" onChange={jest.fn()} />);
     expect(screen.getByText("Option 2")).toBeInTheDocument();
   });
 
   it("shows menu on trigger click", async () => {
     const user = userEvent.setup();
-    render(
-      <Dropdown
-        options={options}
-        value=""
-        onChange={jest.fn()}
-      />,
-    );
+    render(<Dropdown options={options} value="" onChange={jest.fn()} />);
 
     await user.click(screen.getByRole("button"));
     expect(screen.getByRole("listbox")).toBeInTheDocument();
@@ -52,13 +42,7 @@ describe("Dropdown", () => {
     const user = userEvent.setup();
     const onChange = jest.fn();
 
-    render(
-      <Dropdown
-        options={options}
-        value=""
-        onChange={onChange}
-      />,
-    );
+    render(<Dropdown options={options} value="" onChange={onChange} />);
 
     await user.click(screen.getByRole("button"));
     await user.click(screen.getByText("Option 1"));
@@ -69,13 +53,7 @@ describe("Dropdown", () => {
 
   it("closes menu on Escape key", async () => {
     const user = userEvent.setup();
-    render(
-      <Dropdown
-        options={options}
-        value=""
-        onChange={jest.fn()}
-      />,
-    );
+    render(<Dropdown options={options} value="" onChange={jest.fn()} />);
 
     await user.click(screen.getByRole("button"));
     expect(screen.getByRole("listbox")).toBeInTheDocument();
@@ -87,11 +65,11 @@ describe("Dropdown", () => {
   it("renders label and required indicator", () => {
     render(
       <Dropdown
+        required
+        label="Status"
         options={options}
         value=""
         onChange={jest.fn()}
-        label="Status"
-        required
       />,
     );
     expect(screen.getByText("Status")).toBeInTheDocument();
@@ -101,25 +79,21 @@ describe("Dropdown", () => {
   it("displays error message", () => {
     render(
       <Dropdown
+        error="This field is required"
+        label="Status"
         options={options}
         value=""
         onChange={jest.fn()}
-        error="This field is required"
-        label="Status"
       />,
     );
-    expect(screen.getByRole("alert")).toHaveTextContent("This field is required");
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "This field is required",
+    );
   });
 
   it("highlights selected option in the menu", async () => {
     const user = userEvent.setup();
-    render(
-      <Dropdown
-        options={options}
-        value="opt2"
-        onChange={jest.fn()}
-      />,
-    );
+    render(<Dropdown options={options} value="opt2" onChange={jest.fn()} />);
 
     await user.click(screen.getByRole("button"));
     const menuItems = screen.getAllByRole("option");

@@ -1,14 +1,39 @@
 import { getTopActiveDeals } from "./dealsDashboard";
+
 import type { Client, Deal } from "../../types";
 
 describe("getTopActiveDeals", () => {
   const clients: Client[] = [
-    { id: "c1", name: "Alice", phone: "", email: "", company: "Acme", createdAt: "", createdBy: "u1" },
+    {
+      id: "c1",
+      name: "Alice",
+      phone: "",
+      email: "",
+      company: "Acme",
+      createdAt: "",
+      createdBy: "u1",
+    },
   ];
 
   const deals: Deal[] = [
-    { id: "d1", title: "Website", clientId: "c1", amount: 50000, status: "new", createdAt: "2024-03-01T10:00:00Z", createdBy: "u1" },
-    { id: "d2", title: "Mobile App", clientId: "c1", amount: 100000, status: "in_progress", createdAt: "2024-03-15T10:00:00Z", createdBy: "u1" },
+    {
+      id: "d1",
+      title: "Website",
+      clientId: "c1",
+      amount: 50000,
+      status: "new",
+      createdAt: "2024-03-01T10:00:00Z",
+      createdBy: "u1",
+    },
+    {
+      id: "d2",
+      title: "Mobile App",
+      clientId: "c1",
+      amount: 100000,
+      status: "in_progress",
+      createdAt: "2024-03-15T10:00:00Z",
+      createdBy: "u1",
+    },
   ];
 
   it("returns limited deals with formatted fields", () => {

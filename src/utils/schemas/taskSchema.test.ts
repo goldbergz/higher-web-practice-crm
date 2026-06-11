@@ -40,7 +40,7 @@ describe("taskSchema", () => {
   });
 
   it("accepts task without dueDate", () => {
-    const { dueDate, ...data } = validData;
+    const { dueDate: _, ...data } = validData;
     const result = taskSchema.safeParse(data);
     expect(result.success).toBe(true);
   });

@@ -10,8 +10,10 @@ import {
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import DealForm from "../../components/Forms/DealForm";
+import MobileList from "../../components/MobileList/MobileList";
 import Modal from "../../components/Modal/Modal";
 import { formatAmount, formatDate } from "../../helpers/formaters";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { useAppSelector } from "../../store";
 import { selectCurrentUser } from "../../store/userSlice";
 import {
@@ -27,8 +29,6 @@ import type { Deal } from "../../types";
 import type { DealDisplay } from "../../types/deal";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type React from "react";
-import { useMediaQuery } from "../../helpers/useMediaQuery";
-import MobileList from "../../components/MobileList/MobileList";
 
 type ModalMode = "create" | "edit" | null;
 

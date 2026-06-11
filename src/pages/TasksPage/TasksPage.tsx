@@ -11,8 +11,10 @@ import {
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import TaskForm from "../../components/Forms/TaskForm";
+import MobileList from "../../components/MobileList/MobileList";
 import Modal from "../../components/Modal/Modal";
 import { formatDate } from "../../helpers/formaters";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { useAppSelector } from "../../store";
 import { selectCurrentUser } from "../../store/userSlice";
 import { TASK_STATUS_LABELS } from "../../utils/constants/taskConstants";
@@ -24,8 +26,6 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Task, TaskDisplay } from "../../types/task";
 import type { TaskFormValues } from "../../utils/schemas/taskSchema";
 import type React from "react";
-import { useMediaQuery } from "../../helpers/useMediaQuery";
-import MobileList from "../../components/MobileList/MobileList";
 
 type ModalMode = "create" | "edit" | null;
 

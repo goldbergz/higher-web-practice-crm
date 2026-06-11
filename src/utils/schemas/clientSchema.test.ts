@@ -36,7 +36,10 @@ describe("clientSchema", () => {
   });
 
   it("rejects phone without +", () => {
-    const result = clientSchema.safeParse({ ...validData, phone: "1234567890" });
+    const result = clientSchema.safeParse({
+      ...validData,
+      phone: "1234567890",
+    });
     expect(result.success).toBe(false);
   });
 

@@ -1,4 +1,5 @@
 import { renderHook } from "@testing-library/react";
+
 import { useMediaQuery } from "./useMediaQuery";
 
 describe("useMediaQuery", () => {
@@ -48,9 +49,15 @@ describe("useMediaQuery", () => {
     }));
 
     const { unmount } = renderHook(() => useMediaQuery("(min-width: 768px)"));
-    expect(addEventListener).toHaveBeenCalledWith("change", expect.any(Function));
+    expect(addEventListener).toHaveBeenCalledWith(
+      "change",
+      expect.any(Function),
+    );
 
     unmount();
-    expect(removeEventListener).toHaveBeenCalledWith("change", expect.any(Function));
+    expect(removeEventListener).toHaveBeenCalledWith(
+      "change",
+      expect.any(Function),
+    );
   });
 });

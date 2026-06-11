@@ -35,7 +35,7 @@ describe("formatAmount", () => {
 });
 
 describe("formatDueDate", () => {
-  it('returns em dash for empty input', () => {
+  it("returns em dash for empty input", () => {
     expect(formatDueDate()).toBe("—");
     expect(formatDueDate("")).toBe("—");
   });
@@ -60,7 +60,13 @@ describe("formatPdfAmount", () => {
 describe("formatSalesDisplayData", () => {
   it("formats amount field in each row", () => {
     const rows = [
-      { dealId: "1", title: "Deal", clientName: "Client", amount: 5000, completedAt: "2024-01-01" },
+      {
+        dealId: "1",
+        title: "Deal",
+        clientName: "Client",
+        amount: 5000,
+        completedAt: "2024-01-01",
+      },
     ];
     const result = formatSalesDisplayData(rows);
     expect(result[0].amount).toContain("₽");
@@ -69,9 +75,7 @@ describe("formatSalesDisplayData", () => {
 
 describe("formatStagesDisplayData", () => {
   it("formats stage labels and amounts", () => {
-    const rows = [
-      { stage: "new" as const, dealsCount: 5, totalAmount: 10000 },
-    ];
+    const rows = [{ stage: "new" as const, dealsCount: 5, totalAmount: 10000 }];
     const result = formatStagesDisplayData(rows);
     expect(result[0].stage).toBe("Новая");
     expect(result[0].totalAmount).toContain("₽");

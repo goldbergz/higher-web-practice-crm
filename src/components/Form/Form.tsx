@@ -98,8 +98,8 @@ function Form<T extends FieldValues>({
       return (
         <Controller
           key={field.name}
-          name={field.name}
           control={control}
+          name={field.name}
           render={({ field: { onChange, value } }) => (
             <Dropdown
               error={displayError}

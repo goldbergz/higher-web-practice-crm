@@ -32,11 +32,11 @@ import styles from "./MainPage.module.css";
 
 import type { ColumnConfig } from "../../components/DataList/types";
 import type { Deal, Task } from "../../types";
+import type { DealDisplay } from "../../types/deal";
 import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type { DealFormValues } from "../../utils/schemas/dealSchema";
 import type { TaskFormValues } from "../../utils/schemas/taskSchema";
 import type React from "react";
-import type { DealDisplay } from "../../types/deal";
 
 type StatsRow = {
   id: string;
@@ -618,7 +618,9 @@ const MainPage: React.FC = () => {
           return (
             <MobileDataListRow>
               <div style={{ padding: "8px 12px", background: bg }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 2 }}
+                >
                   <span className={styles.mobileDealTitle}>
                     {dealDisplay.title}
                   </span>
@@ -664,7 +666,9 @@ const MainPage: React.FC = () => {
           return (
             <MobileDataListRow>
               <div style={{ padding: "12px 16px", background: bg }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: 8 }}
+                >
                   <div className={styles.taskCardInfo}>
                     <span className={styles.taskCardTitle}>{task.title}</span>
                     <div className={styles.taskCardDeal}>
@@ -678,9 +682,7 @@ const MainPage: React.FC = () => {
                     <span className={styles.taskCardDueDate}>
                       {formatDueDate(task.dueDate)}
                     </span>
-                    <span
-                      style={{ color: getTaskStatusColor(task.status) }}
-                    >
+                    <span style={{ color: getTaskStatusColor(task.status) }}>
                       {TASK_STATUS_LABELS[task.status] ?? task.status}
                     </span>
                   </div>

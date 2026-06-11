@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import Pagination from "./Pagination";
 
 describe("Pagination", () => {
@@ -37,7 +38,11 @@ describe("Pagination", () => {
     const onPageChange = jest.fn();
 
     render(
-      <Pagination currentPage={5} totalPages={10} onPageChange={onPageChange} />,
+      <Pagination
+        currentPage={5}
+        totalPages={10}
+        onPageChange={onPageChange}
+      />,
     );
 
     await user.click(screen.getByLabelText("Предыдущая страница"));
@@ -49,7 +54,11 @@ describe("Pagination", () => {
     const onPageChange = jest.fn();
 
     render(
-      <Pagination currentPage={5} totalPages={10} onPageChange={onPageChange} />,
+      <Pagination
+        currentPage={5}
+        totalPages={10}
+        onPageChange={onPageChange}
+      />,
     );
 
     await user.click(screen.getByLabelText("Следующая страница"));

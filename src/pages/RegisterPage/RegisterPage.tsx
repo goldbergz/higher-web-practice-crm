@@ -23,16 +23,16 @@ const RegisterPage: React.FC = () => {
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   const handleSubmit = async (data: RegisterFormValues) => {
-      const profile = await registerUser({
-        email: data.email,
-        password: data.password,
-        name: data.name,
-        surname: data.surname,
-        accName: data.accName,
-      }).unwrap();
+    const profile = await registerUser({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      surname: data.surname,
+      accName: data.accName,
+    }).unwrap();
 
-      dispatch(setUser(profile));
-      navigate("/main");
+    dispatch(setUser(profile));
+    navigate("/main");
   };
 
   return (

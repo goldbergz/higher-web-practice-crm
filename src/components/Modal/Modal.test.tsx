@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
 import Modal from "./Modal";
 
 describe("Modal", () => {
   it("does not render when isOpen is false", () => {
     render(
-      <Modal isOpen={false} onClose={jest.fn()} title="Test">
+      <Modal isOpen={false} title="Test" onClose={jest.fn()}>
         <p>Content</p>
       </Modal>,
     );
@@ -14,7 +15,7 @@ describe("Modal", () => {
 
   it("renders when isOpen is true", () => {
     render(
-      <Modal isOpen={true} onClose={jest.fn()} title="Test Modal">
+      <Modal isOpen={true} title="Test Modal" onClose={jest.fn()}>
         <p>Modal content</p>
       </Modal>,
     );
@@ -28,7 +29,7 @@ describe("Modal", () => {
     const onClose = jest.fn();
 
     render(
-      <Modal isOpen={true} onClose={onClose} title="Test">
+      <Modal isOpen={true} title="Test" onClose={onClose}>
         <p>Content</p>
       </Modal>,
     );
@@ -42,7 +43,7 @@ describe("Modal", () => {
     const onClose = jest.fn();
 
     render(
-      <Modal isOpen={true} onClose={onClose} title="Test">
+      <Modal isOpen={true} title="Test" onClose={onClose}>
         <p>Content</p>
       </Modal>,
     );
@@ -56,7 +57,7 @@ describe("Modal", () => {
     const onClose = jest.fn();
 
     render(
-      <Modal isOpen={true} onClose={onClose} title="Test">
+      <Modal isOpen={true} title="Test" onClose={onClose}>
         <p>Content</p>
       </Modal>,
     );
@@ -67,7 +68,12 @@ describe("Modal", () => {
 
   it("renders headerRight when provided", () => {
     render(
-      <Modal isOpen={true} onClose={jest.fn()} title="Test" headerRight={<span>Extra</span>}>
+      <Modal
+        headerRight={<span>Extra</span>}
+        isOpen={true}
+        title="Test"
+        onClose={jest.fn()}
+      >
         <p>Content</p>
       </Modal>,
     );
@@ -76,7 +82,7 @@ describe("Modal", () => {
 
   it("has accessible attributes", () => {
     render(
-      <Modal isOpen={true} onClose={jest.fn()} title="Accessible Modal">
+      <Modal isOpen={true} title="Accessible Modal" onClose={jest.fn()}>
         <p>Content</p>
       </Modal>,
     );
@@ -88,7 +94,7 @@ describe("Modal", () => {
   it("does not attach escape listener when closed", () => {
     const addSpy = jest.spyOn(document, "addEventListener");
     const { unmount } = render(
-      <Modal isOpen={false} onClose={jest.fn()} title="Test">
+      <Modal isOpen={false} title="Test" onClose={jest.fn()}>
         <p>Content</p>
       </Modal>,
     );

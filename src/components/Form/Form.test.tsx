@@ -1,7 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Form from "./Form";
 import { z } from "zod";
+
+import Form from "./Form";
 
 const testSchema = z.object({
   name: z.string().min(1, "Введите имя"),
@@ -12,8 +13,18 @@ const sections = [
   {
     title: "Main Info",
     fields: [
-      { label: "Name", name: "name" as const, type: "text" as const, required: true },
-      { label: "Email", name: "email" as const, type: "email" as const, required: true },
+      {
+        label: "Name",
+        name: "name" as const,
+        type: "text" as const,
+        required: true,
+      },
+      {
+        label: "Email",
+        name: "email" as const,
+        type: "email" as const,
+        required: true,
+      },
     ],
   },
 ];
@@ -22,10 +33,10 @@ describe("Form", () => {
   it("renders section title and fields", () => {
     render(
       <Form
+        defaultValues={{ name: "", email: "" }}
         schema={testSchema}
         sections={sections}
         onSubmit={jest.fn()}
-        defaultValues={{ name: "", email: "" }}
       />,
     );
     expect(screen.getByText("Main Info")).toBeInTheDocument();
@@ -36,10 +47,10 @@ describe("Form", () => {
   it("renders required indicator", () => {
     render(
       <Form
+        defaultValues={{ name: "", email: "" }}
         schema={testSchema}
         sections={sections}
         onSubmit={jest.fn()}
-        defaultValues={{ name: "", email: "" }}
       />,
     );
     const requiredIndicators = screen.getAllByText("*");
@@ -64,10 +75,10 @@ describe("Form", () => {
 
     render(
       <Form
+        defaultValues={{ status: "" }}
         schema={schema}
         sections={sectionsWithSelect}
         onSubmit={jest.fn()}
-        defaultValues={{ status: "" }}
       />,
     );
     expect(screen.getByText("Status")).toBeInTheDocument();
@@ -77,7 +88,11 @@ describe("Form", () => {
     const sectionsWithTextarea = [
       {
         fields: [
-          { label: "Description", name: "description" as const, type: "textarea" as const },
+          {
+            label: "Description",
+            name: "description" as const,
+            type: "textarea" as const,
+          },
         ],
       },
     ];
@@ -86,10 +101,10 @@ describe("Form", () => {
 
     render(
       <Form
+        defaultValues={{ description: "" }}
         schema={schema}
         sections={sectionsWithTextarea}
         onSubmit={jest.fn()}
-        defaultValues={{ description: "" }}
       />,
     );
     const textarea = screen.getByLabelText(/Description/);
@@ -102,10 +117,10 @@ describe("Form", () => {
 
     render(
       <Form
+        defaultValues={{ name: "", email: "" }}
         schema={testSchema}
         sections={sections}
         onSubmit={onSubmit}
-        defaultValues={{ name: "", email: "" }}
       >
         <button type="submit">Submit</button>
       </Form>,
@@ -124,11 +139,11 @@ describe("Form", () => {
   it("shows error messages from serverErrors", () => {
     render(
       <Form
+        defaultValues={{ name: "", email: "" }}
         schema={testSchema}
         sections={sections}
-        onSubmit={jest.fn()}
-        defaultValues={{ name: "", email: "" }}
         serverErrors={{ email: "Email already taken" }}
+        onSubmit={jest.fn()}
       />,
     );
     expect(screen.getByText("Email already taken")).toBeInTheDocument();

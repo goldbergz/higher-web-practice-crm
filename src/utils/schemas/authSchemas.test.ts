@@ -2,7 +2,10 @@ import { loginSchema, registerSchema } from "./authSchemas";
 
 describe("loginSchema", () => {
   it("validates correct login data", () => {
-    const result = loginSchema.safeParse({ email: "test@example.com", password: "secret" });
+    const result = loginSchema.safeParse({
+      email: "test@example.com",
+      password: "secret",
+    });
     expect(result.success).toBe(true);
   });
 
@@ -15,12 +18,18 @@ describe("loginSchema", () => {
   });
 
   it("rejects invalid email", () => {
-    const result = loginSchema.safeParse({ email: "not-email", password: "secret" });
+    const result = loginSchema.safeParse({
+      email: "not-email",
+      password: "secret",
+    });
     expect(result.success).toBe(false);
   });
 
   it("rejects empty password", () => {
-    const result = loginSchema.safeParse({ email: "test@example.com", password: "" });
+    const result = loginSchema.safeParse({
+      email: "test@example.com",
+      password: "",
+    });
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues[0].message).toContain("пароль");
@@ -49,12 +58,19 @@ describe("registerSchema", () => {
   });
 
   it("rejects short password", () => {
-    const result = registerSchema.safeParse({ ...validData, password: "short", confirmPassword: "short" });
+    const result = registerSchema.safeParse({
+      ...validData,
+      password: "short",
+      confirmPassword: "short",
+    });
     expect(result.success).toBe(false);
   });
 
   it("rejects mismatched passwords", () => {
-    const result = registerSchema.safeParse({ ...validData, confirmPassword: "different" });
+    const result = registerSchema.safeParse({
+      ...validData,
+      confirmPassword: "different",
+    });
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues[0].path).toContain("confirmPassword");

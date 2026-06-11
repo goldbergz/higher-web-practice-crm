@@ -43,39 +43,40 @@ const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      aria-labelledby="modal-title"
-      aria-modal="true"
       className={styles.overlay}
-      role="dialog"
-      onClick={onClose}
+      role="presentation"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
       <div
         ref={modalRef}
+        aria-labelledby="modal-title"
+        aria-modal="true"
         className={styles.modal}
-        role="document"
-        onClick={(e) => e.stopPropagation()}
+        role="dialog"
       >
         <div className={styles.header}>
           <div className={styles.headerTopRow}>
             <button
-              type="button"
-              className={styles.backButton}
-              onClick={onClose}
               aria-label="Закрыть"
+              className={styles.backButton}
+              type="button"
+              onClick={onClose}
             >
               <svg
-                width="18"
+                fill="none"
                 height="16"
                 viewBox="0 0 18 16"
-                fill="none"
+                width="18"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M4.08333 4L0.75 8L4.08333 12M0.75 8H16.75"
                   stroke="#1F2937"
-                  strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  strokeWidth="1.5"
                 />
               </svg>
             </button>

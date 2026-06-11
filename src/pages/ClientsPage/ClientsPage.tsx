@@ -9,8 +9,10 @@ import {
 import Button from "../../components/Button/Button";
 import DataList from "../../components/DataList/DataList";
 import ClientForm from "../../components/Forms/ClientForm";
+import MobileList from "../../components/MobileList/MobileList";
 import Modal from "../../components/Modal/Modal";
 import { formatDate } from "../../helpers/formaters";
+import { useMediaQuery } from "../../helpers/useMediaQuery";
 import { useAppSelector } from "../../store";
 import { selectCurrentUser } from "../../store/userSlice";
 import { clientColumns } from "../../utils/constants/сonstants";
@@ -21,8 +23,6 @@ import type { SortConfig } from "../../components/DataList/types";
 import type { Client } from "../../types";
 import type { ClientFormValues } from "../../utils/schemas/clientSchema";
 import type React from "react";
-import { useMediaQuery } from "../../helpers/useMediaQuery";
-import MobileList from "../../components/MobileList/MobileList";
 
 type ModalMode = "create" | "edit" | null;
 

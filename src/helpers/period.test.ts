@@ -1,4 +1,10 @@
-import { filterByPeriod, isThisMonth, isThisQuarter, isThisWeek, isToday } from "./period";
+import {
+  filterByPeriod,
+  isThisMonth,
+  isThisQuarter,
+  isThisWeek,
+  isToday,
+} from "./period";
 
 describe("isToday", () => {
   it("returns true for today", () => {
