@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 
 import MainLayout from "../components/MainLayout/MainLayout";
 import ClientsPage from "../pages/ClientsPage/ClientsPage";
@@ -10,20 +10,46 @@ import RegisterPage from "../pages/RegisterPage/RegisterPage";
 import ReportsPage from "../pages/ReportsPage/ReportsPage";
 import StartPage from "../pages/StartPage/StartPage";
 import TasksPage from "../pages/TasksPage/TasksPage";
+import { useAppSelector } from "../store";
+import { selectIsAuthenticated } from "../store/userSlice";
+
+import type React from "react";
+
+const RequireAuth: React.FC = () => {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  return <Outlet />;
+};
+
+const RedirectIfAuth: React.FC = () => {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  if (isAuthenticated) return <Navigate to="/main" replace />;
+  return <Outlet />;
+};
 
 export const router = createBrowserRouter([
-  { element: <StartPage />, path: "/" },
-  { element: <LoginPage />, path: "/login" },
-  { element: <RegisterPage />, path: "/register" },
   {
+    element: <RedirectIfAuth />,
     children: [
-      { element: <MainPage />, path: "/main" },
-      { element: <ClientsPage />, path: "/clients" },
-      { element: <DealsPage />, path: "/deals" },
-      { element: <ReportsPage />, path: "/reports" },
-      { element: <TasksPage />, path: "/tasks" },
-      { element: <ProfilePage />, path: "/profile" },
+      { element: <StartPage />, path: "/" },
+      { element: <LoginPage />, path: "/login" },
+      { element: <RegisterPage />, path: "/register" },
     ],
-    element: <MainLayout />,
+  },
+  {
+    element: <RequireAuth />,
+    children: [
+      {
+        element: <MainLayout />,
+        children: [
+          { element: <MainPage />, path: "/main" },
+          { element: <ClientsPage />, path: "/clients" },
+          { element: <DealsPage />, path: "/deals" },
+          { element: <ReportsPage />, path: "/reports" },
+          { element: <TasksPage />, path: "/tasks" },
+          { element: <ProfilePage />, path: "/profile" },
+        ],
+      },
+    ],
   },
 ]);
