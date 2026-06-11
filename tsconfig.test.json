@@ -6,6 +6,6 @@
     "types": ["jest", "node", "@testing-library/jest-dom"],
     "jsx": "react-jsx"
   },
-  "include": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/test/**/*.d.ts"],
+  "include": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/test/**/*.ts"],
   "exclude": []
 }

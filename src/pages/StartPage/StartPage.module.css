@@ -1,19 +1,67 @@
 .root {
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
   background: #fff;
 }
 
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blobGreen {
+  position: absolute;
+  width: 596px;
+  height: 647px;
+  left: -2%;
+  top: 0;
+  filter: blur(40px);
+  opacity: 0.35;
+}
+
+.blobOrange {
+  position: absolute;
+  width: 634px;
+  height: 528px;
+  left: 58%;
+  top: 100px;
+  filter: blur(40px);
+  opacity: 0.35;
+}
+
+.blobBlue1 {
+  position: absolute;
+  filter: blur(40px);
+  width: 533px;
+  height: 885px;
+  opacity: 0.35;
+  left: -1%;
+  top: 189px;
+}
+
+.blobBlue2 {
+  position: absolute;
+  filter: blur(40px);
+  width: 394px;
+  height: 654px;
+  opacity: 0.35;
+  left: 43%;
+  top: 328px;
+}
+
 .content {
-  flex: 1;
+  width: 100%;
+  max-width: 480px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 40px;
   padding: 20px;
-  max-width: 480px;
 }
 
 .top {

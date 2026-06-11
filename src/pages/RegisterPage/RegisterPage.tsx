@@ -23,7 +23,6 @@ const RegisterPage: React.FC = () => {
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   const handleSubmit = async (data: RegisterFormValues) => {
-    try {
       const profile = await registerUser({
         email: data.email,
         password: data.password,
@@ -34,9 +33,6 @@ const RegisterPage: React.FC = () => {
 
       dispatch(setUser(profile));
       navigate("/main");
-    } catch {
-      /* error is handled by RTK Query */
-    }
   };
 
   return (
