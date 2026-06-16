@@ -66,16 +66,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
     label: "",
     flex: "240 1 0",
     renderCell: (item) => (
-      <span
-        style={{
-          color: "#1F2937",
-          fontSize: 14,
-          fontWeight: 700,
-          lineHeight: "20px",
-        }}
-      >
-        {item.label}
-      </span>
+      <span className={styles.statsRowLabel}>{item.label}</span>
     ),
   },
   {
@@ -83,16 +74,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
     label: "на сегодня",
     flex: "203 1 0",
     renderCell: (item) => (
-      <span
-        style={{
-          color: "#3B82F6",
-          fontSize: 24,
-          fontWeight: 700,
-          lineHeight: "32px",
-        }}
-      >
-        {item.total}
-      </span>
+      <span className={styles.statsTotalValue}>{item.total}</span>
     ),
   },
   {
@@ -100,16 +82,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
     label: "за сегодня",
     flex: "203 1 0",
     renderCell: (item) => (
-      <span
-        style={{
-          color: "#10B981",
-          fontSize: 20,
-          fontWeight: 700,
-          lineHeight: "28px",
-        }}
-      >
-        {item.todayNew}
-      </span>
+      <span className={styles.statsIncrementValue}>{item.todayNew}</span>
     ),
   },
   {
@@ -117,16 +90,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
     label: "за неделю",
     flex: "203 1 0",
     renderCell: (item) => (
-      <span
-        style={{
-          color: "#10B981",
-          fontSize: 20,
-          fontWeight: 700,
-          lineHeight: "28px",
-        }}
-      >
-        {item.week}
-      </span>
+      <span className={styles.statsIncrementValue}>{item.week}</span>
     ),
   },
   {
@@ -134,16 +98,7 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
     label: "за месяц",
     flex: "203 1 0",
     renderCell: (item) => (
-      <span
-        style={{
-          color: "#10B981",
-          fontSize: 20,
-          fontWeight: 700,
-          lineHeight: "28px",
-        }}
-      >
-        {item.month}
-      </span>
+      <span className={styles.statsIncrementValue}>{item.month}</span>
     ),
   },
   {
@@ -151,71 +106,10 @@ const statsColumns: ColumnConfig<StatsRow>[] = [
     label: "за квартал",
     flex: "203 1 0",
     renderCell: (item) => (
-      <span
-        style={{
-          color: "#10B981",
-          fontSize: 20,
-          fontWeight: 700,
-          lineHeight: "28px",
-        }}
-      >
-        {item.quarter}
-      </span>
+      <span className={styles.statsIncrementValue}>{item.quarter}</span>
     ),
   },
 ];
-
-const getDealStatusColor = (status: string): string => {
-  switch (status) {
-    case "new":
-      return "#1F2937";
-    case "in_progress":
-      return "#3B82F6";
-    case "completed":
-      return "#10B981";
-    case "cancelled":
-      return "#F59E0B";
-    default:
-      return "#1F2937";
-  }
-};
-
-const getDealCardBackground = (status: string): string => {
-  switch (status) {
-    case "new":
-      return "#EFF6FF";
-    case "completed":
-      return "#F0FDF4";
-    case "cancelled":
-      return "#FFF7ED";
-    default:
-      return "#FFFFFF";
-  }
-};
-
-const getTaskCardBackground = (status: string): string => {
-  switch (status) {
-    case "new":
-      return "#EFF6FF";
-    case "completed":
-      return "#F0FDF4";
-    default:
-      return "#FFFFFF";
-  }
-};
-
-const getTaskStatusColor = (status: string): string => {
-  switch (status) {
-    case "new":
-      return "#1F2937";
-    case "in_progress":
-      return "#3B82F6";
-    case "completed":
-      return "#10B981";
-    default:
-      return "#1F2937";
-  }
-};
 
 const MainPage: React.FC = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -614,13 +508,28 @@ const MainPage: React.FC = () => {
             (d) => d.id === dealDisplay.id,
           );
           const status = deal?.status ?? "new";
-          const bg = getDealCardBackground(status);
+          const bgClass =
+            status === "new"
+              ? styles.rowNew
+              : status === "completed"
+                ? styles.rowCompleted
+                : status === "cancelled"
+                  ? styles.rowCancelled
+                  : "";
+          const colorClass =
+            status === "new"
+              ? styles.statusNew
+              : status === "in_progress"
+                ? styles.statusInProgress
+                : status === "completed"
+                  ? styles.statusCompleted
+                  : status === "cancelled"
+                    ? styles.statusCancelled
+                    : "";
           return (
             <MobileDataListRow>
-              <div style={{ padding: "8px 12px", background: bg }}>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 2 }}
-                >
+              <div className={`${styles.mobileDealCard} ${bgClass}`}>
+                <div className={styles.mobileDealCardBody}>
                   <span className={styles.mobileDealTitle}>
                     {dealDisplay.title}
                   </span>
@@ -631,7 +540,7 @@ const MainPage: React.FC = () => {
                     {dealDisplay.amount}
                   </span>
                   <div className={styles.mobileDealFooter}>
-                    <span style={{ color: getDealStatusColor(status) }}>
+                    <span className={colorClass}>
                       {dealDisplay.status}
                     </span>
                     <span className={styles.mobileDealDate}>
@@ -662,13 +571,24 @@ const MainPage: React.FC = () => {
         getItemId={(item) => item.id}
         items={lastTasks}
         renderItem={(task) => {
-          const bg = getTaskCardBackground(task.status);
+          const bgClass =
+            task.status === "new"
+              ? styles.taskCardNew
+              : task.status === "completed"
+                ? styles.taskCardCompleted
+                : "";
+          const colorClass =
+            task.status === "new"
+              ? styles.taskCardStatusNew
+              : task.status === "in_progress"
+                ? styles.taskCardStatusInProgress
+                : task.status === "completed"
+                  ? styles.taskCardStatusCompleted
+                  : "";
           return (
             <MobileDataListRow>
-              <div style={{ padding: "12px 16px", background: bg }}>
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 8 }}
-                >
+              <div className={`${styles.mobileTaskCard} ${bgClass}`}>
+                <div className={styles.mobileTaskCardBody}>
                   <div className={styles.taskCardInfo}>
                     <span className={styles.taskCardTitle}>{task.title}</span>
                     <div className={styles.taskCardDeal}>
@@ -682,7 +602,7 @@ const MainPage: React.FC = () => {
                     <span className={styles.taskCardDueDate}>
                       {formatDueDate(task.dueDate)}
                     </span>
-                    <span style={{ color: getTaskStatusColor(task.status) }}>
+                    <span className={colorClass}>
                       {TASK_STATUS_LABELS[task.status] ?? task.status}
                     </span>
                   </div>

@@ -56,3 +56,9 @@
   font-size: 0.9375rem;
   line-height: 1.6;
 }
+
+.authError {
+  color: var(--color-text-error);
+  font-size: 0.875rem;
+  padding-top: 15px;
+}

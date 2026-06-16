@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useRegisterUserMutation } from "../../api";
@@ -21,18 +22,28 @@ const RegisterPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const handleSubmit = async (data: RegisterFormValues) => {
-    const profile = await registerUser({
-      email: data.email,
-      password: data.password,
-      name: data.name,
-      surname: data.surname,
-      accName: data.accName,
-    }).unwrap();
+    try {
+      setAuthError(null);
 
-    dispatch(setUser(profile));
-    navigate("/main");
+      const profile = await registerUser({
+        email: data.email,
+        password: data.password,
+        name: data.name,
+        surname: data.surname,
+        accName: data.accName,
+      }).unwrap();
+
+      dispatch(setUser(profile));
+      navigate("/main");
+    } catch (err) {
+      const error = err as { data?: { message?: string } };
+      setAuthError(
+        error?.data?.message ?? "Ошибка регистрации. Попробуйте снова.",
+      );
+    }
   };
 
   return (
@@ -56,6 +67,11 @@ const RegisterPage: React.FC = () => {
             Зарегистрироваться
           </Button>
         </Form>
+        {authError ? (
+          <p className={styles.authError} role="alert">
+            {authError}
+          </p>
+        ) : null}
       </div>
     </AuthLayout>
   );
