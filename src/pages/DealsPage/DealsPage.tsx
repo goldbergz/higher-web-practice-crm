@@ -207,6 +207,7 @@ const DealsPage: React.FC = () => {
         changes: {
           title: data.title,
           description: data.description || undefined,
+          clientId: data.clientId,
           amount: Number(data.amount.replace(/\s/g, "")),
           status:
             selectedDeal.status === "completed" ? "completed" : data.status,
