@@ -48,7 +48,7 @@ describe("Modal", () => {
       </Modal>,
     );
 
-    await user.click(screen.getByRole("dialog"));
+    await user.click(screen.getByRole("presentation"));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -62,7 +62,7 @@ describe("Modal", () => {
       </Modal>,
     );
 
-    await user.click(screen.getByRole("document"));
+    await user.click(screen.getByRole("dialog"));
     expect(onClose).not.toHaveBeenCalled();
   });
 
